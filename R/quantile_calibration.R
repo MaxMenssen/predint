@@ -4,8 +4,8 @@
 
 # To do
 # - newdat
-# - traceplot
-# - only models with randiom effects (1|xy)
+# - traceplot DONE
+# - only models with randiom effects (1|xy) DONE
 
 
 lmer_pi <- function(model,
@@ -42,9 +42,11 @@ lmer_pi <- function(model,
 
         if(wrong_formula){
                 stop("Random effects must be specified as (1|random_effect)")
-        }else{
-                print('lmer formula correct')
         }
+
+        # else{
+        #         print('lmer formula correct')
+        # }
 
         # Extraction the intercept
         mu_hat <- unname(fixef(model))
@@ -208,21 +210,59 @@ lmer_pi <- function(model,
                 runval_i <- vector()
 
                 # Set tolerable range of cover
-                cover_max <- 1-(alpha-tol)
-                cover_min <- 1-(alpha+tol)
+                # cover_max <- 1-(alpha-tol)
+                # cover_min <- 1-(alpha+tol)
 
 
                 # if the coverage is smaller for both quant take quant_min
-                if ((f(quant_min) > cover_min)) {
+                if ((f(quant_min) > 1-(alpha+tol))) {
 
-                        print(paste("f(quant_min)", f(quant_min)))
+                        warning(paste("observed coverage probability for quant_min =",
+                                      f(quant_min),
+                                      "is bigger than 1-alpha+tol =",
+                                      1-alpha+tol))
+
+                        if(traceplot==TRUE){
+
+                                plot(x=quant_min,
+                                     y=f(quant_min)-(1-alpha),
+                                     type="p",
+                                     pch=20,
+                                     xlab="calibration value",
+                                     ylab="obs. coverage - nom. coverage",
+                                     main=paste("f(quant_min) > 1-alpha+tol"),
+                                     ylim=c(f(quant_min)-(1-alpha)+tol, -tol))
+                                abline(a=0, b=0, lty="dashed")
+                                abline(a=tol, b=0, col="grey")
+                        }
+
                         return(quant_min)
                 }
 
-                # if the coverage is bigger for both quant take quant_max
-                else if ((f(quant_max) < cover_max)) {
 
-                        print(paste("(f(quant_max)", f(quant_max)))
+                # if the coverage is bigger for both quant take quant_max
+                else if ((f(quant_max) < 1-(alpha-tol))) {
+
+                        warning(paste("observed coverage probability for quant_max =",
+                                      f(quant_max),
+                                      "is smaller than 1-alpha-tol =",
+                                      1-alpha-tol))
+
+
+                        if(traceplot==TRUE){
+
+                                plot(x=quant_max,
+                                     y=f(quant_max)-(1-alpha),
+                                     type="p", pch=20,
+                                     xlab="calibration value",
+                                     ylab="obs. coverage - nom. coverage",
+                                     main=paste("f(quant_max) < 1-alpha-tol"),
+                                     ylim=c(f(quant_max)-(1-alpha)-tol, tol))
+                                abline(a=0, b=0, lty="dashed")
+                                abline(a=-tol, b=0, col="grey")
+                        }
+
+
                         return(quant_max)
                 }
 
@@ -230,20 +270,9 @@ lmer_pi <- function(model,
                 else for (i in 1:n) {
                         c <- (quant_min + quant_max) / 2 # Calculate midpoint
 
-                        # print(paste("i", i))
-
-                        # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
-                        # function and return the root.
-
-                        # print(paste("quant_c", c))
-
-                        # print(paste("f(c)=", f(c)))
-
                         runval <- (1-alpha)-f(c)
 
-                        # print(paste("runval=", runval))
-
-                        # Assigning c1 and runval into the vectors
+                        # Assigning c and runval into the vectors
                         c_i[i] <- c
                         runval_i[i] <- runval
 
@@ -253,17 +282,19 @@ lmer_pi <- function(model,
 
                                 if(traceplot==TRUE){
 
-                                        # print("runval_i")
-                                        # print(runval_i)
-
-                                        plot(x=c_i, y=runval_i, type="p", pch=20,
-                                             xlab="lambda", ylab="obs. coverage - nom. coverage",
+                                        plot(x=c_i,
+                                             y=runval_i,
+                                             type="p",
+                                             pch=20,
+                                             xlab="calibration value",
+                                             ylab="obs. coverage - nom. coverage",
                                              main=paste("Trace with", i, "iterations"))
                                         lines(x=c_i, y=runval_i, type="s", col="red")
                                         abline(a=0, b=0, lty="dashed")
+                                        abline(a=tol, b=0, col="grey")
+                                        abline(a=-tol, b=0, col="grey")
                                 }
 
-                                # print(paste("c",c))
                                 return(c)
                         }
 
@@ -278,21 +309,26 @@ lmer_pi <- function(model,
 
 
                 }
+
                 # If the max number of iterations is reached and no root has been found,
                 # return message and end function.
-                print('Too many iterations, but the quantile of the last step are returned')
+                warning('Too many iterations, but the quantile of the last step are returned')
 
                 if(traceplot==TRUE){
 
-                        # print("runval_i")
-                        # print(runval_i)
-
-                        plot(x=c_i, y=runval_i, type="p", pch=20,
-                             # xlab="lambda", ylab=paste("coverage-", nomcov),
+                        plot(x=c_i,
+                             y=runval_i,
+                             type="p",
+                             pch=20,
+                             xlab="calibration value",
+                             ylab="obs. coverage - nom. coverage",
                              main=paste("Trace with", i, "iterations"))
                         lines(x=c_i, y=runval_i, type="s", col="red")
                         abline(a=0, b=0, lty="dashed")
+                        abline(a=tol, b=0, col="grey")
+                        abline(a=-tol, b=0, col="grey")
                 }
+
                 return(c)
 
         }
@@ -400,10 +436,10 @@ dat_c2_new <- c2_ab_e_drop(mu=-100, n_i=3, n_j=4, n_ij=5,
                            var_i=30, var_j=20, var_ij=10, var_ijk=5,
                            p_e=0, p_ab=0)
 # Fitting the model
-lmer_fit_c2 <- lmer(y_ijk ~ 1 + (b|a), dat_c2)
+lmer_fit_c2 <- lmer(y_ijk ~ 1 + (1|a) + (1|b) + (1|a:b), dat_c2)
 
 # Run the PI
-system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2, m=10, traceplot=TRUE))
+system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2, m=15, alpha=0.001, traceplot=TRUE))
 pi_calib_c2
 
 
