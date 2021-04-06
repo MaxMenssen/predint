@@ -4,16 +4,31 @@
 
 # To do
 # - newdat
+# - alternative
 # - traceplot DONE
 # - only models with randiom effects (1|xy) DONE
 
+# histdat,
+# newdat=NULL,
+# m=NULL,
+# alternative="both",
+# alpha=0.05,
+# nboot=2000,
+# lambda_min=0.01,
+# lambda_max=10,
+# traceplot=FALSE,
+# n_bisec=30
 
 lmer_pi <- function(model,
-                        m,
-                        alpha=0.05,
-                        bs_nsim=1000,
-                        traceplot=TRUE,
-                        n_bisec=20){
+                    newdat=NULL,
+                    m=NULL,
+                    # alternative="both",
+                    alpha=0.05,
+                    nboot=1000,
+                    lambda_min=0.01,
+                    lambda_max=10,
+                    traceplot=TRUE,
+                    n_bisec=30){
 
         # Model must be of class lmerMod
         if(class(model) != "lmerMod"){
@@ -26,6 +41,8 @@ lmer_pi <- function(model,
 
         }
 
+
+        ### All random effects must be specified as (1|random_effect)
         # Get forumla object
         f <- lmer_fit_c2@call$formula
 
@@ -44,15 +61,48 @@ lmer_pi <- function(model,
                 stop("Random effects must be specified as (1|random_effect)")
         }
 
-        # else{
-        #         print('lmer formula correct')
+
+
+        # Relationship between newdat and m
+        if(is.null(newdat) & is.null(m)){
+                stop("newdat and m are both NULL")
+        }
+
+        if(!is.null(newdat) & !is.null(m)){
+                stop("newdat and m are both defined")
+        }
+
+
+        ### Actual data
+        if(is.null(newdat) == FALSE){
+                if(is.data.frame(newdat)==FALSE){
+                        stop("newdat is not a data.frame")
+                }
+
+                if(ncol(newdat) != 1){
+                        stop("newdat has to have one column")
+                }
+        }
+
+        if(is.null(newdat) & is.null(m)==FALSE){
+                newdat <- data.frame(x=rep(NA, m))
+        }
+
+
+        # alternative must be defined
+        # if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+        #         stop("alternative must be either both, lower or upper")
         # }
 
-        # Extraction the intercept
+        #----------------------------------------------------------------------
+
+
+        # Extraction of the intercept
         mu_hat <- unname(fixef(model))
 
         # SE for the future observation
-        se_y_star_hat <- sqrt(sum(c(as.vector(vcov(model)), data.frame(VarCorr(model))$vcov)))
+        se_y_star_hat <- sqrt(sum(c(as.vector(vcov(model)),
+                                    data.frame(VarCorr(model))$vcov)))
 
         # Number of observations
         n_obs <- nrow(model@frame)
@@ -76,7 +126,7 @@ lmer_pi <- function(model,
         }
 
         # Bootstrap for the observations
-        boot_obs <- bootMer(model, obs_fun, nsim = bs_nsim)
+        boot_obs <- bootMer(model, obs_fun, nsim = nboot)
 
         # Smallest BS observation
         bs_y_min <- min(t(boot_obs$t))
@@ -121,7 +171,7 @@ lmer_pi <- function(model,
         }
 
         # Bootstrap
-        boot_se <- bootMer(model, se_fun, nsim = bs_nsim)
+        boot_se <- bootMer(model, se_fun, nsim = nboot)
 
         # Bootstrapped Parameters
         bs_params <- data.frame(boot_se$t)
@@ -192,16 +242,6 @@ lmer_pi <- function(model,
 
         #----------------------------------------------------------------------
         ### Bisection
-
-        # Start Values
-        quant_max <- min(20, (abs(bs_y_max)+abs(bs_mu_max))/bs_se_min)
-        quant_min <- max(1,(abs(bs_y_min)-abs(bs_mu_min))/bs_se_max)
-
-        # print("quant_max")
-        # print(quant_max)
-        #
-        # print("quant_min")
-        # print(quant_min)
 
         bisection <- function(f, quant_min, quant_max, n, tol = 1e-3) {
 
@@ -334,7 +374,7 @@ lmer_pi <- function(model,
         }
 
         # Calculation of the degreees of freedom
-        quant_calib <- bisection(f=coverfun, quant_min=quant_min, quant_max=quant_max, n=n_bisec)
+        quant_calib <- bisection(f=coverfun, quant_min=lambda_min, quant_max=lambda_max, n=n_bisec)
 
         # print(paste("df_calib=",df_calib))
         #----------------------------------------------------------------------
@@ -353,9 +393,12 @@ lmer_pi <- function(model,
         lower <- mu_hat-quant_calib*se_y_star_hat
         upper <- mu_hat+quant_calib*se_y_star_hat
 
-        pi_final <- data.frame("lower"=lower, "upper"=upper,
-                      "quant_calib"=quant_calib,
-                      "m"=m)
+        pi_final <- data.frame("m"=m,
+                               "histmean"=mu_hat,
+                               "quant_calib"=quant_calib,
+                               "pred_se"=se_y_star_hat,
+                               "lower"=lower,
+                               "upper"=upper)
 
 
         return(pi_final)
@@ -439,10 +482,11 @@ dat_c2_new <- c2_ab_e_drop(mu=-100, n_i=3, n_j=4, n_ij=5,
 lmer_fit_c2 <- lmer(y_ijk ~ 1 + (1|a) + (1|b) + (1|a:b), dat_c2)
 
 # Run the PI
-system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2, m=15, alpha=0.001, traceplot=TRUE))
+system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2, m=1, alpha=0.05, traceplot=TRUE))
 pi_calib_c2
 
-
+range(dat_c2$y_ijk)
+range(dat_c2_new$y_ijk)
 
 
 
