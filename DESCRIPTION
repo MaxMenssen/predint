@@ -2,10 +2,13 @@ Package: predint
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Max Menssen
-Maintainer: The package maintainer <menssen@cell.uni-hannover.de>
+Author: Max Menssen, Frank Schaarschmidt
+Maintainer: Max Menssen <menssen@cell.uni-hannover.de>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: CC0
 Encoding: UTF-8
 LazyData: true
+Depends: 
+        lme4,
+        dplyr
