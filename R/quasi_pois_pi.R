@@ -296,7 +296,7 @@ quasi_pois_pi <- function(histdat,
                 }
                 # If the max number of iterations is reached and no root has been found,
                 # return message and end function.
-                warning('Too many iterations, but the quantile of the last step are returned')
+                warning('Too many iterations, but the quantile of the last step is returned')
 
                 if(traceplot==TRUE){
 
