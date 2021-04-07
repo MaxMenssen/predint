@@ -2,27 +2,10 @@
 #----------------- PI function based on quantile calibration -------------------
 #-------------------------------------------------------------------------------
 
-# To do
-# - newdat
-# - alternative
-# - traceplot DONE
-# - only models with randiom effects (1|xy) DONE
-
-# histdat,
-# newdat=NULL,
-# m=NULL,
-# alternative="both",
-# alpha=0.05,
-# nboot=2000,
-# lambda_min=0.01,
-# lambda_max=10,
-# traceplot=FALSE,
-# n_bisec=30
-
 lmer_pi <- function(model,
                     newdat=NULL,
                     m=NULL,
-                    # alternative="both",
+                    alternative="both",
                     alpha=0.05,
                     nboot=1000,
                     lambda_min=0.01,
@@ -93,18 +76,10 @@ lmer_pi <- function(model,
 
         }
 
-        # Define newdat in case that m is given
-        if(is.null(newdat) & is.null(m)==FALSE){
-                newdat <- data.frame(x=rep(NA, m))
-        }
-
-
-
-
         # alternative must be defined
-        # if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
-        #         stop("alternative must be either both, lower or upper")
-        # }
+        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+                stop("alternative must be either both, lower or upper")
+        }
 
         #----------------------------------------------------------------------
 
@@ -188,9 +163,6 @@ lmer_pi <- function(model,
         # Bootstrapped Parameters
         bs_params <- data.frame(boot_se$t)
 
-        # print("bs_params")
-        # print(bs_params)
-
         # Bootstrapped se
         bs_se<- as.list(as.vector(bs_params$bs_se_y_star))
 
@@ -220,32 +192,94 @@ lmer_pi <- function(model,
 
                 pi_list <- vector("list", length=nrow(bs_params))
 
-                for(b in 1:nrow(bs_params)){
+                if(alternative=="both"){
+                        for(b in 1:nrow(bs_params)){
 
-                        lower <- bs_params$bs_mu[b]-quant*bs_params$bs_se_y_star[b]
-                        upper <- bs_params$bs_mu[b]+quant*bs_params$bs_se_y_star[b]
+                                lower <- bs_params$bs_mu[b]-quant*bs_params$bs_se_y_star[b]
+                                upper <- bs_params$bs_mu[b]+quant*bs_params$bs_se_y_star[b]
 
-                        pi_list[[b]] <- c("lower"=lower, "upper"=upper, "quant"=quant)
+                                pi_list[[b]] <- c("lower"=lower, "upper"=upper, "quant"=quant)
+
+                        }
+
+                        # Check if both lists have the same length
+                        if(length(pi_list) != length(ystar_list)){
+                                stop("length(pi_list) != length(ystar_list)")
+                        }
+
+                        # Length of the lists
+                        K <- length(pi_list)
+
+                        # Vector for the Coverage
+                        cover_vec <- logical(length=K)
+
+                        for(k in 1:K){
+                                cover_vec[k] <- pi_list[[k]]["lower"] < ystar_list[[k]][1] && pi_list[[k]]["upper"] > ystar_list[[k]][2]
+                        }
+
+                        # Coverage probabilities as the mean of the 1/0 vector
+                        coverage <- mean(as.integer(cover_vec))
 
                 }
 
-                # Check if bith lists have the same length
-                if(length(pi_list) != length(ystar_list)){
-                        stop("length(pi_list) != length(ystar_list)")
+                else if(alternative=="lower"){
+                        for(b in 1:nrow(bs_params)){
+
+                                lower <- bs_params$bs_mu[b]-quant*bs_params$bs_se_y_star[b]
+
+                                pi_list[[b]] <- c("lower"=lower, "quant"=quant)
+
+                        }
+
+                        # Check if both lists have the same length
+                        if(length(pi_list) != length(ystar_list)){
+                                stop("length(pi_list) != length(ystar_list)")
+                        }
+
+                        # Length of the lists
+                        K <- length(pi_list)
+
+                        # Vector for the Coverage
+                        cover_vec <- logical(length=K)
+
+                        for(k in 1:K){
+                                cover_vec[k] <- pi_list[[k]]["lower"] < ystar_list[[k]][1]
+                        }
+
+                        # Coverage probabilities as the mean of the 1/0 vector
+                        coverage <- mean(as.integer(cover_vec))
+
                 }
 
-                # Length of the lists
-                K <- length(pi_list)
+                else if(alternative=="upper"){
+                        for(b in 1:nrow(bs_params)){
 
-                # Vector for the Coverage
-                cover_vec <- logical(length=K)
+                                upper <- bs_params$bs_mu[b]+quant*bs_params$bs_se_y_star[b]
 
-                for(k in 1:K){
-                        cover_vec[k] <- pi_list[[k]]["lower"] < ystar_list[[k]][1] && pi_list[[k]]["upper"] > ystar_list[[k]][2]
+                                pi_list[[b]] <- c("upper"=upper, "quant"=quant)
+
+                        }
+
+                        # Check if both lists have the same length
+                        if(length(pi_list) != length(ystar_list)){
+                                stop("length(pi_list) != length(ystar_list)")
+                        }
+
+                        # Length of the lists
+                        K <- length(pi_list)
+
+                        # Vector for the Coverage
+                        cover_vec <- logical(length=K)
+
+                        for(k in 1:K){
+                                cover_vec[k] <- pi_list[[k]]["upper"] > ystar_list[[k]][2]
+                        }
+
+                        # Coverage probabilities as the mean of the 1/0 vector
+                        coverage <- mean(as.integer(cover_vec))
+
                 }
 
-                # Coverage probabilities as the mean of the 1/0 vector
-                coverage <- mean(as.integer(cover_vec))
 
                 return(coverage)
 
@@ -260,10 +294,6 @@ lmer_pi <- function(model,
 
                 c_i <- vector()
                 runval_i <- vector()
-
-                # Set tolerable range of cover
-                # cover_max <- 1-(alpha-tol)
-                # cover_min <- 1-(alpha+tol)
 
 
                 # if the coverage is smaller for both quant take quant_min
@@ -388,54 +418,114 @@ lmer_pi <- function(model,
         # Calculation of the degreees of freedom
         quant_calib <- bisection(f=coverfun, quant_min=lambda_min, quant_max=lambda_max, n=n_bisec)
 
-        # print(paste("df_calib=",df_calib))
         #----------------------------------------------------------------------
 
-        # DF calibrated PI
-
-        # print("mu_hat")
-        # print(mu_hat)
-        #
-        # print("quant_calib")
-        # print(quant_calib)
-        #
-        # print("se_y_star_hat")
-        # print(se_y_star_hat)
+        # calibrated PI
 
         lower <- mu_hat-quant_calib*se_y_star_hat
         upper <- mu_hat+quant_calib*se_y_star_hat
 
         # Define output if newdat is given
         if(is.null(newdat)==FALSE){
-                pi_final <- data.frame("histmean"=mu_hat,
-                                       "quant_calib"=quant_calib,
-                                       "pred_se"=se_y_star_hat,
-                                       "lower"=lower,
-                                       "upper"=upper)
 
-                # extract the dependent variable from newdat
-                dep_var <- newdat[,as.character(model@call$formula)[2]]
 
-                # open vector for coverage
-                cover <- logical(length=nrow(newdat))
+                if(alternative=="both"){
+                        pi_final <- data.frame("histmean"=mu_hat,
+                                               "quant_calib"=quant_calib,
+                                               "pred_se"=se_y_star_hat,
+                                               "lower"=lower,
+                                               "upper"=upper)
 
-                for(j in 1:nrow(newdat)){
-                        cover[j] <- pi_final$lower < dep_var[j] && dep_var[j] < pi_final$upper
+                        # extract the dependent variable from newdat
+                        dep_var <- newdat[,as.character(model@call$formula)[2]]
 
+                        # open vector for coverage
+                        cover <- logical(length=nrow(newdat))
+
+                        for(j in 1:nrow(newdat)){
+                                cover[j] <- pi_final$lower < dep_var[j] && dep_var[j] < pi_final$upper
+
+                        }
+
+                        cover <- data.frame("cover"=cover)
+
+                        out <- cbind(merge(newdat, pi_final), cover)
                 }
 
-                cover <- data.frame("cover"=cover)
+                else if(alternative=="lower"){
+                        pi_final <- data.frame("histmean"=mu_hat,
+                                               "quant_calib"=quant_calib,
+                                               "pred_se"=se_y_star_hat,
+                                               "lower"=lower)
 
-        out <- cbind(merge(newdat, pi_final), cover)
+                        # extract the dependent variable from newdat
+                        dep_var <- newdat[,as.character(model@call$formula)[2]]
+
+                        # open vector for coverage
+                        cover <- logical(length=nrow(newdat))
+
+                        for(j in 1:nrow(newdat)){
+                                cover[j] <- pi_final$lower < dep_var[j]
+
+                        }
+
+                        cover <- data.frame("cover"=cover)
+
+                        out <- cbind(merge(newdat, pi_final), cover)
+                }
+
+                else if(alternative=="upper"){
+                        pi_final <- data.frame("histmean"=mu_hat,
+                                               "quant_calib"=quant_calib,
+                                               "pred_se"=se_y_star_hat,
+                                               "upper"=upper)
+
+                        # extract the dependent variable from newdat
+                        dep_var <- newdat[,as.character(model@call$formula)[2]]
+
+                        # open vector for coverage
+                        cover <- logical(length=nrow(newdat))
+
+                        for(j in 1:nrow(newdat)){
+                                cover[j] <- dep_var[j] < pi_final$upper
+
+                        }
+
+                        cover <- data.frame("cover"=cover)
+
+                        out <- cbind(merge(newdat, pi_final), cover)
+                }
 
         }
 
-        else{out <- data.frame("m"=m,
-                               "histmean"=mu_hat,
-                               "quant_calib"=quant_calib,
-                               "pred_se"=se_y_star_hat,
-                               "lower"=lower,
-                               "upper"=upper)
+        # if m is given
+        else if(is.null(newdat)){
+
+                if(alternative=="both"){
+                        out <- data.frame("m"=m,
+                                          "histmean"=mu_hat,
+                                          "quant_calib"=quant_calib,
+                                          "pred_se"=se_y_star_hat,
+                                          "lower"=lower,
+                                          "upper"=upper)
+                }
+
+                if(alternative=="lower"){
+                        out <- data.frame("m"=m,
+                                          "histmean"=mu_hat,
+                                          "quant_calib"=quant_calib,
+                                          "pred_se"=se_y_star_hat,
+                                          "lower"=lower)
+                }
+
+                if(alternative=="upper"){
+                        out <- data.frame("m"=m,
+                                          "histmean"=mu_hat,
+                                          "quant_calib"=quant_calib,
+                                          "pred_se"=se_y_star_hat,
+                                          "upper"=upper)
+                }
+
         }
 
 
@@ -443,118 +533,4 @@ lmer_pi <- function(model,
         return(out)
 
 }
-
-#------------------------------------------------------------------------------
-
-library(lme4)
-library(dplyr)
-
-# Function for data sampling
-c2_ab_e_drop <- function(mu, n_i, n_j, n_ij, var_i, var_j, var_ij, var_ijk, p_e, p_ab){
-
-        # Vector for the intercept
-        mu <- rep(x=mu, times=(n_i * n_j * n_ij))
-
-        # vector for factor a
-        a_i <- rep(x=rnorm(n=n_i, sd=var_i), each=n_ij, times=n_j)
-
-        # vector for factor b
-        b_j <- rep(x=rnorm(n=n_j, sd=var_j), each=n_i*n_ij)
-
-        # vector for the interaction
-        ab_ij <- rep(x=rnorm(n=n_j*n_i, sd=var_ij), each=n_ij)
-
-        # vector of the residuals
-        e_ijk <- rnorm(n=(n_i*n_j*n_ij), sd=var_ijk)
-
-        # vector of the observations
-        y_ijk <- mu + a_i + b_j + ab_ij + e_ijk
-
-        # Sampling index vector for  NAs
-        na_index1 <- rbinom(n=length(y_ijk), size=1, prob=p_e)
-
-        # Setting some observations NA
-        for(i in 1:length(y_ijk)){
-
-                if(na_index1[i]==1){
-                        y_ijk[i] <- NA
-                }
-        }
-
-        # Structure of the data-set
-        a <- factor(rep(x=c(1:n_i), each=n_ij, times=n_j))
-        b <- factor(rep(x=c(1:n_j), each=n_i*n_ij))
-
-        # Dataset
-        blockinter <- na.omit(data.frame(y_ijk, a=factor(a), b=factor(b)))
-
-        # print(blockinter)
-        # str(blockinter)
-
-        blockinter$ab <- interaction(blockinter$a, blockinter$b)
-
-        dropout <- rbinom(n=unique(blockinter$ab), size=1, prob=p_ab)
-
-        ab <- unique(blockinter$ab)
-
-
-        drop_dat <- data.frame(ab, dropout)
-
-        out <- full_join(blockinter, drop_dat, by = "ab") %>%
-                filter(dropout==0) %>%
-                select(y_ijk, a, b)
-
-
-        return(out)
-}
-
-
-# Data Sampling
-dat_c2 <- c2_ab_e_drop(mu=100, n_i=3, n_j=4, n_ij=5,
-                       var_i=30, var_j=20, var_ij=10, var_ijk=5,
-                       p_e=0, p_ab=0)
-
-dat_c2_new <- c2_ab_e_drop(mu=100, n_i=3, n_j=4, n_ij=5,
-                           var_i=30, var_j=20, var_ij=10, var_ijk=5,
-                           p_e=0.1, p_ab=0.5)
-
-dat_c2_new <- rename(dat_c2_new, y=y_ijk)
-
-# Fitting the model
-lmer_fit_c2 <- lmer(y_ijk ~ 1 + (1|a) + (1|b) + (1|a:b), dat_c2)
-
-# Run the PI
-system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2,
-                                   newdat=dat_c2_new,
-                                   # m=1,
-                                   alpha=0.05,
-                                   traceplot=TRUE,
-                                   nboot=100))
-pi_calib_c2
-
-
-range(dat_c2$y_ijk)
-range(dat_c2_new$y_ijk)
-
-#-------------------------------------------------------------------------------
-
-#
-# str(lmer_fit_c2)
-# lmer_fit_c2@frame
-#
-# range(dat_c2$y_ijk)
-# range(dat_c2_new$y_ijk)
-#
-#
-# all(colnames(dat_c2) == c("y_ijk", "b", "a"))
-#
-#
-#
-#
-# str(lmer_fit_c2@call$formula)
-#
-# as.character(lmer_fit_c2@call$formula)[2]
-#
-# dat_c2_new$c
-#
 
