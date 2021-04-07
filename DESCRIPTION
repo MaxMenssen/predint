@@ -1,6 +1,6 @@
 Package: predint
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Prediction intervals
 Version: 0.1.0
 Author: Max Menssen, Frank Schaarschmidt
 Maintainer: Max Menssen <menssen@cell.uni-hannover.de>
@@ -12,3 +12,4 @@ LazyData: true
 Depends: 
         lme4,
         dplyr
+RoxygenNote: 7.1.1
