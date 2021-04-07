@@ -44,10 +44,11 @@ lmer_pi <- function(model,
 
         ### All random effects must be specified as (1|random_effect)
         # Get forumla object
-        f <- lmer_fit_c2@call$formula
+        f <- model@call$formula
 
         # Right part of formula as a string
         fs <- as.character(f)[3]
+
 
         # First substitue all whitespace characters with nothing ("") to make shure they don't disturb.
         # '\\s' is regex for 'all whitespace characters like space, tab, line break, ...)'
@@ -75,18 +76,29 @@ lmer_pi <- function(model,
 
         ### Actual data
         if(is.null(newdat) == FALSE){
+
+                # newdat needs to be a data.frame
                 if(is.data.frame(newdat)==FALSE){
                         stop("newdat is not a data.frame")
                 }
 
-                if(ncol(newdat) != 1){
-                        stop("newdat has to have one column")
+                # colnames of historical data and new data must be the same
+                if(all(colnames(model@frame) == colnames(newdat))==FALSE){
+                        stop("columnames of historical data and newdat are not the same")
                 }
+
+                # Define m
+                m <- nrow(newdat)
+
+
         }
 
+        # Define newdat in case that m is given
         if(is.null(newdat) & is.null(m)==FALSE){
                 newdat <- data.frame(x=rep(NA, m))
         }
+
+
 
 
         # alternative must be defined
@@ -393,15 +405,42 @@ lmer_pi <- function(model,
         lower <- mu_hat-quant_calib*se_y_star_hat
         upper <- mu_hat+quant_calib*se_y_star_hat
 
-        pi_final <- data.frame("m"=m,
+        # Define output if newdat is given
+        if(is.null(newdat)==FALSE){
+                pi_final <- data.frame("histmean"=mu_hat,
+                                       "quant_calib"=quant_calib,
+                                       "pred_se"=se_y_star_hat,
+                                       "lower"=lower,
+                                       "upper"=upper)
+
+                # extract the dependent variable from newdat
+                dep_var <- newdat[,as.character(model@call$formula)[2]]
+
+                # open vector for coverage
+                cover <- logical(length=nrow(newdat))
+
+                for(j in 1:nrow(newdat)){
+                        cover[j] <- pi_final$lower < dep_var[j] && dep_var[j] < pi_final$upper
+
+                }
+
+                cover <- data.frame("cover"=cover)
+
+        out <- cbind(merge(newdat, pi_final), cover)
+
+        }
+
+        else{out <- data.frame("m"=m,
                                "histmean"=mu_hat,
                                "quant_calib"=quant_calib,
                                "pred_se"=se_y_star_hat,
                                "lower"=lower,
                                "upper"=upper)
+        }
 
 
-        return(pi_final)
+
+        return(out)
 
 }
 
@@ -471,24 +510,51 @@ c2_ab_e_drop <- function(mu, n_i, n_j, n_ij, var_i, var_j, var_ij, var_ijk, p_e,
 
 
 # Data Sampling
-dat_c2 <- c2_ab_e_drop(mu=-100, n_i=3, n_j=4, n_ij=5,
+dat_c2 <- c2_ab_e_drop(mu=100, n_i=3, n_j=4, n_ij=5,
                        var_i=30, var_j=20, var_ij=10, var_ijk=5,
                        p_e=0, p_ab=0)
 
-dat_c2_new <- c2_ab_e_drop(mu=-100, n_i=3, n_j=4, n_ij=5,
+dat_c2_new <- c2_ab_e_drop(mu=100, n_i=3, n_j=4, n_ij=5,
                            var_i=30, var_j=20, var_ij=10, var_ijk=5,
-                           p_e=0, p_ab=0)
+                           p_e=0.1, p_ab=0.5)
+
+dat_c2_new <- rename(dat_c2_new, y=y_ijk)
+
 # Fitting the model
 lmer_fit_c2 <- lmer(y_ijk ~ 1 + (1|a) + (1|b) + (1|a:b), dat_c2)
 
 # Run the PI
-system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2, m=1, alpha=0.05, traceplot=TRUE))
+system.time(pi_calib_c2 <- lmer_pi(model=lmer_fit_c2,
+                                   newdat=dat_c2_new,
+                                   # m=1,
+                                   alpha=0.05,
+                                   traceplot=TRUE,
+                                   nboot=100))
 pi_calib_c2
+
 
 range(dat_c2$y_ijk)
 range(dat_c2_new$y_ijk)
 
+#-------------------------------------------------------------------------------
 
-
-
+#
+# str(lmer_fit_c2)
+# lmer_fit_c2@frame
+#
+# range(dat_c2$y_ijk)
+# range(dat_c2_new$y_ijk)
+#
+#
+# all(colnames(dat_c2) == c("y_ijk", "b", "a"))
+#
+#
+#
+#
+# str(lmer_fit_c2@call$formula)
+#
+# as.character(lmer_fit_c2@call$formula)[2]
+#
+# dat_c2_new$c
+#
 
