@@ -2,6 +2,25 @@
 #------------- quantile calibrated pi (quasibinomial) --------------------------
 #-------------------------------------------------------------------------------
 
+#' beta_bin_pi
+#'
+#' beta_bin_pi calculates prediction intervals for beta binomial distributed one way design
+#'
+#' @param histdat a data frame containing the historical data
+#' @param newdat a data frame containing the actual data
+#' @param newsize a vector containing new cluster sizes
+#' @param alternative either "both", "upper" or "lower"
+#' @param alpha defines the level of confidence 1-alpha
+#' @param nboot number of bootstraps
+#' @param lambda_min lower start value for bisection
+#' @param lambda_max upper start value for bisection
+#' @param traceplot plot for visualization of the bisection process
+#' @param n_bisec maximal number of bisection steps
+#'
+#' @return a data frame with prediction intervals
+#' @export
+#'
+#' @examples
 beta_bin_pi <- function(histdat,
                         newdat=NULL,
                         newsize=NULL,
