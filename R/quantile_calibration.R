@@ -2,12 +2,13 @@
 #----------------- PI function based on quantile calibration -------------------
 #-------------------------------------------------------------------------------
 
+
 lmer_pi <- function(model,
                     newdat=NULL,
                     m=NULL,
                     alternative="both",
                     alpha=0.05,
-                    nboot=1000,
+                    nboot=10000,
                     lambda_min=0.01,
                     lambda_max=10,
                     traceplot=TRUE,
@@ -139,8 +140,6 @@ lmer_pi <- function(model,
         # List with future observations (y_star)
         ystar_list <- lapply(bsdat_list, ystar_fun)
 
-        # print(ystar_list)
-
         #----------------------------------------------------------------------
         ### Bootstrapping the variance of y_star
 
@@ -152,9 +151,6 @@ lmer_pi <- function(model,
                 bs_mu <- unname(fixef(.))
 
                 c(bs_mu=bs_mu, bs_se_y_star=bs_se_y_star)
-
-
-
         }
 
         # Bootstrap
@@ -171,9 +167,6 @@ lmer_pi <- function(model,
 
         # Maximum bootstrapped se
         bs_se_max <- max(as.vector(bs_params$bs_se_y_star))
-
-        # print("c(bs_se_min, bs_se_max)")
-        # print(c(bs_se_min, bs_se_max))
 
         # Bootstrapped mu
         bs_mu<- as.list(as.vector(bs_params$bs_mu))

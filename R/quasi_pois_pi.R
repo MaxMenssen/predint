@@ -7,10 +7,10 @@ quasi_pois_pi <- function(histdat,
                           m=NULL,
                           alternative="both",
                           alpha=0.05,
-                          nboot=2000,
+                          nboot=10000,
                           lambda_min=0.01,
                           lambda_max=10,
-                          traceplot=FALSE,
+                          traceplot=TRUE,
                           n_bisec=30){
 
 
@@ -51,18 +51,10 @@ quasi_pois_pi <- function(histdat,
                 m <- nrow(newdat)
         }
 
-        # if(is.null(newdat) & is.null(m)==FALSE){
-        #         newdat <- data.frame(x=rep(NA, m))
-        # }
-
         # alternative must be defined
         if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
                 stop("alternative must be either both, lower or upper")
         }
-
-        #----------------------------------------------------------------------
-        #  Number of future clusters
-        # m <- nrow(newdat)
 
         #-----------------------------------------------------------------------
         ### Historical numbers of observations
@@ -75,9 +67,6 @@ quasi_pois_pi <- function(histdat,
 
         # Historical phi
         hist_phi <- summary(model)$dispersion
-
-        # Store the phi for the final PI
-        # newdat$hist_phi <- hist_phi
 
         # If historical phi <= 1, adjust it
         if(hist_phi <= 1){
@@ -210,10 +199,6 @@ quasi_pois_pi <- function(histdat,
 
                 c_i <- vector()
                 runval_i <- vector()
-
-                # Set tolerable range of cover
-                # lower_bound <- 1-(alpha-tol)
-                # cover_min <- 1-(alpha+tol)
 
                 # if the coverage is smaller for both quant take quant_min
                 if ((f(quant_min) > 1-(alpha+tol))) {
@@ -401,16 +386,5 @@ quasi_pois_pi <- function(histdat,
 }
 
 
-
-
-
-
-
-
-dat <- data.frame(y=rqpois(n=5, lambda=5, phi=3))
-
-
-quasi_pois_pi(histdat=dat, m=3)
-quasi_pois_pi(histdat=dat, newdat=dat)
 
 
