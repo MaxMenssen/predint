@@ -2,7 +2,7 @@
 % Please edit documentation in R/beta_bin_pi.R
 \name{beta_bin_pi}
 \alias{beta_bin_pi}
-\title{beta_bin_pi}
+\title{prediction intervals for beta binomial data}
 \usage{
 beta_bin_pi(
   histdat,
@@ -18,19 +18,58 @@ beta_bin_pi(
 )
 }
 \arguments{
-\item{histdat}{a data frame containing the historical data}
+\item{histdat}{a data frame with two columns (success and failure) containing the historical data}
 
-\item{newdat}{a data frame containing the actual data}
+\item{newdat}{a data frame with two columns (success and failure) containing the actual data}
 
 \item{newsize}{a vector containing new cluster sizes}
 
-\item{alternative}{either "both", "upper" or "lower"}
+\item{alternative}{either "both", "upper" or "lower" specifying if a prediction interval or
+an upper or a lower prediction limit should be computed}
 
-\item{n_bisec}{}
+\item{alpha}{defines the level of confidence (1-alpha)}
+
+\item{nboot}{number of bootstraps}
+
+\item{lambda_min}{lower start value for bisection}
+
+\item{lambda_max}{upper start value for bisection}
+
+\item{traceplot}{plot for visualization of the bisection process}
+
+\item{n_bisec}{maximal number of bisection steps}
 }
 \value{
 a data frame with prediction intervals
 }
 \description{
-beta_bin_pi calculates prediction intervals for beta binomial distributed one way design
+beta_bin_pi calculates bootstrap calibrated prediction intervals for beta
+ binomial distributed one way design
+}
+\details{
+This function returns a bootstrap calibrated prediction interval
+\deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+with \eqn{\hat{y}} as the predicted future number of successes,
+\eqn{y} as the observed future number of successes, \eqn{\sqrt{var(\hat{y} - y)}}
+as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
+approximates a multivariate normal distribution. Please note that
+the predicted future number of successes is based on the future cluster size
+and the success probability estimated from the historical data
+\eqn{\hat{y}=\pi^{hist} n^{fut}}
+}
+\examples{
+# Historical data
+bb_dat1
+
+# Future data
+bb_dat2
+
+# Prediction interval using bb_dat2 as future data
+beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)
+
+# Upper prediction bound for m=3 future number of successes
+# that are based on cluster sizes 40, 50, 60 respectively
+beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")
+
+
 }
