@@ -1,8 +1,6 @@
-#-------------------------------------------------------------------------------
-#------------- quantile calibrated pi (quasibinomial) --------------------------
-#-------------------------------------------------------------------------------
 
-#' prediction intervals for beta binomial data
+
+#' Prediction intervals for beta binomial data
 #'
 #' beta_bin_pi calculates bootstrap calibrated prediction intervals for beta
 #'  binomial distributed one way design
