@@ -3,3 +3,4 @@
 export(beta_bin_pi)
 export(pi_rho_est)
 export(rbbinom)
+export(rqbinom)
