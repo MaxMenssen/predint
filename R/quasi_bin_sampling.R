@@ -26,11 +26,11 @@
 #'
 #' @examples
 #' # Sampling of example data
-#' set.seed(345)
+#' set.seed(456)
 #' qb_dat1 <- rqbinom(n=10, size=50, prob=0.1, phi=3)
 #' qb_dat1
 #'
-#' set.seed(345)
+#' set.seed(456)
 #' qb_dat2 <- rqbinom(n=3, size=c(40, 50, 60), prob=0.1, phi=3)
 #' qb_dat2
 #'
