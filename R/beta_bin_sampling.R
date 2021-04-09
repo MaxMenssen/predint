@@ -6,7 +6,7 @@
 #'
 #' @param n defines the number of clusters (\eqn{i})
 #' @param size integer vector defining the cluster sizes (\eqn{n_i})
-#' @param prob binomial proportion (\eqn{\pi})
+#' @param prob overall binomial proportion (\eqn{\pi})
 #' @param rho intra class correlation (\eqn{\rho})
 #'
 #' @details The sampling is done such that
@@ -31,12 +31,12 @@
 #' @examples
 #' # Sampling of example data
 #' set.seed(234)
-#' bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.3)
-#'bb_dat1
+#' bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.06)
+#' bb_dat1
 #'
 #'
 #' set.seed(234)
-#' bb_dat2 <- rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.3)
+#' bb_dat2 <- rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.06)
 #' bb_dat2
 #'
 #'
