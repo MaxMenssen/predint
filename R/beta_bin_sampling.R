@@ -1,13 +1,45 @@
-#-------------------------------------------------------------------------------
-#----------------- Sampling of quasi-binomial data -----------------------------
-#-------------------------------------------------------------------------------
 
-# Generation of historical data set with different n_k
 
-# n is the number of clusters
-# size is the total number of observations in each cluster
-# n and size have the same function as in rbinom
-
+#' Sampling of beta binomial data
+#'
+#' rbbinom samples beta binomial data according to Menssen and Schaarschmidt (2019)
+#'
+#' @param n defines the number of clusters (\eqn{i})
+#' @param size integer vector defining the cluster sizes (\eqn{n_i})
+#' @param prob binomial proportion (\eqn{\pi})
+#' @param rho intra class correlation (\eqn{\rho})
+#'
+#' @details The sampling is done such that
+#' \deqn{x_i \sim Bin(n_i, \pi_i) and \bi_i \sim Beta(a,b)}
+#' with \eqn{i=1..I} clusters where \eqn{E(\pi_i)=\pi=a/(a+b)} and
+#' \eqn{E(x_i)=n_i \pi}. Hence, the beta binomial variance is
+#' \deqn{var(x_i)=n_i \pi (1-\pi) (1+ (n_i-1) \rho)}
+#' with \eqn{\rho} as the intra class correlation
+#' \deqn{\rho = \frac{1}{1+a+b}}
+#' Please note, that \eqn{1+ (n_i-1) \rho} is a constant if all cluster sizes are
+#' the same and hence, in this special case, also the quasi binomial assumption is
+#' fulfilled.
+#'
+#' @return a data frame with two columns (succ, fail)
+#' @export
+#'
+#' @references
+#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
+#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
+#' https://doi.org/10.1002/sim.8124
+#'
+#' @examples
+#' # Sampling of example data
+#' set.seed(234)
+#' bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.3)
+#'bb_dat1
+#'
+#'
+#' set.seed(234)
+#' bb_dat2 <- rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.3)
+#' bb_dat2
+#'
+#'
 rbbinom <- function(n, size, prob, rho){
 
         # n must be of length 1
