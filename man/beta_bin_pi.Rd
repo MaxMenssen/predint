@@ -2,7 +2,7 @@
 % Please edit documentation in R/beta_bin_pi.R
 \name{beta_bin_pi}
 \alias{beta_bin_pi}
-\title{prediction intervals for beta binomial data}
+\title{Prediction intervals for beta binomial data}
 \usage{
 beta_bin_pi(
   histdat,
