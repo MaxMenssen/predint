@@ -11,7 +11,7 @@ rbbinom(n, size, prob, rho)
 
 \item{size}{integer vector defining the cluster sizes (\eqn{n_i})}
 
-\item{prob}{binomial proportion (\eqn{\pi})}
+\item{prob}{overall binomial proportion (\eqn{\pi})}
 
 \item{rho}{intra class correlation (\eqn{\rho})}
 }
@@ -36,12 +36,12 @@ fulfilled.
 \examples{
 # Sampling of example data
 set.seed(234)
-bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.3)
+bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.06)
 bb_dat1
 
 
 set.seed(234)
-bb_dat2 <- rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.3)
+bb_dat2 <- rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.06)
 bb_dat2
 
 
