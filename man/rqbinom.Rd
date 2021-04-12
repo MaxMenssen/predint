@@ -25,7 +25,7 @@ the beta binomial distribution such that the quasi binomial assumption is fulfil
 \details{
 It is assumed that the dispersion parameter (\eqn{\Phi})
 is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
-\deqn{\Phi n_i \pi (1-\pi).}
+\deqn{var(y_i)=\Phi n_i \pi (1-\pi).}
 For the sampling \eqn{(a+b)_i} is defined as
 \deqn{(a+b)_i=(\Phi-n_i)/(1-\Phi)}
 where \eqn{a_i=\pi (a+b)_i} and \eqn{b_i=(a+b)_i-a_i}. Then, the binomial proportions
