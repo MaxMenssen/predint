@@ -42,10 +42,31 @@
 #'
 rbbinom <- function(n, size, prob, rho){
 
+        # n must be integer
+        if(!isTRUE(all(n == floor(n)))){
+                stop("'n' must be an integer")
+        }
+
         # n must be of length 1
         if(length(n) != 1){
                 stop("length(n) must be 1")
         }
+
+        # size must be integer
+        if(!isTRUE(all(size == floor(size)))){
+                stop("'size' must contain integer values only")
+        }
+
+        # Prob must be element of [0,1]
+        if(prob < 0 ){
+                stop("prob is not element of [0,1]")
+        }
+
+        # Prob must be element of [0,1]
+        if(prob > 1 ){
+                stop("prob is not element of [0,1]")
+        }
+
 
         # Rho must be bigger than 0
         if(rho<=0){
