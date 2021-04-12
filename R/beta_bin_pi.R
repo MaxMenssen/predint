@@ -6,7 +6,7 @@
 #'  binomial distributed one way design
 #'
 #' @param histdat a data frame with two columns (success and failure) containing the historical data
-#' @param newdat a data frame with two columns (success and failure) containing the actual data
+#' @param newdat a data frame with two columns (success and failure) containing the future data
 #' @param newsize a vector containing new cluster sizes
 #' @param alternative either "both", "upper" or "lower" specifying if a prediction interval or
 #' an upper or a lower prediction limit should be computed
@@ -18,9 +18,9 @@
 #' @param n_bisec maximal number of bisection steps
 #'
 #' @details This function returns a bootstrap calibrated prediction interval
-#' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
-#' with \eqn{\hat{y}} as the predicted future number of successes,
-#' \eqn{y} as the observed future number of successes, \eqn{\sqrt{var(\hat{y} - y)}}
+#' \deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{var(\hat{y}_m - y_m)}}
+#' with \eqn{\hat{y}}_m as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
+#' \eqn{y}_m as the observed future number of successes, \eqn{\sqrt{var(\hat{y}_m - y_m)}}
 #' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
 #' approximates a multivariate normal distribution. Please note that
 #' the predicted future number of successes is based on the future cluster size
@@ -89,14 +89,15 @@ beta_bin_pi <- function(histdat,
 
         #-----------------------------------------------------------------------
 
-        # either newdat or newsize must be given
-        if(!is.null(newdat) && !is.null(newsize)){
-                stop("either newdat or newsize must be given, but not both")
-        }
-
 
         # If newsize is given
         if(!is.null(newsize)){
+
+                # size must be integer
+                if(!isTRUE(all(newsize == floor(newsize)))){
+                        stop("'newsize' must contain integer values only")
+                }
+
                 total <- newsize
                 newdat <- as.data.frame(total)
                 m <- nrow(newdat)
@@ -111,6 +112,16 @@ beta_bin_pi <- function(histdat,
 
                 if(ncol(newdat) != 2){
                         stop("newdat has to have two columns (success, failure)")
+                }
+
+                # both columns must be integer
+                if(!isTRUE(all(newdat[,1] == floor(newdat[,1])))){
+                        stop("(newdat[,1] must contain integer values only")
+                }
+
+                # both columns must be integer
+                if(!isTRUE(all(newdat[,2] == floor(newdat[,2])))){
+                        stop("(newdat[,2] must contain integer values only")
                 }
 
                 m <- nrow(newdat)
