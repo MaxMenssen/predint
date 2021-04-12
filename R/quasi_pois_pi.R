@@ -2,6 +2,30 @@
 #----------------------- Quasi poisson PI -------------------------------------
 #------------------------------------------------------------------------------
 
+#' Prediction intervals for quasi poisson data
+#'
+#' quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
+#' data with constant overdispersion (quasi poisson)
+#'
+#' @param histdat a data frame with one column containing the historical data
+#' @param newdat a data frame with one column containing the future data
+#' @param m number of future clusters
+#' @param alternative either "both", "upper" or "lower" specifying if a prediction interval or
+#' an upper or a lower prediction limit should be computed
+#' @param alpha defines the level of confidence (1-alpha)
+#' @param nboot number of bootstraps
+#' @param lambda_min lower start value for bisection
+#' @param lambda_max upper start value for bisection
+#' @param traceplot plot for visualization of the bisection process
+#' @param n_bisec maximal number of bisection steps
+#'
+#' @details This function returns a bootstrap calibrated prediction interval
+#' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+#'
+#' @return
+#' @export
+#'
+#' @examples
 quasi_pois_pi <- function(histdat,
                           newdat=NULL,
                           m=NULL,
