@@ -3,5 +3,6 @@
 export(beta_bin_pi)
 export(pi_rho_est)
 export(quasi_bin_pi)
+export(quasi_pois_pi)
 export(rbbinom)
 export(rqbinom)
