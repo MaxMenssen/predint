@@ -20,7 +20,7 @@ quasi_bin_pi(
 \arguments{
 \item{histdat}{a data frame with two columns (success and failure) containing the historical data}
 
-\item{newdat}{a data frame with two columns (success and failure) containing the actual data}
+\item{newdat}{a data frame with two columns (success and failure) containing the future data}
 
 \item{newsize}{a vector containing new cluster sizes}
 
@@ -49,10 +49,10 @@ quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
 data with constant overdispersion (quasi binomial)
 }
 \details{
-This function returns a bootstrap calibrated prediction interval
-\deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
-with \eqn{\hat{y}} as the predicted future number of successes,
-\eqn{y} as the observed future number of successes, \eqn{\sqrt{var(\hat{y} - y)}}
+This function returns a bootstrap calibrated prediction intervals
+\deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{var(\hat{y}_m - y_m)}}
+with \eqn{\hat{y}}_m as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
+\eqn{y}_m as the observed future number of successes, \eqn{\sqrt{var(\hat{y}_m - y_m)}}
 as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
 approximates a multivariate normal distribution. Please note that
 the predicted future number of successes is based on the future cluster size
