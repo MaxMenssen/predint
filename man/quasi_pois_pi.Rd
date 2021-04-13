@@ -40,7 +40,14 @@ an upper or a lower prediction limit should be computed}
 \item{n_bisec}{maximal number of bisection steps}
 }
 \value{
+If newdat is specified: A data frame that contains the future data,
+ the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+ the prediction error (pred_se), the prediction interval (lower and upper)
+ and a statement if the prediction interval covers the future observation (cover).
 
+ If m is specified: A data frame that contains the number of future observations (m)
+ the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+ the prediction error (pred_se) and the prediction interval (lower and upper).
 }
 \description{
 quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
@@ -49,4 +56,22 @@ data with constant overdispersion (quasi poisson)
 \details{
 This function returns a bootstrap calibrated prediction interval
 \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+
+needs further improofment!
+}
+\examples{
+#' # Historical data
+qp_dat1
+
+# Future data
+qp_dat2
+
+# Prediction interval using bb_dat2 as future data
+quasi_pois_pi(histdat=data.frame(qp_dat1),
+            newdat=data.frame(qp_dat2))
+
+# Upper prediction bound for m=3 future observations
+quasi_pois_pi(histdat=data.frame(qp_dat1),
+              m=3,
+              alternative="upper")
 }
