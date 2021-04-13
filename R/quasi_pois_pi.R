@@ -22,10 +22,36 @@
 #' @details This function returns a bootstrap calibrated prediction interval
 #' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
 #'
-#' @return
+#' needs further improofment!
+#'
+#' @return If newdat is specified: A data frame that contains the future data,
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se), the prediction interval (lower and upper)
+#'  and a statement if the prediction interval covers the future observation (cover).
+#'
+#'  If m is specified: A data frame that contains the number of future observations (m)
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#'
+#'
+#'
 #' @export
 #'
 #' @examples
+#' #' # Historical data
+#' qp_dat1
+#'
+#' # Future data
+#' qp_dat2
+#'
+#' # Prediction interval using bb_dat2 as future data
+#' quasi_pois_pi(histdat=data.frame(qp_dat1),
+#'             newdat=data.frame(qp_dat2))
+#'
+#' # Upper prediction bound for m=3 future observations
+#' quasi_pois_pi(histdat=data.frame(qp_dat1),
+#'               m=3,
+#'               alternative="upper")
 quasi_pois_pi <- function(histdat,
                           newdat=NULL,
                           m=NULL,
