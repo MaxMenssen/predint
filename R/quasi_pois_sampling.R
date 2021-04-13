@@ -7,6 +7,8 @@
 #'
 #' rqpois samples overdispersed poisson data with constant overdispersion from
 #' the negative binomial distribution such that the quasi poisson assumption is fulfilled.
+#' The following description of the sampling process is based on the parametrization
+#' used by Gsteiger et al. 2013.
 #'
 #' @param n defines the number of clusters (\eqn{i})
 #' @param lambda defines the overall poisson mean (\eqn{\lambda})
@@ -14,9 +16,20 @@
 #'
 #' @details It is assumed that the dispersion parameter (\eqn{\Phi})
 #' is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
-#' \deqn{var(y_i)=\Phi \lambda_i.}
+#' \deqn{var(y_i)= \lambda(1+\lambda \kappa) = \Phi \lambda.}
+#' For the sampling \eqn{\kappa} is defined as
+#' \deqn{\kappa=(\Phi-1)/(\lambda)}
+#' where \eqn{a=1/\kappa} and \eqn{b=1/(\kappa \lambda)}. Then, the poisson means
+#' for each cluster are sampled from the gamma distribution
+#' \deqn{\lambda_i \sim Gamma(a, b)}
+#' and the observations per cluster are sampled to be
+#' \deqn{y_i \sim Pois(\lambda_i).}
+#' Please note, that the quasi poisson assumption is not in contradiction with the
+#' negative binomial distribution if the data structure is only defined by the number
+#' of clusters (which is the case here) and no other factors play a role in the
+#' data generating process.
 #'
-#' @return
+#' @return a vector containing the sampled observations (one per cluster)
 #' @export
 #'
 #' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
@@ -24,6 +37,15 @@
 #' trials with overdispersed count data. Statist. Med., 32: 3609-3622. https://doi.org/10.1002/sim.5851
 #'
 #' @examples
+#' set.seed(123)
+#' qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
+#' qp_dat1
+#'
+#' set.seed(123)
+#' qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
+#' qp_dat2
+#'
+#'
 rqpois <- function(n, lambda, phi){
 
         # Phi must be bigger than 1
