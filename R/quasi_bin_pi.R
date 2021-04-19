@@ -27,12 +27,31 @@
 #' and the success probability estimated from the historical data
 #' \eqn{\hat{y}=\pi^{hist} n^{fut}}.
 #'
-#' @return
-#' A data frame that contains the future data, the calibrated
-#' coefficient (quant_calib), the predicion error (pred_se), and the prediction interval
-#' (lower and upper).
+#' The whole calibration process is based on a bisection algorithm that is similar
+#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+#' overview about the bisection process is given.
+#'
+#' @return If newdat is specified: A data frame that contains the future data,
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se), the prediction interval (lower and upper)
+#'  and a statement if the prediction interval covers the future observation (cover).
+#'
+#'  If m is specified: A data frame that contains the number of future observations (m)
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#'
+#'  If alternative is set to "lower": Lower prediction bounds are computed instead
+#'  of a prediction interval.
+#'
+#'  If alternative is set to "upper": Upper prediction bounds are computed instead
+#'  of a prediction interval.
 #'
 #' @export
+#'
+#' @references
+#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
+#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
+#' https://doi.org/10.1002/sim.8124
 #'
 #' @examples
 #' #' # Historical data
