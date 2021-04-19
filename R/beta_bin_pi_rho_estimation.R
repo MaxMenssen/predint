@@ -1,5 +1,5 @@
 
-#' Estimation of \eqn{\pi} and \eqn{\rho} of beta binomial data according to Lui et al. 2000
+#' Estimation of \eqn{\pi} and \eqn{\rho} of beta binomial data according to Lui et al. 2000.
 #'
 #' pi_rho_est estimates the overall binomial proportion \eqn{\pi} and the intra
 #' class correlation \eqn{\rho} of data that is assumed to follow the beta binomial
