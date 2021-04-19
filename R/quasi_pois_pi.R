@@ -21,8 +21,19 @@
 #'
 #' @details This function returns a bootstrap calibrated prediction interval
 #' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+#' with \eqn{\hat{y}} as the predicted future observation,
+#' \eqn{y} as the observed future observations, \eqn{\sqrt{var(\hat{y} - y)}}
+#' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
+#' approximates a multivariate normal distribution.
 #'
-#' needs further improofment!
+#' The whole calibration process is based on a bisection algorithm that is similar
+#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+#' overview about the bisection process is given.
+#'
+#' @references
+#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
+#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
+#' https://doi.org/10.1002/sim.8124
 #'
 #' @return If newdat is specified: A data frame that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
@@ -32,6 +43,12 @@
 #'  If m is specified: A data frame that contains the number of future observations (m)
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#'
+#'  If alternative is set to "lower": Lower prediction bounds are computed instead
+#'  of a prediction interval.
+#'
+#'  If alternative is set to "upper": Upper prediction bounds are computed instead
+#'  of a prediction interval.
 #'
 #'
 #'
@@ -52,6 +69,9 @@
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
 #'               m=3,
 #'               alternative="upper")
+#'
+#'
+#'
 quasi_pois_pi <- function(histdat,
                           newdat=NULL,
                           m=NULL,
@@ -94,6 +114,12 @@ quasi_pois_pi <- function(histdat,
         }
 
         if(is.null(newdat) & is.null(m)==FALSE){
+
+                # m must be integer
+                if(!isTRUE(m == floor(m))){
+                        stop("m must be integer")
+                }
+
                 newdat <- data.frame(x=NA, m=m)
         }
 
