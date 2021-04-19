@@ -2,7 +2,7 @@
 % Please edit documentation in R/beta_bin_pi_rho_estimation.R
 \name{pi_rho_est}
 \alias{pi_rho_est}
-\title{Estimation of \eqn{\pi} and \eqn{\rho} of beta binomial data according to Lui et al. 2000}
+\title{Estimation of \eqn{\pi} and \eqn{\rho} of beta binomial data according to Lui et al. 2000.}
 \usage{
 pi_rho_est(dat)
 }
