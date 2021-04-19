@@ -40,11 +40,24 @@ an upper or a lower prediction limit should be computed}
 \item{n_bisec}{maximal number of bisection steps}
 }
 \value{
-a data frame with prediction intervals
+If newdat is specified: A data frame that contains the future data,
+ the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+ the prediction error (pred_se), the prediction interval (lower and upper)
+ and a statement if the prediction interval covers the future observation (cover).
+
+ If m is specified: A data frame that contains the number of future observations (m)
+ the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+ the prediction error (pred_se) and the prediction interval (lower and upper).
+
+ If alternative is set to "lower": Lower prediction bounds are computed instead
+ of a prediction interval.
+
+ If alternative is set to "upper": Upper prediction bounds are computed instead
+ of a prediction interval.
 }
 \description{
 beta_bin_pi calculates bootstrap calibrated prediction intervals for beta
- binomial distributed one way design
+binomial data
 }
 \details{
 This function returns a bootstrap calibrated prediction interval
@@ -55,7 +68,11 @@ as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
 approximates a multivariate normal distribution. Please note that
 the predicted future number of successes is based on the future cluster size
 and the success probability estimated from the historical data
-\eqn{\hat{y}=\pi^{hist} n^{fut}}
+\eqn{\hat{y}=\pi^{hist} n^{fut}}.
+
+The whole calibration process is based on a bisection algorithm that is similar
+to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+overview about the bisection process is given.
 }
 \examples{
 # Historical data
@@ -72,4 +89,9 @@ beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)
 beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")
 
 
+}
+\references{
+Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
+with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
+https://doi.org/10.1002/sim.8124
 }
