@@ -1,8 +1,74 @@
-#-------------------------------------------------------------------------------
-#----------------- PI function based on quantile calibration -------------------
-#-------------------------------------------------------------------------------
 
-
+#' Prediction intervals for future observations based on linear random effects models
+#'
+#' lmer_pi calculates a bootstrap calibrated prediction interval for one or more
+#' future observation(s) based on linear random effects models
+#'
+#' @param model a random effect model of class lmerMod
+#' @param newdat a data frame with the same column names as the historical data
+#' on which the model depends
+#' @param m number of future observations
+#' @param alternative either "both", "upper" or "lower" specifying if a prediction interval or
+#' an upper or a lower prediction limit should be computed
+#' @param alpha defines the level of confidence (1-alpha)
+#' @param nboot number of bootstraps
+#' @param lambda_min lower start value for bisection
+#' @param lambda_max upper start value for bisection
+#' @param traceplot plot for visualization of the bisection process
+#' @param n_bisec maximal number of bisection steps
+#'
+#' @details This function returns a bootstrap calibrated prediction interval
+#' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+#' with \eqn{\hat{y}} as the predicted future observation,
+#' \eqn{y} as the observed future observations, \eqn{\sqrt{var(\hat{y} - y)}}
+#' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
+#' approximates a multivariate t distribution. Please note that this function relies
+#' on linear random effects models that are fitted with lmer() from the lme4 package.
+#' Random effects have to be specified as (1|random_effect).
+#'
+#' The whole calibration process is based on a bisection algorithm that is similar
+#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+#' overview about the bisection process is given.
+#'
+#' @references
+#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
+#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
+#' https://doi.org/10.1002/sim.8124
+#'
+#' @return If newdat is specified: A data frame that contains the future data,
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se), the prediction interval (lower and upper)
+#'  and a statement if the prediction interval covers the future observation (cover).
+#'
+#'  If m is specified: A data frame that contains the number of future observations (m)
+#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
+#'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#'
+#'  If alternative is set to "lower": Lower prediction bounds are computed instead
+#'  of a prediction interval.
+#'
+#'  If alternative is set to "upper": Upper prediction bounds are computed instead
+#'  of a prediction interval.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' # loading lme4
+#' library(lme4)
+#'
+#' # Fitting a random effects model based on c2_dat_1
+#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
+#' summary(fit)
+#'
+#' # Prediction interval using c2_dat2 as future data
+#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both")
+#'
+#' # Upper prediction bound for m=3 future observations
+#' lmer_pi(model=fit, m=3, alternative="upper")
+#'
+#'
+#'
 lmer_pi <- function(model,
                     newdat=NULL,
                     m=NULL,
@@ -423,7 +489,7 @@ lmer_pi <- function(model,
 
 
                 if(alternative=="both"){
-                        pi_final <- data.frame("histmean"=mu_hat,
+                        pi_final <- data.frame("hist_mean"=mu_hat,
                                                "quant_calib"=quant_calib,
                                                "pred_se"=se_y_star_hat,
                                                "lower"=lower,
@@ -446,7 +512,7 @@ lmer_pi <- function(model,
                 }
 
                 else if(alternative=="lower"){
-                        pi_final <- data.frame("histmean"=mu_hat,
+                        pi_final <- data.frame("hist_mean"=mu_hat,
                                                "quant_calib"=quant_calib,
                                                "pred_se"=se_y_star_hat,
                                                "lower"=lower)
@@ -468,7 +534,7 @@ lmer_pi <- function(model,
                 }
 
                 else if(alternative=="upper"){
-                        pi_final <- data.frame("histmean"=mu_hat,
+                        pi_final <- data.frame("hist_mean"=mu_hat,
                                                "quant_calib"=quant_calib,
                                                "pred_se"=se_y_star_hat,
                                                "upper"=upper)
@@ -496,7 +562,7 @@ lmer_pi <- function(model,
 
                 if(alternative=="both"){
                         out <- data.frame("m"=m,
-                                          "histmean"=mu_hat,
+                                          "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
                                           "lower"=lower,
@@ -505,7 +571,7 @@ lmer_pi <- function(model,
 
                 if(alternative=="lower"){
                         out <- data.frame("m"=m,
-                                          "histmean"=mu_hat,
+                                          "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
                                           "lower"=lower)
@@ -513,7 +579,7 @@ lmer_pi <- function(model,
 
                 if(alternative=="upper"){
                         out <- data.frame("m"=m,
-                                          "histmean"=mu_hat,
+                                          "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
                                           "upper"=upper)
