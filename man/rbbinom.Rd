@@ -2,7 +2,7 @@
 % Please edit documentation in R/beta_bin_sampling.R
 \name{rbbinom}
 \alias{rbbinom}
-\title{Sampling of beta binomial data}
+\title{Sampling of beta-binomial data}
 \usage{
 rbbinom(n, size, prob, rho)
 }
@@ -19,7 +19,7 @@ rbbinom(n, size, prob, rho)
 a data frame with two columns (succ, fail)
 }
 \description{
-rbbinom samples beta binomial data according to Menssen and Schaarschmidt (2019).
+rbbinom samples beta-binomial data according to Menssen and Schaarschmidt (2019).
 }
 \details{
 For beta binomial data with \eqn{i=1, ... I} clusters, the variance is

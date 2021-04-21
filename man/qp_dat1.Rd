@@ -5,13 +5,13 @@
 \alias{qp_dat1}
 \title{Quasi-poisson data (example 1)}
 \format{
-A vector containing quasi poisson data:
+An integer vector with ten entries containing quasi poisson data:
 }
 \usage{
 qp_dat1
 }
 \description{
-This data set contains sampled quasi-poisson data for 10 clusters
+This data set contains sampled quasi-poisson data for 10 clusters.
 }
 \examples{
 set.seed(123)

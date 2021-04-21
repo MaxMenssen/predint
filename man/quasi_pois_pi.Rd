@@ -2,7 +2,7 @@
 % Please edit documentation in R/quasi_pois_pi.R
 \name{quasi_pois_pi}
 \alias{quasi_pois_pi}
-\title{Prediction intervals for quasi poisson data}
+\title{Prediction intervals for quasi-poisson data}
 \usage{
 quasi_pois_pi(
   histdat,
@@ -24,7 +24,7 @@ quasi_pois_pi(
 
 \item{m}{number of future clusters}
 
-\item{alternative}{either "both", "upper" or "lower" specifying if a prediction interval or
+\item{alternative}{either "both", "upper" or "lower". alternative specifies if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
 \item{alpha}{defines the level of confidence (1-alpha)}
@@ -57,7 +57,7 @@ If newdat is specified: A data frame that contains the future data,
 }
 \description{
 quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
-data with constant overdispersion (quasi poisson)
+data with constant overdispersion (quasi-poisson).
 }
 \details{
 This function returns a bootstrap calibrated prediction interval

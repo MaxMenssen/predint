@@ -16,11 +16,11 @@ rqbinom(n, size, prob, phi)
 \item{phi}{dispersion parameter (\eqn{\Phi})}
 }
 \value{
-
+a data frame with two columns (succ, fail)
 }
 \description{
 rqbinom samples overdispersed binomial data with constant overdispersion from
-the beta binomial distribution such that the quasi binomial assumption is fulfilled.
+the beta-binomial distribution such that the quasi-binomial assumption is fulfilled.
 }
 \details{
 It is assumed that the dispersion parameter (\eqn{\Phi})
@@ -34,8 +34,8 @@ for each cluster are sampled from the beta distribution
 and the numbers of succes for each cluster are sampled to be
 \deqn{y_i \sim Bin(n_i, \pi_i).}
 In this parametrization \eqn{E(\pi_i)=\pi} and \eqn{E(y_i)=n_i \pi}.
-Please note, the quasi binomial assumption is not in contradiction with the beta
-binomial distribution if all cluster sizes are the same.
+Please note, the quasi-binomial assumption is not in contradiction with
+the beta-binomial distribution if all cluster sizes are the same.
 }
 \examples{
 # Sampling of example data

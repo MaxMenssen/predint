@@ -5,13 +5,13 @@
 \alias{qp_dat2}
 \title{Quasi-poisson data (example 2)}
 \format{
-A vector containing quasi poisson data:
+An integer vector with three entries containing quasi poisson data:
 }
 \usage{
 qp_dat2
 }
 \description{
-This data set contains sampled quasi-poisson data for 3 clusters
+This data set contains sampled quasi-poisson data for 3 clusters.
 }
 \examples{
 set.seed(123)
@@ -25,11 +25,6 @@ qp_dat2
 # Prediction interval using bb_dat2 as future data
 quasi_pois_pi(histdat=data.frame(qp_dat1),
               newdat=data.frame(qp_dat2))
-
-# Upper prediction bound for m=3 future observations
-quasi_pois_pi(histdat=data.frame(qp_dat1),
-              m=3,
-              alternative="upper")
 
 }
 \keyword{datasets}

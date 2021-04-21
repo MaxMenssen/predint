@@ -5,10 +5,10 @@
 \alias{qb_dat1}
 \title{Quasi-binomial data (example 1)}
 \format{
-A data frame with 3 rows and 2 variables:
+A data frame with 3 rows and 2 columns:
 \describe{
   \item{succ}{number of succes}
-  \item{fail}{number of failure}
+  \item{fail}{number of failures}
 }
 }
 \usage{
@@ -16,7 +16,7 @@ qb_dat1
 }
 \description{
 This data set contains sampled quasi-binomial data from from 10 clusters
-each of size 50
+each of size 50.
 }
 \examples{
 # Sampling of qb_dat1
