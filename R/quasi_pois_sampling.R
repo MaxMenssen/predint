@@ -6,7 +6,7 @@
 #' Sampling of overdispersed poisson data with constant overdispersion
 #'
 #' rqpois samples overdispersed poisson data with constant overdispersion from
-#' the negative binomial distribution such that the quasi poisson assumption is fulfilled.
+#' the negative-binomial distribution such that the quasi-poisson assumption is fulfilled.
 #' The following description of the sampling process is based on the parametrization
 #' used by Gsteiger et al. 2013.
 #'
@@ -24,13 +24,15 @@
 #' \deqn{\lambda_i \sim Gamma(a, b)}
 #' and the observations per cluster are sampled to be
 #' \deqn{y_i \sim Pois(\lambda_i).}
-#' Please note, that the quasi poisson assumption is not in contradiction with the
-#' negative binomial distribution if the data structure is only defined by the number
-#' of clusters (which is the case here) and no other factors play a role in the
-#' data generating process.
+#' Please note, that the quasi-poisson assumption is not in contradiction with the
+#' negative-binomial distribution if the data structure is defined by the number
+#' of clusters only (which is the case here), rather than by a complex randomization structure.
 #'
 #' @return a vector containing the sampled observations (one per cluster)
+#'
 #' @export
+#'
+#'@importFrom stats rgamma rpois
 #'
 #' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
 #' Using historical control information for the design and analysis of clinical
