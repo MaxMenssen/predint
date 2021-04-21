@@ -2,15 +2,15 @@
 #----------------------- Quasi poisson PI -------------------------------------
 #------------------------------------------------------------------------------
 
-#' Prediction intervals for quasi poisson data
+#' Prediction intervals for quasi-poisson data
 #'
 #' quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
-#' data with constant overdispersion (quasi poisson)
+#' data with constant overdispersion (quasi-poisson).
 #'
 #' @param histdat a data frame with one column containing the historical data
 #' @param newdat a data frame with one column containing the future data
 #' @param m number of future clusters
-#' @param alternative either "both", "upper" or "lower" specifying if a prediction interval or
+#' @param alternative either "both", "upper" or "lower". alternative specifies if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-alpha)
 #' @param nboot number of bootstraps
@@ -53,6 +53,8 @@
 #'
 #'
 #' @export
+#'
+#' @importFrom stats glm quasipoisson coef
 #'
 #' @examples
 #' #' # Historical data
