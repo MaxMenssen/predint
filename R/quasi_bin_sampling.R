@@ -3,7 +3,7 @@
 #' Sampling of overdispersed binomial data with constant overdispersion
 #'
 #' rqbinom samples overdispersed binomial data with constant overdispersion from
-#' the beta binomial distribution such that the quasi binomial assumption is fulfilled.
+#' the beta-binomial distribution such that the quasi-binomial assumption is fulfilled.
 #'
 #' @param n defines the number of clusters (\eqn{i})
 #' @param size integer vector defining the cluster sizes (\eqn{n_i})
@@ -21,11 +21,14 @@
 #' and the numbers of succes for each cluster are sampled to be
 #' \deqn{y_i \sim Bin(n_i, \pi_i).}
 #' In this parametrization \eqn{E(\pi_i)=\pi} and \eqn{E(y_i)=n_i \pi}.
-#' Please note, the quasi binomial assumption is not in contradiction with the beta
-#' binomial distribution if all cluster sizes are the same.
+#' Please note, the quasi-binomial assumption is not in contradiction with
+#' the beta-binomial distribution if all cluster sizes are the same.
 #'
-#' @return
+#' @return a data frame with two columns (succ, fail)
+#'
 #' @export
+#'
+#' @importFrom stats rbeta rbinom
 #'
 #' @examples
 #' # Sampling of example data
