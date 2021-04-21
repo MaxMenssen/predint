@@ -8,7 +8,7 @@
 #' @param newdat a data frame with the same column names as the historical data
 #' on which the model depends
 #' @param m number of future observations
-#' @param alternative either "both", "upper" or "lower" specifying if a prediction interval or
+#' @param alternative either "both", "upper" or "lower". alternative specifies if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-alpha)
 #' @param nboot number of bootstraps
@@ -22,7 +22,7 @@
 #' with \eqn{\hat{y}} as the predicted future observation,
 #' \eqn{y} as the observed future observations, \eqn{\sqrt{var(\hat{y} - y)}}
 #' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a multivariate t distribution. Please note that this function relies
+#' approximates a multivariate t-distribution. Please note that this function relies
 #' on linear random effects models that are fitted with lmer() from the lme4 package.
 #' Random effects have to be specified as (1|random_effect).
 #'
@@ -51,6 +51,10 @@
 #'  of a prediction interval.
 #'
 #' @export
+#'
+#' @importFrom graphics abline lines
+#' @importFrom lme4 fixef VarCorr bootMer
+#' @importFrom stats vcov
 #'
 #' @examples
 #'
