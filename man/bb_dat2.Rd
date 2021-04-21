@@ -5,7 +5,7 @@
 \alias{bb_dat2}
 \title{Beta-binomial data (example 2)}
 \format{
-A data frame with 3 rows and 2 variables:
+A data frame with 3 rows and 2 columns:
 \describe{
   \item{succ}{number of succes}
   \item{fail}{number of failure}
@@ -15,11 +15,11 @@ A data frame with 3 rows and 2 variables:
 bb_dat2
 }
 \description{
-This data set contains sampled beta binomial data from 3 clusters with
-different size
+This data set contains sampled beta-binomial data from 3 clusters with
+different size, each.
 }
 \examples{
-# Sampling bb_dat1
+# Sampling of bb_dat1
 set.seed(234)
 bb_dat1 <- rbbinom(n=10, size=50, prob=0.1, rho=0.06)
 bb_dat1
