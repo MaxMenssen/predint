@@ -1,8 +1,8 @@
 
 
-#' Sampling of beta binomial data
+#' Sampling of beta-binomial data
 #'
-#' rbbinom samples beta binomial data according to Menssen and Schaarschmidt (2019).
+#' rbbinom samples beta-binomial data according to Menssen and Schaarschmidt (2019).
 #'
 #' @param n defines the number of clusters (\eqn{i})
 #' @param size integer vector defining the cluster sizes (\eqn{n_i})
@@ -26,7 +26,10 @@
 #' fulfilled.
 #'
 #' @return a data frame with two columns (succ, fail)
+#'
 #' @export
+#'
+#' @importFrom stats rbeta rbinom
 #'
 #' @references
 #' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
