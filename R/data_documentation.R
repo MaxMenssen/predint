@@ -9,9 +9,8 @@
 #'
 #' @format A data frame with 10 rows and 2 colums:
 #' \describe{
-#'   \item{succ}{number of succes}
-#'   \item{fail}{number of failure}
-#'   ...
+#'   \item{succ}{ number of successes}
+#'   \item{fail}{number of failures}
 #' }
 #'
 #' @examples
@@ -44,8 +43,8 @@
 #'
 #' @format A data frame with 3 rows and 2 columns:
 #' \describe{
-#'   \item{succ}{number of succes}
-#'   \item{fail}{number of failure}
+#'   \item{succ}{ number of successes}
+#'   \item{fail}{number of failures}
 #' }
 #'
 #'
