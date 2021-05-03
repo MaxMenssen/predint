@@ -18,17 +18,17 @@ lmer_pi(
 )
 }
 \arguments{
-\item{model}{a random effect model of class lmerMod}
+\item{model}{a random effects model of class lmerMod}
 
-\item{newdat}{a data frame with the same column names as the historical data
+\item{newdat}{a \code{data.frame} with the same column names as the historical data
 on which the model depends}
 
 \item{m}{number of future observations}
 
-\item{alternative}{either "both", "upper" or "lower". alternative specifies if a prediction interval or
-an upper or a lower prediction limit should be computed}
+\item{alternative}{either "both", "upper" or "lower". alternative specifies
+if a prediction interval or an upper or a lower prediction limit should be computed}
 
-\item{alpha}{defines the level of confidence (1-alpha)}
+\item{alpha}{defines the level of confidence (1-\code{alpha})}
 
 \item{nboot}{number of bootstraps}
 
@@ -41,19 +41,19 @@ an upper or a lower prediction limit should be computed}
 \item{n_bisec}{maximal number of bisection steps}
 }
 \value{
-If newdat is specified: A data frame that contains the future data,
+If \code{newdat} is specified: A \code{data.frame} that contains the future data,
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
- the prediction error (pred_se), the prediction interval (lower and upper)
+ the prediction standard error (pred_se), the prediction interval (lower and upper)
  and a statement if the prediction interval covers the future observation (cover).
 
- If m is specified: A data frame that contains the number of future observations (m)
+ If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
- the prediction error (pred_se) and the prediction interval (lower and upper).
+ the prediction standard error (pred_se) and the prediction interval (lower and upper).
 
- If alternative is set to "lower": Lower prediction bounds are computed instead
+ If \code{alternative} is set to "lower": Lower prediction limits are computed instead
  of a prediction interval.
 
- If alternative is set to "upper": Upper prediction bounds are computed instead
+ If \code{alternative} is set to "upper": Upper prediction limits are computed instead
  of a prediction interval.
 }
 \description{
@@ -62,13 +62,13 @@ future observation(s) based on linear random effects models
 }
 \details{
 This function returns a bootstrap calibrated prediction interval
-\deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+\deqn{[l,u] = \hat{y} \pm q \sqrt{\hat{var}(\hat{y} - y)}}
 with \eqn{\hat{y}} as the predicted future observation,
-\eqn{y} as the observed future observations, \eqn{\sqrt{var(\hat{y} - y)}}
-as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
+\eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
+as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
 approximates a multivariate t-distribution. Please note that this function relies
 on linear random effects models that are fitted with lmer() from the lme4 package.
-Random effects have to be specified as (1|random_effect).
+Random effects have to be specified as \code{(1|random_effect)}.
 
 The whole calibration process is based on a bisection algorithm that is similar
 to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
@@ -84,14 +84,10 @@ fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 summary(fit)
 
 # Prediction interval using c2_dat2 as future data
-\donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+\donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both")}
 
-# Upper prediction bound for m=3 future observations
-\donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
-
-# Please note, that nboot is set to 100 in order to increase computing time. For a
-# valid analysis, set nboot=10000.
-
+# Upper prediction limit for m=3 future observations
+\donttest{lmer_pi(model=fit, m=3, alternative="upper")}
 }
 \references{
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
