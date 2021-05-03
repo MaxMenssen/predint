@@ -6,8 +6,8 @@
 #' the beta-binomial distribution such that the quasi-binomial assumption is fulfilled.
 #'
 #' @param n defines the number of clusters (\eqn{i})
-#' @param size integer vector defining the cluster sizes (\eqn{n_i})
-#' @param prob overall binomial proportion (\eqn{\pi})
+#' @param size integer vector defining the number of trials per cluster (\eqn{n_i})
+#' @param prob probability of success on each trial (\eqn{\pi})
 #' @param phi dispersion parameter (\eqn{\Phi})
 #'
 #' @details It is assumed that the dispersion parameter (\eqn{\Phi})
@@ -24,7 +24,7 @@
 #' Please note, the quasi-binomial assumption is not in contradiction with
 #' the beta-binomial distribution if all cluster sizes are the same.
 #'
-#' @return a data frame with two columns (succ, fail)
+#' @return a \code{data.frame} with two columns (succ, fail)
 #'
 #' @export
 #'
