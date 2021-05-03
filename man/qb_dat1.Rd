@@ -5,7 +5,7 @@
 \alias{qb_dat1}
 \title{Quasi-binomial data (example 1)}
 \format{
-A data frame with 3 rows and 2 columns:
+A \code{data.frame} with 3 rows and 2 columns:
 \describe{
   \item{succ}{number of succes}
   \item{fail}{number of failures}
@@ -16,28 +16,15 @@ qb_dat1
 }
 \description{
 This data set contains sampled quasi-binomial data from from 10 clusters
-each of size 50.
+each of size 50. The data set was sampled with \code{rqbinom(n=10, size=50, prob=0.1, phi=3)}.
 }
 \examples{
-# Sampling of qb_dat1
-set.seed(456)
-qb_dat1 <- rqbinom(n=10, size=50, prob=0.1, phi=3)
-qb_dat1
-
-# Sampling of qb_dat2
-set.seed(456)
-qb_dat2 <- rqbinom(n=3, size=c(40, 50, 60), prob=0.1, phi=3)
-qb_dat2
-
 # Prediction interval using qb_dat2 as future data
-quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+\donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)}
 
-# Upper prediction bound for m=3 future observations
+# Upper prediction limit for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively
-quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
-
-# Please note, that nboot is set to 100 in order to increase computing time. For a
-# valid analysis, set nboot=10000.
+\donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
 
 }
 \keyword{datasets}
