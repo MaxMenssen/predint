@@ -56,6 +56,21 @@ rqpois <- function(n, lambda, phi){
                 stop("phi<=1")
         }
 
+        # n must be integer
+        if(!isTRUE(all(n == floor(n)))){
+                stop("'n' must be an integer")
+        }
+
+        # n must be of length 1
+        if(length(n) != 1){
+                stop("length(n) must be 1")
+        }
+
+        # lambda must be > 0
+        if(lambda<=0){
+                stop("lambda must be > 0")
+        }
+
 
         # Defining kappa following the parametrisation of the nb-distribution
         # of Gsteiger et al 2013 (Stats in Med)
