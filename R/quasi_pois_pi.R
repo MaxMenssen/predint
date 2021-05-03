@@ -7,10 +7,11 @@
 #' quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
 #' data with constant overdispersion (quasi-poisson).
 #'
-#' @param histdat a data frame with one column containing the historical data
-#' @param newdat a data frame with one column containing the future data
+#' @param histdat a \code{data.frame} with one column containing the historical data
+#' @param newdat a \code{data.frame} with one column containing the future data
 #' @param m number of future clusters
-#' @param alternative either "both", "upper" or "lower". alternative specifies if a prediction interval or
+#' @param alternative either "both", "upper" or "lower".
+#' \code{alternative} specifies if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-alpha)
 #' @param nboot number of bootstraps
@@ -20,11 +21,11 @@
 #' @param n_bisec maximal number of bisection steps
 #'
 #' @details This function returns a bootstrap calibrated prediction interval
-#' \deqn{[l,u] = \hat{y} \pm q \sqrt{var(\hat{y} - y)}}
+#' \deqn{[l,u] = \hat{y} \pm q \sqrt{\hat{var}(\hat{y} - y)}}
 #' with \eqn{\hat{y}} as the predicted future observation,
-#' \eqn{y} as the observed future observations, \eqn{\sqrt{var(\hat{y} - y)}}
+#' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 #' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a multivariate normal distribution.
+#' approximates a quantile of a multivariate normal distribution.
 #'
 #' The whole calibration process is based on a bisection algorithm that is similar
 #' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
@@ -35,19 +36,19 @@
 #' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
 #' https://doi.org/10.1002/sim.8124
 #'
-#' @return If newdat is specified: A data frame that contains the future data,
+#' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction error (pred_se), the prediction interval (lower and upper)
 #'  and a statement if the prediction interval covers the future observation (cover).
 #'
-#'  If m is specified: A data frame that contains the number of future observations (m)
+#'  If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction error (pred_se) and the prediction interval (lower and upper).
 #'
-#'  If alternative is set to "lower": Lower prediction bounds are computed instead
+#'  If \alternative{alternative} is set to "lower": Lower prediction bounds are computed instead
 #'  of a prediction interval.
 #'
-#'  If alternative is set to "upper": Upper prediction bounds are computed instead
+#'  If \alternative{alternative} is set to "upper": Upper prediction bounds are computed instead
 #'  of a prediction interval.
 #'
 #'
