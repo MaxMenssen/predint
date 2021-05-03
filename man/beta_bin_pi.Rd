@@ -18,16 +18,19 @@ beta_bin_pi(
 )
 }
 \arguments{
-\item{histdat}{a data frame with two columns (success and failure) containing the historical data}
+\item{histdat}{a \code{data.frame} with two columns (number of successes and
+number of failures) containing the historical data}
 
-\item{newdat}{a data frame with two columns (success and failure) containing the future data}
+\item{newdat}{a \code{data.frame} with two columns (number of successes and
+number of failures) containing the future data}
 
 \item{newsize}{a vector containing the future cluster sizes}
 
-\item{alternative}{either "both", "upper" or "lower". alternative specifies if a prediction interval or
-an upper or a lower prediction limit should be computed}
+\item{alternative}{either "both", "upper" or "lower". \code{alternative}
+specifies if a prediction interval or an upper or a lower prediction limit
+should be computed}
 
-\item{alpha}{defines the level of confidence (1-alpha)}
+\item{alpha}{defines the level of confidence (1-\code{alpha})}
 
 \item{nboot}{number of bootstraps}
 
@@ -40,19 +43,23 @@ an upper or a lower prediction limit should be computed}
 \item{n_bisec}{maximal number of bisection steps}
 }
 \value{
-If newdat is specified: A data frame that contains the future data,
- the historical mean (hist_mean), the calibrated coefficient (quant_calib),
- the prediction error (pred_se), the prediction interval (lower and upper)
+If \code{newdat} is specified: A \code{data.frame} that contains the future data,
+ the historical proportion (hist_prob),
+ the calibrated coefficient (quant_calib),
+ the prediction standard error (pred_se),
+ the prediction interval (lower and upper)
  and a statement if the prediction interval covers the future observation (cover).
 
- If newsize is specified: A data frame that contains the future cluster sizes (total)
- the historical mean (hist_mean), the calibrated coefficient (quant_calib),
- the prediction error (pred_se) and the prediction interval (lower and upper).
+ If \code{newsize} is specified: A \code{data.frame} that contains the future cluster sizes (total)
+ the historical proportion (hist_prob),
+ the calibrated coefficient (quant_calib),
+ the prediction standard error (pred_se)
+ and the prediction interval (lower and upper).
 
- If alternative is set to "lower": Lower prediction bounds are computed instead
+ If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
  of a prediction interval.
 
- If alternative is set to "upper": Upper prediction bounds are computed instead
+ If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
  of a prediction interval.
 }
 \description{
@@ -61,15 +68,17 @@ beta-binomial data
 }
 \details{
 This function returns bootstrap calibrated prediction intervals
-\deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{var(\hat{y}_m - y_m)}}
-with \eqn{\hat{y}}_m as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
-\eqn{y}_m as the observed future number of successes, \eqn{\sqrt{var(\hat{y}_m - y_m)}}
-as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-approximates a multivariate normal distribution. Please note that
-the predicted future number of successes is based on the future cluster size \eqn{n_m}
-and the success probability estimated from the historical data \eqn{\pi^{hist}}
-such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
-different for each of the \eqn{m} future clusters, if their size is not the same.
+\deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{\hat{var}(\hat{y}_m - y_m)}}
+with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M}
+future clusters, \eqn{y_m} as the observed future number of successes,
+\eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}} as the prediction standard error and \eqn{q}
+as the bootstrap calibrated coefficient that approximates a quantile from a
+multivariate normal distribution.
+Please note that the predicted future number of successes is based on the future
+cluster size \eqn{n_m} and the success probability estimated from the historical
+data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the
+prediction intervals \eqn{[l,u]_m} are different for each of the \eqn{m} future clusters,
+if their size is not the same.
 
 The whole calibration process is based on a bisection algorithm that is similar
 to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
@@ -83,14 +92,11 @@ bb_dat1
 bb_dat2
 
 # Prediction interval using bb_dat2 as future data
-beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
+\donttest{beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)}
 
 # Upper prediction bound for m=3 future number of successes
 # that are based on cluster sizes 40, 50, 60 respectively
-beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
-
-# Please note, that nboot is set to 100 in order to increase computing time. For a
-# valid analysis, set nboot=10000.
+\donttest{beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")}
 
 
 }
