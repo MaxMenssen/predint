@@ -25,11 +25,14 @@
 #' bb_dat2
 #'
 #' # Prediction interval using bb_dat2 as future data
-#' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)
+#' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future number of successes
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")
+#' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "bb_dat1"
 
@@ -60,11 +63,14 @@
 #' bb_dat2
 #'
 #' # Prediction interval using bb_dat2 as future data
-#' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)
+#' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future number of successes
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")
+#' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "bb_dat2"
 
@@ -96,11 +102,14 @@
 #' qb_dat2
 #'
 #' # Prediction interval using qb_dat2 as future data
-#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)
+#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")
+#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "qb_dat1"
 
@@ -131,11 +140,14 @@
 #' qb_dat2
 #'
 #' # Prediction interval using qb_dat2 as future data
-#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)
+#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")
+#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "qb_dat2"
 
@@ -160,12 +172,16 @@
 #'
 #'#' # Prediction interval using bb_dat2 as future data
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'               newdat=data.frame(qp_dat2))
+#'               newdat=data.frame(qp_dat2),
+#'               nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
 #'               m=3,
-#'               alternative="upper")
+#'               alternative="upper", nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "qp_dat1"
 
@@ -189,7 +205,11 @@
 #'
 #' # Prediction interval using bb_dat2 as future data
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'               newdat=data.frame(qp_dat2))
+#'               newdat=data.frame(qp_dat2),
+#'               nboot=100)
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "qp_dat2"
 
@@ -220,10 +240,13 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both")
+#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
 #' # Upper prediction bound for m=3 future observations
-#' lmer_pi(model=fit, m=3, alternative="upper")
+#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "c2_dat1"
 
@@ -252,8 +275,10 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both")
+#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 "c2_dat2"
 
