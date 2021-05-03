@@ -2,13 +2,13 @@
 % Please edit documentation in R/beta_bin_pi_rho_estimation.R
 \name{pi_rho_est}
 \alias{pi_rho_est}
-\title{Estimation of \eqn{\pi} and \eqn{\rho} of beta-binomial data according
-to Lui et al. 2000.}
+\title{Estimation of the binimial proportion \eqn{\pi} and the intra class correlation
+\eqn{\rho}.}
 \usage{
 pi_rho_est(dat)
 }
 \arguments{
-\item{dat}{a data frame with two columns (success and failure)}
+\item{dat}{a \code{data.frame} with two columns (successes and failures)}
 }
 \value{
 a vector containing estimates for \eqn{\pi} and \eqn{\rho}
@@ -16,7 +16,8 @@ a vector containing estimates for \eqn{\pi} and \eqn{\rho}
 \description{
 pi_rho_est estimates the overall binomial proportion \eqn{\pi} and the intra
 class correlation \eqn{\rho} of data that is assumed to follow the beta-binomial
-distribution
+distribution. The estimation of \eqn{\pi} and \eqn{\rho} is done following
+the approach of Lui et al. 2000.
 }
 \examples{
 # Estimates for the bb_dat1
