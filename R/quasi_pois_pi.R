@@ -65,14 +65,17 @@
 #'
 #' # Prediction interval using bb_dat2 as future data
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'             newdat=data.frame(qp_dat2))
+#'             newdat=data.frame(qp_dat2),
+#'             nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' quasi_pois_pi(histdat=data.frame(qp_dat1),
 #'               m=3,
-#'               alternative="upper")
+#'               alternative="upper",
+#'               nboot=100)
 #'
-#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 quasi_pois_pi <- function(histdat,
                           newdat=NULL,
@@ -104,6 +107,7 @@ quasi_pois_pi <- function(histdat,
                 stop("histdat has to have one column containing counted observations")
         }
 
+
         ### Actual data
         if(is.null(newdat) == FALSE){
                 if(is.data.frame(newdat)==FALSE){
@@ -113,6 +117,10 @@ quasi_pois_pi <- function(histdat,
                 if(ncol(newdat) != 1){
                         stop("newdat has to have one column")
                 }
+
+                if(nrow(newdat) > nrow(histdat)){
+                        warning("The calculation of a PI for more future than historical observations is not recommended")
+                }
         }
 
         if(is.null(newdat) & is.null(m)==FALSE){
@@ -120,6 +128,10 @@ quasi_pois_pi <- function(histdat,
                 # m must be integer
                 if(!isTRUE(m == floor(m))){
                         stop("m must be integer")
+                }
+
+                if(m > nrow(histdat)){
+                        warning("The calculation of a PI for more future than historical observations is not recommended")
                 }
 
                 newdat <- data.frame(x=NA, m=m)
