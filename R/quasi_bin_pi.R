@@ -3,13 +3,14 @@
 #' Prediction intervals for quasi-binomial data
 #'
 #' quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
-#' data with constant overdispersion (quasi-binomial)
+#' data with constant overdispersion (quasi-binomial assumption).
 #'
-#' @param histdat a data frame with two columns (success and failure) containing the historical data
-#' @param newdat a data frame with two columns (success and failure) containing the future data
+#' @param histdat a \code{data.frame} with two columns (success and failure) containing the historical data
+#' @param newdat a \code{data.frame} with two columns (success and failure) containing the future data
 #' @param newsize a vector containing the future cluster sizes
-#' @param alternative either "both", "upper" or "lower". alternative specifies if a prediction interval or
-#' an upper or a lower prediction limit should be computed
+#' @param alternative either "both", "upper" or "lower". \code{alternative}
+#'  specifies if a prediction interval or an upper or a lower prediction limit
+#'  should be computed
 #' @param alpha defines the level of confidence (1-alpha)
 #' @param nboot number of bootstraps
 #' @param lambda_min lower start value for bisection
@@ -18,11 +19,11 @@
 #' @param n_bisec maximal number of bisection steps
 #'
 #' @details This function returns bootstrap calibrated prediction intervals
-#' \deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{var(\hat{y}_m - y_m)}}
-#' with \eqn{\hat{y}}_m as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
-#' \eqn{y}_m as the observed future number of successes, \eqn{\sqrt{var(\hat{y}_m - y_m)}}
-#' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a multivariate normal distribution. Please note that
+#' \deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{\hat{var}(\hat{y}_m - y_m)}}
+#' with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
+#' \eqn{y_m} as the observed future number of successes, \eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}}
+#' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
+#' approximates a quantile from a multivariate normal. Please note that
 #' the predicted future number of successes is based on the future cluster size \eqn{n_m}
 #' and the success probability estimated from the historical data \eqn{\pi^{hist}}
 #' such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
@@ -32,19 +33,23 @@
 #' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
 #' overview about the bisection process is given.
 #'
-#' @return If newdat is specified: A data frame that contains the future data,
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction error (pred_se), the prediction interval (lower and upper)
+#' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
+#'  the the historical proportion (hist_prob),
+#'  the calibrated coefficient (quant_calib),
+#'  the prediction standard error (pred_se),
+#'  the prediction interval (lower and upper)
 #'  and a statement if the prediction interval covers the future observation (cover).
 #'
-#'  If newsize is specified: A data frame that contains the future cluster sizes (total)
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#'  If \code{newsize} is specified: A \code{data.frame} that contains the future cluster sizes (total)
+#'  the the historical proportion (hist_prob),
+#'  the calibrated coefficient (quant_calib),
+#'  the prediction standard error (pred_se)
+#'  and the prediction interval (lower and upper).
 #'
-#'  If alternative is set to "lower": Lower prediction bounds are computed instead
+#'  If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
 #'  of a prediction interval.
 #'
-#'  If alternative is set to "upper": Upper prediction bounds are computed instead
+#'  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
 #'  of a prediction interval.
 #'
 #' @export
@@ -64,11 +69,11 @@
 #' qb_dat2
 #'
 #' # Prediction interval using qb_dat2 as future data
-#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+#' \donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat1)}
 #'
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#' \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
 #'
 #' # Please note, that nboot is set to 100 in order to increase computing time. For a
 #' # valid analysis, set nboot=10000.
@@ -195,8 +200,8 @@ quasi_bin_pi <- function(histdat,
 
 
         # Historical pi
-        hist_pi <- exp(unname(coef(model)))/(1+exp(unname(coef(model))))
-        newdat$hist_pi <- hist_pi
+        hist_prob <- exp(unname(coef(model)))/(1+exp(unname(coef(model))))
+        newdat$hist_prob <- hist_prob
 
         #-----------------------------------------------------------------------
         ### Sampling of future data
@@ -212,14 +217,14 @@ quasi_bin_pi <- function(histdat,
 
                 # Future observations for calibration
                 fut_dat <- rqbinom(n = m, size = newdat$total,
-                                   prob = hist_pi, phi = hist_phi)
+                                   prob = hist_prob, phi = hist_phi)
 
                 # Total number of trials
                 fut_dat$total <- fut_dat[,1] + fut_dat[,2]
 
                 # Sampling of the data on which pi and phi is estimated
                 bs_pi_se_dat <- rqbinom(n = nrow(histdat), size = histdat$total,
-                                        prob = hist_pi, phi = hist_phi)
+                                        prob = hist_prob, phi = hist_phi)
 
                 # If all succes are 0 adjust
                 if(all(bs_pi_se_dat[,1]==0)){
@@ -496,12 +501,12 @@ quasi_bin_pi <- function(histdat,
                 n_fut <- newdat$total[d]
 
                 # predicted y
-                y_fut <- n_fut*hist_pi
+                y_fut <- n_fut*hist_prob
 
                 # prediction variance var(y_hat-y)
                 fut_var <- hist_phi *
-                        ((n_fut*hist_pi*(1-hist_pi)) +
-                                 ((n_fut^2*hist_pi*(1-hist_pi)) *
+                        ((n_fut*hist_prob*(1-hist_prob)) +
+                                 ((n_fut^2*hist_prob*(1-hist_prob)) *
                                           (1/bs_n_total)))
 
                 # se(y_hat-y)
