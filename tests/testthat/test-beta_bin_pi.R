@@ -57,9 +57,34 @@ test_that("alternative", {
                                       traceplot = FALSE,
                                       nboot = 100))
 
-        expect_equal(ncol_upper, 4)
-        expect_equal(ncol_lower, 4)
-        expect_equal(ncol_both, 5)
+
+        expect_equal(ncol_upper, 5)
+        expect_equal(ncol_lower, 5)
+        expect_equal(ncol_both, 6)
+
+
+        # Tests if the data frame is correct if alternative is specified correctly
+        ncol_upper_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
+                                       newdat=bb_dat2,
+                                       alternative="upper",
+                                       traceplot = FALSE,
+                                       nboot = 100))
+
+        ncol_lower_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
+                                       newdat=bb_dat2,
+                                       alternative="lower",
+                                       traceplot = FALSE,
+                                       nboot = 100))
+
+        ncol_both_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
+                                      newdat=bb_dat2,
+                                      alternative="both",
+                                      traceplot = FALSE,
+                                      nboot = 100))
+
+        expect_equal(ncol_upper_nd, 8)
+        expect_equal(ncol_lower_nd, 8)
+        expect_equal(ncol_both_nd, 9)
 
 })
 
