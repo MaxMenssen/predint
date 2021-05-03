@@ -66,12 +66,13 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both")
+#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
 #' # Upper prediction bound for m=3 future observations
-#' lmer_pi(model=fit, m=3, alternative="upper")
+#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
 #'
-#'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 lmer_pi <- function(model,
                     newdat=NULL,
@@ -125,6 +126,20 @@ lmer_pi <- function(model,
 
         if(!is.null(newdat) & !is.null(m)){
                 stop("newdat and m are both defined")
+        }
+
+        ### m
+        if(is.null(m) == FALSE){
+                # m must be integer
+                if(!isTRUE(m == floor(m))){
+                        stop("m must be integer")
+                }
+
+                if(length(m) > 1){
+                        stop("length(m) > 1")
+                }
+
+
         }
 
 
