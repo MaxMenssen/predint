@@ -9,9 +9,9 @@ rqbinom(n, size, prob, phi)
 \arguments{
 \item{n}{defines the number of clusters (\eqn{i})}
 
-\item{size}{integer vector defining the cluster sizes (\eqn{n_i})}
+\item{size}{integer vector defining the number of trials per cluster (\eqn{n_i})}
 
-\item{prob}{overall binomial proportion (\eqn{\pi})}
+\item{prob}{probability of success on each trial (\eqn{\pi})}
 
 \item{phi}{dispersion parameter (\eqn{\Phi})}
 }
