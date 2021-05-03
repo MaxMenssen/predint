@@ -64,12 +64,14 @@
 #' qb_dat2
 #'
 #' # Prediction interval using qb_dat2 as future data
-#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)
+#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")
+#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 #'
+#' # Please note, that nboot is set to 100 in order to increase computing time. For a
+#' # valid analysis, set nboot=10000.
 #'
 quasi_bin_pi <- function(histdat,
                          newdat=NULL,
@@ -137,6 +139,9 @@ quasi_bin_pi <- function(histdat,
                         stop("'newsize' must contain integer values only")
                 }
 
+                if(length(newsize) > nrow(histdat)){
+                        warning("The calculation of a PI for more future than historical observations is not recommended")
+                }
 
                 total <- newsize
                 newdat <- as.data.frame(total)
@@ -162,6 +167,10 @@ quasi_bin_pi <- function(histdat,
                 # both columns must be integer
                 if(!isTRUE(all(newdat[,2] == floor(newdat[,2])))){
                         stop("'(newdat[,2] must contain integer values only")
+                }
+
+                if(nrow(newdat) > nrow(histdat)){
+                        warning("The calculation of a PI for more future than historical observations is not recommended")
                 }
 
                 m <- nrow(newdat)
