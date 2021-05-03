@@ -1,12 +1,13 @@
 
-#' Estimation of \eqn{\pi} and \eqn{\rho} of beta-binomial data according
-#' to Lui et al. 2000.
+#' Estimation of the binimial proportion \eqn{\pi} and the intra class correlation
+#' \eqn{\rho}.
 #'
 #' pi_rho_est estimates the overall binomial proportion \eqn{\pi} and the intra
 #' class correlation \eqn{\rho} of data that is assumed to follow the beta-binomial
-#' distribution
+#' distribution. The estimation of \eqn{\pi} and \eqn{\rho} is done following
+#' the approach of Lui et al. 2000.
 #'
-#' @param dat a data frame with two columns (success and failure)
+#' @param dat a \code{data.frame} with two columns (successes and failures)
 #'
 #' @return a vector containing estimates for \eqn{\pi} and \eqn{\rho}
 #' @export
