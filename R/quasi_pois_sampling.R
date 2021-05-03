@@ -1,8 +1,4 @@
 
-# n is the numbers of observations to draw
-# lambda is the overall poisson mean
-# phi is the dispersion parameter
-
 #' Sampling of overdispersed poisson data with constant overdispersion
 #'
 #' rqpois samples overdispersed poisson data with constant overdispersion from
