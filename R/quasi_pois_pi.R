@@ -121,6 +121,10 @@ quasi_pois_pi <- function(histdat,
                 if(nrow(newdat) > nrow(histdat)){
                         warning("The calculation of a PI for more future than historical observations is not recommended")
                 }
+
+                if(!isTRUE(all(newdat[,1] == floor(newdat[,1])))){
+                        stop("newdat must be integer")
+                }
         }
 
         if(is.null(newdat) & is.null(m)==FALSE){
