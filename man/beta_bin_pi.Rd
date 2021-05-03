@@ -83,11 +83,14 @@ bb_dat1
 bb_dat2
 
 # Prediction interval using bb_dat2 as future data
-beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)
+beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
 
 # Upper prediction bound for m=3 future number of successes
 # that are based on cluster sizes 40, 50, 60 respectively
-beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")
+beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+
+# Please note, that nboot is set to 100 in order to increase computing time. For a
+# valid analysis, set nboot=10000.
 
 
 }

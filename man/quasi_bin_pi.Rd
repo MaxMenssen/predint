@@ -83,12 +83,14 @@ qb_dat1
 qb_dat2
 
 # Prediction interval using qb_dat2 as future data
-quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)
+quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 
 # Upper prediction bound for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively
-quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")
+quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 
+# Please note, that nboot is set to 100 in order to increase computing time. For a
+# valid analysis, set nboot=10000.
 
 }
 \references{

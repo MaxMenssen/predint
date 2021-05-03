@@ -24,7 +24,11 @@ qp_dat2
 
 # Prediction interval using bb_dat2 as future data
 quasi_pois_pi(histdat=data.frame(qp_dat1),
-              newdat=data.frame(qp_dat2))
+              newdat=data.frame(qp_dat2),
+              nboot=100)
+
+# Please note, that nboot is set to 100 in order to increase computing time. For a
+# valid analysis, set nboot=10000.
 
 }
 \keyword{datasets}
