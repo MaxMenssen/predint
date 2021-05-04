@@ -1,10 +1,9 @@
 
-#' Estimation of the binimial proportion \eqn{\pi} and the intra class correlation
-#' \eqn{\rho}.
+#' Estimation of the binomial proportion and the intra class correlation.
 #'
-#' pi_rho_est estimates the overall binomial proportion \eqn{\pi} and the intra
-#' class correlation \eqn{\rho} of data that is assumed to follow the beta-binomial
-#' distribution. The estimation of \eqn{\pi} and \eqn{\rho} is done following
+#' pi_rho_est estimates the overall binomial proportion \eqn{\hat{\pi}} and the intra
+#' class correlation \eqn{\hat{\rho}} of data that is assumed to follow the beta-binomial
+#' distribution. The estimation of \eqn{\hat{\pi}} and \eqn{\hat{\rho}} is done following
 #' the approach of Lui et al. 2000.
 #'
 #' @param dat a \code{data.frame} with two columns (successes and failures)
@@ -19,7 +18,7 @@
 #'
 #'
 #' @examples
-#' # Estimates for the bb_dat1
+#' # Estimates for bb_dat1
 #' pi_rho_est(bb_dat1)
 #'
 pi_rho_est <- function(dat){
