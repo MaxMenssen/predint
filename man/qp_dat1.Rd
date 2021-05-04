@@ -15,9 +15,6 @@ This data set contains sampled quasi-poisson data for 10 clusters.
 The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 }
 \examples{
-# Prediction interval using bb_dat2 as future data
-\donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
-
 # Upper prediction limit for m=3 future observations
 \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
 

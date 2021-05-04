@@ -16,7 +16,7 @@ rqbinom(n, size, prob, phi)
 \item{phi}{dispersion parameter (\eqn{\Phi})}
 }
 \value{
-a data frame with two columns (succ, fail)
+a \code{data.frame} with two columns (succ, fail)
 }
 \description{
 rqbinom samples overdispersed binomial data with constant overdispersion from

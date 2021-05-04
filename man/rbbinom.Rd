@@ -16,7 +16,7 @@ rbbinom(n, size, prob, rho)
 \item{rho}{intra class correlation (\eqn{\rho})}
 }
 \value{
-a data frame with two columns (succ, fail)
+a \code{data.frame} with two columns (succ, fail)
 }
 \description{
 rbbinom samples beta-binomial data according to Menssen and Schaarschmidt (2019).

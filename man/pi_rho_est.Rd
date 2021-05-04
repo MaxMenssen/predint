@@ -2,8 +2,7 @@
 % Please edit documentation in R/beta_bin_pi_rho_estimation.R
 \name{pi_rho_est}
 \alias{pi_rho_est}
-\title{Estimation of the binimial proportion \eqn{\pi} and the intra class correlation
-\eqn{\rho}.}
+\title{Estimation of the binomial proportion and the intra class correlation.}
 \usage{
 pi_rho_est(dat)
 }
@@ -14,13 +13,13 @@ pi_rho_est(dat)
 a vector containing estimates for \eqn{\pi} and \eqn{\rho}
 }
 \description{
-pi_rho_est estimates the overall binomial proportion \eqn{\pi} and the intra
-class correlation \eqn{\rho} of data that is assumed to follow the beta-binomial
-distribution. The estimation of \eqn{\pi} and \eqn{\rho} is done following
+pi_rho_est estimates the overall binomial proportion \eqn{\hat{\pi}} and the intra
+class correlation \eqn{\hat{\rho}} of data that is assumed to follow the beta-binomial
+distribution. The estimation of \eqn{\hat{\pi}} and \eqn{\hat{\rho}} is done following
 the approach of Lui et al. 2000.
 }
 \examples{
-# Estimates for the bb_dat1
+# Estimates for bb_dat1
 pi_rho_est(bb_dat1)
 
 }

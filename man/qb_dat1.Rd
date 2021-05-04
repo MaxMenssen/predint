@@ -19,9 +19,6 @@ This data set contains sampled quasi-binomial data from from 10 clusters
 each of size 50. The data set was sampled with \code{rqbinom(n=10, size=50, prob=0.1, phi=3)}.
 }
 \examples{
-# Prediction interval using qb_dat2 as future data
-\donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)}
-
 # Upper prediction limit for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively
 \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
