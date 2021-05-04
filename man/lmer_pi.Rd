@@ -25,7 +25,7 @@ on which the model depends}
 
 \item{m}{number of future observations}
 
-\item{alternative}{either "both", "upper" or "lower". alternative specifies
+\item{alternative}{either "both", "upper" or "lower". \code{alternative} specifies
 if a prediction interval or an upper or a lower prediction limit should be computed}
 
 \item{alpha}{defines the level of confidence (1-\code{alpha})}
@@ -66,13 +66,11 @@ This function returns a bootstrap calibrated prediction interval
 with \eqn{\hat{y}} as the predicted future observation,
 \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-approximates a multivariate t-distribution. Please note that this function relies
-on linear random effects models that are fitted with lmer() from the lme4 package.
-Random effects have to be specified as \code{(1|random_effect)}.
-
-The whole calibration process is based on a bisection algorithm that is similar
-to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
-overview about the bisection process is given.
+approximates a multivariate t-distribution. \cr
+Please note that this function relies on linear random effects models that are
+fitted with lmer() from the lme4 package.Random effects have to be specified as
+\code{(1|random_effect)}.\cr
+If traceplot=TRUE, a graphical overview about the bisection process is given.
 }
 \examples{
 
@@ -88,9 +86,4 @@ summary(fit)
 
 # Upper prediction limit for m=3 future observations
 \donttest{lmer_pi(model=fit, m=3, alternative="upper")}
-}
-\references{
-Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
-with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-https://doi.org/10.1002/sim.8124
 }

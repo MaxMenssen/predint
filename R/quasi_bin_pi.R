@@ -5,8 +5,8 @@
 #' quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
 #' data with constant overdispersion (quasi-binomial assumption).
 #'
-#' @param histdat a \code{data.frame} with two columns (success and failure) containing the historical data
-#' @param newdat a \code{data.frame} with two columns (success and failure) containing the future data
+#' @param histdat a \code{data.frame} with two columns (success and failures) containing the historical data
+#' @param newdat a \code{data.frame} with two columns (success and failures) containing the future data
 #' @param newsize a vector containing the future cluster sizes
 #' @param alternative either "both", "upper" or "lower". \code{alternative}
 #'  specifies if a prediction interval or an upper or a lower prediction limit
@@ -23,15 +23,12 @@
 #' with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
 #' \eqn{y_m} as the observed future number of successes, \eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}}
 #' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a quantile from a multivariate normal. Please note that
-#' the predicted future number of successes is based on the future cluster size \eqn{n_m}
-#' and the success probability estimated from the historical data \eqn{\pi^{hist}}
-#' such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
-#' different for each of the \eqn{m} future clusters, if their size is not the same.
-#'
-#' The whole calibration process is based on a bisection algorithm that is similar
-#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
-#' overview about the bisection process is given.
+#' approximates a quantile from a multivariate normal. \cr
+#' Please note that the predicted future number of successes is based on the future
+#' cluster size \eqn{n_m} and the success probability estimated from the historical
+#' data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
+#' different for each of the \eqn{m} future clusters, if their size is not the same. \cr
+#' If traceplot=TRUE, a graphical overview about the bisection process is given.
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the the historical proportion (hist_prob),
@@ -56,11 +53,6 @@
 #'
 #' @importFrom stats glm quasibinomial coef
 #'
-#' @references
-#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
-#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-#' https://doi.org/10.1002/sim.8124
-#'
 #' @examples
 #' #' # Historical data
 #' qb_dat1
@@ -74,9 +66,6 @@
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
 #' \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
-#'
-#' # Please note, that nboot is set to 100 in order to increase computing time. For a
-#' # valid analysis, set nboot=10000.
 #'
 quasi_bin_pi <- function(histdat,
                          newdat=NULL,

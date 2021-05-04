@@ -25,16 +25,9 @@
 #' with \eqn{\hat{y}} as the predicted future observation,
 #' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 #' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a quantile of a multivariate normal distribution.
-#'
-#' The whole calibration process is based on a bisection algorithm that is similar
-#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+#' approximates a quantile of a multivariate normal distribution. \cr
+#' If traceplot=TRUE, a graphical
 #' overview about the bisection process is given.
-#'
-#' @references
-#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
-#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-#' https://doi.org/10.1002/sim.8124
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
@@ -45,10 +38,10 @@
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction error (pred_se) and the prediction interval (lower and upper).
 #'
-#'  If \alternative{alternative} is set to "lower": Lower prediction bounds are computed instead
+#'  If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
 #'  of a prediction interval.
 #'
-#'  If \alternative{alternative} is set to "upper": Upper prediction bounds are computed instead
+#'  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
 #'  of a prediction interval.
 #'
 #'
@@ -65,18 +58,10 @@
 #' qp_dat2
 #'
 #' # Prediction interval using bb_dat2 as future data
-#' quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'             newdat=data.frame(qp_dat2),
-#'             nboot=100)
+#' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
 #'
 #' # Upper prediction bound for m=3 future observations
-#' quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'               m=3,
-#'               alternative="upper",
-#'               nboot=100)
-#'
-#' # Please note, that nboot is set to 100 in order to increase computing time. For a
-#' # valid analysis, set nboot=10000.
+#' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
 #'
 quasi_pois_pi <- function(histdat,
                           newdat=NULL,
