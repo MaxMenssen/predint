@@ -1,7 +1,7 @@
 Package: predint
 Type: Package
 Title: Prediction intervals
-Version: 0.1.0
+Version: 1.0.0
 Author: Max Menssen
 Maintainer: Max Menssen <menssen@cell.uni-hannover.de>
 Description: This package provides prediction intervals for overdispersed count data,
