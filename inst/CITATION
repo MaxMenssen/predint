@@ -1,0 +1,14 @@
+citHeader("To cite predint in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "Prediction intervals for overdispersed count data, for overdispersed binomial data and for linear random effects models.",
+  author   = "Max Menssen",
+  url      = "https://cran.r-project.org/web/packages/predint/index.html",
+
+  textVersion =
+  paste( "Max Menssen (2021).",
+         "URL https://cran.r-project.org/web/packages/predint/index.html"
+
+  )
+)
