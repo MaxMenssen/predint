@@ -14,12 +14,9 @@
 #' }
 #'
 #' @examples
-#' # Prediction interval using bb_dat2 as future data
-#' \donttest{beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)}
-#'
 #' # Upper prediction limit for m=3 future number of successes
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' \donttest{beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)}
+#' \donttest{beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")}
 #'
 "bb_dat1"
 
@@ -61,9 +58,6 @@
 #'
 #'
 #' @examples
-#' # Prediction interval using qb_dat2 as future data
-#' \donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)}
-#'
 #' # Upper prediction limit for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
 #' \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
@@ -103,9 +97,6 @@
 #' @format An integer vector with ten entries containing quasi poisson data
 #'
 #' @examples
-#' # Prediction interval using bb_dat2 as future data
-#' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
-#'
 #' # Upper prediction limit for m=3 future observations
 #' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
 #'
@@ -122,7 +113,7 @@
 #' @format An integer vector with three entries containing quasi poisson data
 #'
 #' @examples
-#' # Prediction interval using bb_dat2 as future data
+#' # Prediction interval using qp_dat2 as future data
 #' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
 #'
 "qp_dat2"
