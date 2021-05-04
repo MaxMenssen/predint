@@ -26,15 +26,13 @@
 #' future clusters, \eqn{y_m} as the observed future number of successes,
 #' \eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}} as the prediction standard error and \eqn{q}
 #' as the bootstrap calibrated coefficient that approximates a quantile from a
-#' multivariate normal distribution.
+#' multivariate normal distribution. \cr
 #' Please note that the predicted future number of successes is based on the future
 #' cluster size \eqn{n_m} and the success probability estimated from the historical
 #' data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the
 #' prediction intervals \eqn{[l,u]_m} are different for each of the \eqn{m} future clusters,
-#' if their size is not the same.
-#'
-#' The whole calibration process is based on a bisection algorithm that is similar
-#' to the one described in Menssen and Schaarschmidt 2019. If traceplot=TRUE, a graphical
+#' if their size is not the same. \cr
+#' If traceplot=TRUE, a graphical
 #' overview about the bisection process is given.
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
@@ -59,11 +57,6 @@
 #' @export
 #'
 #' @importFrom graphics abline lines
-#'
-#' @references
-#' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
-#' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-#' https://doi.org/10.1002/sim.8124
 #'
 #' @examples
 #' # Historical data
