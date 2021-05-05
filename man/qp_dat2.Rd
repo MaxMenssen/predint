@@ -16,7 +16,10 @@ The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 }
 \examples{
 # Prediction interval using qp_dat2 as future data
-\donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
+quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
+
+# Please note that nboot was set to 100 in order to increase computing time
+# of the example. For a valid analysis set nboot=10000.
 
 }
 \keyword{datasets}

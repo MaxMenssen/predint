@@ -21,7 +21,10 @@ each of size 50. The data set was sampled with \code{rqbinom(n=10, size=50, prob
 \examples{
 # Upper prediction limit for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively
-\donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
+quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+
+# Please note that nboot was set to 100 in order to increase computing time
+# of the example. For a valid analysis set nboot=10000.
 
 }
 \keyword{datasets}

@@ -20,7 +20,10 @@ different size, each. The data set was sampled with \code{rbbinom(n=3, size=c(40
 }
 \examples{
 # Prediction interval using bb_dat2 as future data
-\donttest{beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)}
+beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
+
+# Please note that nboot was set to 100 in order to increase computing time
+# of the example. For a valid analysis set nboot=10000.
 
 }
 \keyword{datasets}

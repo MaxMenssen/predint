@@ -78,9 +78,12 @@ qp_dat1
 qp_dat2
 
 # Prediction interval using bb_dat2 as future data
-\donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
+quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 
 # Upper prediction bound for m=3 future observations
-\donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
+quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+
+# Please note that nboot was set to 100 in order to increase computing time
+# of the example. For a valid analysis set nboot=10000.
 
 }

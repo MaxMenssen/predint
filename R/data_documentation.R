@@ -16,7 +16,10 @@
 #' @examples
 #' # Upper prediction limit for m=3 future number of successes
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' \donttest{beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper")}
+#' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "bb_dat1"
 
@@ -37,7 +40,10 @@
 #'
 #' @examples
 #' # Prediction interval using bb_dat2 as future data
-#' \donttest{beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2)}
+#' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "bb_dat2"
 
@@ -60,7 +66,10 @@
 #' @examples
 #' # Upper prediction limit for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
+#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "qb_dat1"
 
@@ -81,7 +90,10 @@
 #'
 #' @examples
 #' # Prediction interval using qb_dat2 as future data
-#' \donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2)}
+#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "qb_dat2"
 
@@ -98,7 +110,10 @@
 #'
 #' @examples
 #' # Upper prediction limit for m=3 future observations
-#' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
+#' quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "qp_dat1"
 
@@ -114,7 +129,10 @@
 #'
 #' @examples
 #' # Prediction interval using qp_dat2 as future data
-#' \donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2))}
+#' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "qp_dat2"
 
@@ -145,10 +163,13 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both")}
+#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
 #'
 #' # Upper prediction limit for m=3 future observations
-#' \donttest{lmer_pi(model=fit, m=3, alternative="upper")}
+#' lmer_pi(model=fit, m=3, alternative="upper", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat1"
 
@@ -177,7 +198,10 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both")}
+#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat2"
 

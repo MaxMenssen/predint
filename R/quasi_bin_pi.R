@@ -61,11 +61,14 @@
 #' qb_dat2
 #'
 #' # Prediction interval using qb_dat2 as future data
-#' \donttest{quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat1)}
+#' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat1, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
 #' # that are based on cluster sizes 40, 50, 60 respectively
-#' \donttest{quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper")}
+#' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
 #'
 quasi_bin_pi <- function(histdat,
                          newdat=NULL,

@@ -16,7 +16,10 @@ The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 }
 \examples{
 # Upper prediction limit for m=3 future observations
-\donttest{quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper")}
+quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+
+# Please note that nboot was set to 100 in order to increase computing time
+# of the example. For a valid analysis set nboot=10000.
 
 }
 \keyword{datasets}
