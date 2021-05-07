@@ -59,10 +59,10 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
+#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
 #' # Upper prediction limit for m=3 future observations
-#' lmer_pi(model=fit, m=3, alternative="upper", nboot=100)
+#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
 #'
 #' # Please note that nboot was set to 100 in order to increase computing time
 #' # of the example. For a valid analysis set nboot=10000.
