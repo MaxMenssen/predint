@@ -7,7 +7,7 @@
 #' This data set contains sampled beta-binomial data from 10 clusters
 #' each of size 50. The data set was sampled with \code{rbbinom(n=10, size=50, prob=0.1, rho=0.06)}.
 #'
-#' @format A \code{data.frame} with 10 rows and 2 colums:
+#' @format A \code{data.frame} with 10 rows and 2 columns:
 #' \describe{
 #'   \item{succ}{number of successes}
 #'   \item{fail}{number of failures}
