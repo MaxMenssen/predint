@@ -5,7 +5,7 @@
 \alias{bb_dat1}
 \title{Beta-binomial data (example 1)}
 \format{
-A \code{data.frame} with 10 rows and 2 colums:
+A \code{data.frame} with 10 rows and 2 columns:
 \describe{
   \item{succ}{number of successes}
   \item{fail}{number of failures}
