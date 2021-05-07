@@ -2,11 +2,11 @@ Package: predint
 Type: Package
 Title: Prediction Intervals
 Version: 1.0.0
-Authors@R: person("Max", "Menssen", email = "menssen@cell.uni-hannover.de",
+Authors@R: person("Max", "Menssen", email = "menssen@cell-uni-hannover.de",
                   role = c("aut", "cre"))
-Description: With the predint package, prediction intervals for overdispersed count data,
+Description: Prediction intervals for overdispersed count data,
             for overdispersed binomial data and for linear random effects models
-            can be computed.
+            can be computed with this package.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
