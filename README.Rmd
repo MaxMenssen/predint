@@ -21,7 +21,12 @@ knitr::opts_chunk$set(
 The package predint provides functions to calculate bootstrap calibrated 
 prediction intervals for one or more future observations based on overdispersed 
 binomial data, overdispersed poisson data, as well as data that is modeled by
-linear random effects models fitted with lme4::lmer().
+linear random effects models fitted with lme4::lmer(). The main functions are:
+
+* `beta_bin_pi()` for beta-binomial data (overdispersion differs between clusters)  
+* `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
+* `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
+* `lmer_pi()` for data that is modeled by a linear random effects model  
 
 ## Installation
 
@@ -40,7 +45,7 @@ devtools::install_github("MaxMenssen/predint")
 ## Example
 The following examples are based on the scenario described in Menssen and Schaarschmidt 
 2019: Based on historical control data for the mortality of male B6C3F1-mice 
-obtained in in long term studies at the National Toxicology Program, prediction 
+obtained in in long term studies at the National Toxicology Program (NTP 2017), prediction 
 intervals (PI) can be computed in order to verify the observed 
 mortality of an actual (or future) trial. In this scenario prediction intervals 
 can be comuted for two different puropses.  
@@ -58,7 +63,7 @@ In this scenario, it is of interest to verify the control group of an actual (or
 study that is comprised of 30 mice instead of 50 mice as in the historical data.
 For this purpose a single prediction interval for one future observation is computed.
 
-```{r example, cache=TRUE}
+```{r example}
 # load predint
 library(predint)
 
@@ -72,7 +77,7 @@ pi_m1
 ```
 
 The historical binomial probability of success (historical mortality rate)
-is `r pi_m1$hist_prob`, the bootstrap calibrated coefficient is `r pi_m1$quant_calib`
+is `r pi_m1$hist_prob`, the bootstrap calibrated coefficient is `r round(pi_m1$quant_calib, 5)`
 and the standard error of the prediction is `r pi_m1$pred_se`. The lower limit 
 of the bootstrap calibrated asymptotic prediction interval is `r round(pi_m1$lower, 5)` 
 and its upper limit is given by `r round(pi_m1$upper, 5)`.
@@ -93,7 +98,7 @@ male mice is compared to three treatment groups comprised of 30 mice each. If th
 whole study should be compared to the historical knowledge, four prediction intervals
 have to be computed. Hence `newsize` is set to `c(50, 30, 30, 30)`.
 
-```{r, cache=TRUE}
+```{r}
 pi_m4 <- quasi_bin_pi(histdat=dat_real, newsize=c(50, 30, 30, 30), traceplot = FALSE)
 pi_m4
 ```
@@ -108,8 +113,9 @@ questionable and more research about the compound of interest has to be done.
 ## References
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
 with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-https://doi.org/10.1002/sim.8124
+https://doi.org/10.1002/sim.8124  
 
 
-
+NTP 2017: Tables of historical controls: pathology tables by route/vehicle. https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html.
+Accessed May 17, 2017.
 

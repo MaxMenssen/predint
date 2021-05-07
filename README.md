@@ -10,7 +10,14 @@ The package predint provides functions to calculate bootstrap calibrated
 prediction intervals for one or more future observations based on
 overdispersed binomial data, overdispersed poisson data, as well as data
 that is modeled by linear random effects models fitted with
-lme4::lmer().
+lme4::lmer(). The main functions are:
+
+-   `beta_bin_pi()` for beta-binomial data (overdispersion differs
+    between clusters)  
+-   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
+-   `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
+-   `lmer_pi()` for data that is modeled by a linear random effects
+    model
 
 ## Installation
 
@@ -33,10 +40,10 @@ devtools::install_github("MaxMenssen/predint")
 The following examples are based on the scenario described in Menssen
 and Schaarschmidt 2019: Based on historical control data for the
 mortality of male B6C3F1-mice obtained in in long term studies at the
-National Toxicology Program, prediction intervals (PI) can be computed
-in order to verify the observed mortality of an actual (or future)
-trial. In this scenario prediction intervals can be comuted for two
-different puropses.  
+National Toxicology Program (NTP 2017), prediction intervals (PI) can be
+computed in order to verify the observed mortality of an actual (or
+future) trial. In this scenario prediction intervals can be comuted for
+two different puropses.  
 On the one hand, a PI for one future observation can be computed in
 order to varify the outcome of one actual (or future) untreated control
 group that is compared with several groups treated with the compund of
@@ -66,25 +73,25 @@ dat_real <- data.frame("dead"=c(15, 10, 12, 12, 13, 11, 19, 11, 14, 21),
 # PI for one future control group comprised of 50 mice
 pi_m1 <- quasi_bin_pi(histdat=dat_real, newsize=30, traceplot = FALSE)
 pi_m1
-#>   total hist_prob quant_calib pred_se    lower   upper
-#> 1    30     0.276    1.019731     5.6 2.569504 13.9905
+#>   total hist_prob quant_calib pred_se    lower    upper
+#> 1    30     0.276    1.024609     5.6 2.542187 14.01781
 ```
 
 The historical binomial probability of success (historical mortality
-rate) is 0.276, the bootstrap calibrated coefficient is 1.0197314 and
-the standard error of the prediction is 5.6. The lower limit of the
-bootstrap calibrated asymptotic prediction interval is 2.5695 and its
-upper limit is given by 13.9905.
+rate) is 0.276, the bootstrap calibrated coefficient is 1.02461 and the
+standard error of the prediction is 5.6. The lower limit of the
+bootstrap calibrated asymptotic prediction interval is 2.54219 and its
+upper limit is given by 14.01781.
 
-If the mortality is lower than 2.5695 (practically spkoen lower than 3)
+If the mortality is lower than 2.54219 (practically spkoen lower than 3)
 it can be treated as unusual low. Consequently, mean comparisons between
 the control group might result in too many differences that are
 considered as significant and the compund of interest might be treated
 as more hazardous than it actually is.  
 On the other hand, the compund of interest might be treated as less
 hazardous if the mortality in the untreated control group is unusual
-high. This might be the case, if its mortality exeeds13.9905
-(practically spoken higher than 13).
+high. This might be the case, if its mortality exeeds14.01781
+(practically spoken higher than 14).
 
 ### Evaluation of one future study
 
@@ -98,17 +105,17 @@ Hence `newsize` is set to `c(50, 30, 30, 30)`.
 pi_m4 <- quasi_bin_pi(histdat=dat_real, newsize=c(50, 30, 30, 30), traceplot = FALSE)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276     1.28314 8.854377 2.438597 25.16140
-#> 2    30     0.276     1.28314 5.600000 1.094418 15.46558
-#> 3    30     0.276     1.28314 5.600000 1.094418 15.46558
-#> 4    30     0.276     1.28314 5.600000 1.094418 15.46558
+#> 1    50     0.276    1.292896 8.854377 2.352215 25.24778
+#> 2    30     0.276    1.292896 5.600000 1.039785 15.52021
+#> 3    30     0.276    1.292896 5.600000 1.039785 15.52021
+#> 4    30     0.276    1.292896 5.600000 1.039785 15.52021
 ```
 
 In this case, the untreated control group is in line with the historical
-control data if its mortality falls between 2.4386 and 25.1614.
+control data if its mortality falls between 2.35222 and 25.24778.
 Simillarly, the groups treated with the compound of interest are in line
 with the historical knowlegde regarding untreated control groups if
-their mortality ranges between 1.09442 and 15.46558. In this case
+their mortality ranges between 1.03979 and 15.52021. In this case
 inference based on such results might be highly questionable and more
 research about the compound of interest has to be done.
 
@@ -117,3 +124,8 @@ research about the compound of interest has to be done.
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
 Medicine. 2019;38:2652-2663. <https://doi.org/10.1002/sim.8124>
+
+NTP 2017: Tables of historical controls: pathology tables by
+route/vehicle.
+<https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html>.
+Accessed May 17, 2017.
