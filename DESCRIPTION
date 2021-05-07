@@ -6,6 +6,7 @@ Author: Max Menssen
 Maintainer: Max Menssen <menssen@cell.uni-hannover.de>
 Description: Prediction intervals for overdispersed count data,
             for overdispersed binomial data and for linear random effects models
+            can be computed with the predint package.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
