@@ -1,11 +1,11 @@
 Package: predint
 Type: Package
-Title: Prediction intervals
+Title: Prediction Intervals
 Version: 1.0.0
 Author: Max Menssen
 Maintainer: Max Menssen <menssen@cell.uni-hannover.de>
-Description: This package provides prediction intervals for overdispersed count data,
-            for overdispersed binomial data and for linear random effects models.
+Description: Prediction intervals for overdispersed count data,
+            for overdispersed binomial data and for linear random effects models
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -21,4 +21,3 @@ Suggests:
 Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
-VignetteBuilder: knitr
