@@ -7,4 +7,8 @@
 
 0 errors | 0 warnings | 0 note
 
+check_rhub() and check_win_devel() gave the note that this is a new release, but 
+nothing more.
+
+
 * This is a new release.
