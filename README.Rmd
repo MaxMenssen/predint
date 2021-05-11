@@ -18,6 +18,9 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+In many pharmaceutical and biomedical applications such as assay validation, assessment
+of historical control data or the detection of anti-drug antibodies, prediction intervals
+are of use. 
 The package predint provides functions to calculate bootstrap calibrated 
 prediction intervals for one or more future observations based on overdispersed 
 binomial data, overdispersed poisson data, as well as data that is modeled by

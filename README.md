@@ -6,11 +6,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The package predint provides functions to calculate bootstrap calibrated
-prediction intervals for one or more future observations based on
-overdispersed binomial data, overdispersed poisson data, as well as data
-that is modeled by linear random effects models fitted with
-lme4::lmer(). The main functions are:
+In many pharmaceutical and biomedical applications such as assay
+validation, assessment of historical control data or the detection of
+anti-drug antibodies, prediction intervals are of use. The package
+predint provides functions to calculate bootstrap calibrated prediction
+intervals for one or more future observations based on overdispersed
+binomial data, overdispersed poisson data, as well as data that is
+modeled by linear random effects models fitted with lme4::lmer(). The
+main functions are:
 
 -   `beta_bin_pi()` for beta-binomial data (overdispersion differs
     between clusters)  
@@ -80,25 +83,25 @@ pi_m1 <- quasi_bin_pi(histdat=dat_real,
                       traceplot = FALSE, 
                       alpha=0.05)
 pi_m1
-#>   total hist_prob quant_calib pred_se    lower    upper
-#> 1    30     0.276    1.024609     5.6 2.542187 14.01781
+#>   total hist_prob quant_calib pred_se   lower    upper
+#> 1    30     0.276    1.014854     5.6 2.59682 13.96318
 ```
 
 The historical binomial probability of success (historical mortality
-rate) is 0.276, the bootstrap calibrated coefficient is 1.02461 and the
+rate) is 0.276, the bootstrap calibrated coefficient is 1.01485 and the
 standard error of the prediction is 5.6. The lower limit of the
-bootstrap calibrated asymptotic prediction interval is 2.54219 and its
-upper limit is given by 14.01781.
+bootstrap calibrated asymptotic prediction interval is 2.59682 and its
+upper limit is given by 13.96318.
 
-If the mortality is lower than 2.54219 (practically spoken lower than 3)
+If the mortality is lower than 2.59682 (practically spoken lower than 3)
 it can be treated as unusual low. Consequently, mean comparisons between
 the control group might result in too many differences that are
 considered as significant and the compound of interest might be treated
 as more hazardous than it actually is.  
 On the other hand, the compound of interest might be treated as less
 hazardous if the mortality in the untreated control group is unusual
-high. This might be the case, if its mortality exceeds 14.01781
-(practically spoken higher than 14).
+high. This might be the case, if its mortality exceeds 13.96318
+(practically spoken higher than 13).
 
 ### Evaluation of one future study
 
@@ -115,17 +118,17 @@ pi_m4 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276    1.297773 8.854377 2.309024 25.29098
-#> 2    30     0.276    1.297773 5.600000 1.012469 15.54753
-#> 3    30     0.276    1.297773 5.600000 1.012469 15.54753
-#> 4    30     0.276    1.297773 5.600000 1.012469 15.54753
+#> 1    50     0.276    1.288018 8.854377 2.395406 25.20459
+#> 2    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 3    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 4    30     0.276    1.288018 5.600000 1.067102 15.49290
 ```
 
 In this case, the untreated control group is in line with the historical
-control data if its mortality falls between 2.30902 and 25.29098.
+control data if its mortality falls between 2.39541 and 25.20459.
 Similarly, the groups treated with the compound of interest are in line
 with the historical knowledge regarding untreated control groups if
-their mortality ranges between 1.01247 and 15.54753. This means that the
+their mortality ranges between 1.0671 and 15.4929. This means that the
 compound of interest might not have an effect on mortality, if the
 observed moralities of some (or all) of the treatment groups fall into
 their corresponding prediction interval.
