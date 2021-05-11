@@ -16,13 +16,7 @@ The following comments were given by Julia Haider via e-mail:
 1) Please do not start the description with "This package", package name, title or similar.
 -> I fixed this
 
-2) If there are references describing the methods in your package, please add these in the   description field of your DESCRIPTION file in the form
-authors (year) <doi:...>
-authors (year) <arXiv:...>
-authors (year, ISBN:...)
-or if those are not available: <https:...>
-with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for auto-linking.
-(If you want to add a title as well please put it in quotes: "Title") 
+2) If there are references describing the methods in your package, please add these in the   description field of your DESCRIPTION file....
 -> The paper regarding the methods used in this package is still in review. Hence,
    there is no reference other than the link on the cran homepage that will be 
    active after the upload. 
