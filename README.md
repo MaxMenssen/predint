@@ -6,11 +6,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The package predint provides functions to calculate bootstrap calibrated
-prediction intervals for one or more future observation8s) based on
-overdispersed binomial data, overdispersed poisson data, as well as data
-that is modeled by linear random effects models fitted with
-lme4::lmer(). The main functions are:
+In many pharmaceutical and biomedical applications such as assay
+validation, assessment of historical control data or the detection of
+anti-drug antibodies, prediction intervals are of use. The package
+predint provides functions to calculate bootstrap calibrated prediction
+intervals for one or more future observation8s) based on overdispersed
+binomial data, overdispersed poisson data, as well as data that is
+modeled by linear random effects models fitted with lme4::lmer(). The
+main functions are:
 
 -   `beta_bin_pi()` for beta-binomial data (overdispersion differs
     between clusters)  
@@ -116,17 +119,17 @@ pi_m4 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276    1.288018 8.854377 2.395406 25.20459
-#> 2    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 3    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 4    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 1    50     0.276    1.278262 8.854377 2.481788 25.11821
+#> 2    30     0.276    1.278262 5.600000 1.121734 15.43827
+#> 3    30     0.276    1.278262 5.600000 1.121734 15.43827
+#> 4    30     0.276    1.278262 5.600000 1.121734 15.43827
 ```
 
 In this case, the untreated control group that contains 50 animals is in
 line with the historical control data if its mortality falls between
-2.39541 and 25.20459. Similarly, the control groups that contain 30
+2.48179 and 25.11821. Similarly, the control groups that contain 30
 animalsare in line with the historical knowledge if their mortality
-ranges between 1.0671 and 15.4929.
+ranges between 1.12173 and 15.43827.
 
 ## References
 
