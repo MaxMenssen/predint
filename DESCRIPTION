@@ -4,9 +4,8 @@ Title: Prediction Intervals
 Version: 1.0.0
 Authors@R: person("Max", "Menssen", email = "menssen@cell.uni-hannover.de",
                   role = c("aut", "cre"))
-Description: Prediction intervals for overdispersed count data,
-            for overdispersed binomial data and for linear random effects models
-            can be computed with this package.
+Description: An implementation of prediction intervals for overdispersed count data,
+            for overdispersed binomial data and for linear random effects models.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
