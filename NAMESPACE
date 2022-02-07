@@ -2,6 +2,8 @@
 
 export(beta_bin_pi)
 export(lmer_pi)
+export(lmer_pi_futmat)
+export(lmer_pi_futvec)
 export(lmer_pi_unsrtuc)
 export(pi_rho_est)
 export(quasi_bin_pi)
