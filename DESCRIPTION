@@ -13,7 +13,7 @@ Imports: lme4,
          dplyr,
          stats,
          graphics
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     rmarkdown,
     knitr,
