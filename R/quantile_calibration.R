@@ -78,6 +78,9 @@ lmer_pi <- function(model,
                     traceplot=TRUE,
                     n_bisec=30){
 
+        warning("This function is deprecated and will be deleted soon.
+                Please use lmer_pi_unstruc() which has exactly the same functionality.")
+
         # Model must be of class lmerMod
         if(class(model) != "lmerMod"){
                 stop("class(model) != lmerMod")
