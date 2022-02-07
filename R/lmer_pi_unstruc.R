@@ -2,7 +2,12 @@
 #' Prediction intervals for future observations based on linear random effects models
 #'
 #' lmer_pi_unstruc calculates a bootstrap calibrated prediction interval for one or more
-#' future observation(s) based on linear random effects models
+#' future observation(s) based on linear random effects models as described in section
+#' 3.2.4. of Menssen and Schaarschmidt (2021).
+#' Please note, that the bootstrap calibration used here does not consider the sampling
+#' structure of the future data, since the calibration values are drawn randomly from
+#' bootstrap data sets that have the same structure as the historical data.
+#'
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
@@ -24,7 +29,7 @@
 #' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
 #' approximates a multivariate t-distribution. \cr
 #' Please note that this function relies on linear random effects models that are
-#' fitted with lmer() from the lme4 package.Random effects have to be specified as
+#' fitted with lmer() from the lme4 package. Random effects have to be specified as
 #' \code{(1|random_effect)}.\cr
 #' If traceplot=TRUE, a graphical overview about the bisection process is given.
 #'
@@ -43,6 +48,11 @@
 #'  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
 #'  of a prediction interval.
 #'
+#' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \url{https://onlinelibrary.wiley.com/doi/10.1111/stan.12260}
+#'
+#'
 #' @export
 #'
 #' @importFrom graphics abline lines
@@ -50,7 +60,6 @@
 #' @importFrom stats vcov
 #'
 #' @examples
-#'
 #' # loading lme4
 #' library(lme4)
 #'
