@@ -58,7 +58,11 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
 }
 \description{
 lmer_pi_unstruc calculates a bootstrap calibrated prediction interval for one or more
-future observation(s) based on linear random effects models
+future observation(s) based on linear random effects models as described in section
+3.2.4. of Menssen and Schaarschmidt (2021).
+Please note, that the bootstrap calibration used here does not consider the sampling
+structure of the future data, since the calibration values are drawn randomly from
+bootstrap data sets that have the same structure as the historical data.
 }
 \details{
 This function returns a bootstrap calibrated prediction interval
@@ -68,12 +72,11 @@ with \eqn{\hat{y}} as the predicted future observation,
 as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
 approximates a multivariate t-distribution. \cr
 Please note that this function relies on linear random effects models that are
-fitted with lmer() from the lme4 package.Random effects have to be specified as
+fitted with lmer() from the lme4 package. Random effects have to be specified as
 \code{(1|random_effect)}.\cr
 If traceplot=TRUE, a graphical overview about the bisection process is given.
 }
 \examples{
-
 # loading lme4
 library(lme4)
 
@@ -82,12 +85,17 @@ fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 summary(fit)
 
 # Prediction interval using c2_dat2 as future data
-\donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+\donttest{lmer_pi_unsrtuc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 
 # Upper prediction limit for m=3 future observations
-\donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+\donttest{lmer_pi_unsrtuc(model=fit, m=3, alternative="upper", nboot=100)}
 
 # Please note that nboot was set to 100 in order to increase computing time
 # of the example. For a valid analysis set nboot=10000.
 
+}
+\references{
+Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica,
+ \url{https://onlinelibrary.wiley.com/doi/10.1111/stan.12260}
 }
