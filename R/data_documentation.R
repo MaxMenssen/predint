@@ -152,9 +152,7 @@
 #'   \item{b}{treatment b}
 #' }
 #'
-#'
 #' @examples
-#'
 #' # loading lme4
 #' library(lme4)
 #'
@@ -163,15 +161,16 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+#' \donttest{lmer_pi_unsrtuc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
 #' # Upper prediction limit for m=3 future observations
-#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+#' \donttest{lmer_pi_unsrtuc(model=fit, m=3, alternative="upper", nboot=100)}
 #'
 #' # Please note that nboot was set to 100 in order to increase computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat1"
+
 
 #-------------------------------------------------------------------------------
 # c2_dat2
@@ -187,6 +186,38 @@
 #'   \item{b}{treatment b}
 #' }
 #'
+#' @examples
+#' # loading lme4
+#' library(lme4)
+#'
+#' # Fitting a random effects model based on c2_dat_1
+#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
+#' summary(fit)
+#'
+#' # Prediction interval using c2_dat2 as future data
+#' \donttest{lmer_pi_unsrtuc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+#'
+#' # Upper prediction limit for m=3 future observations
+#' \donttest{lmer_pi_unsrtuc(model=fit, m=3, alternative="upper", nboot=100)}
+#'
+#' # Please note that nboot was set to 100 in order to increase computing time
+#' # of the example. For a valid analysis set nboot=10000.
+#'
+"c2_dat2"
+
+#-------------------------------------------------------------------------------
+# c2_dat3
+
+#' Cross-classified data (example 3)
+#'
+#' c2_dat3 contains data that was sampled from a balanced cross-classified design.
+#'
+#' @format A \code{data.frame} with 8 rows and 3 columns:
+#' \describe{
+#'   \item{y_ijk}{observations}
+#'   \item{a}{treatment a}
+#'   \item{b}{treatment b}
+#' }
 #'
 #' @examples
 #'
@@ -197,13 +228,19 @@
 #' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 #' summary(fit)
 #'
-#' # Prediction interval using c2_dat2 as future data
-#' lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
+#' #----------------------------------------------------------------------------
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
-#' # of the example. For a valid analysis set nboot=10000.
+#' ### Prediction interval using c2_dat3 as future data
+#' # without printing c2_dat3 in the output
+#' \donttest{
+#' # Row numbers of the historical data c2_dat1 that define the structure of
+#' # the future data c2_dat3
+#' futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
 #'
-"c2_dat2"
+#' # Calculating the PI
+#' lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
+#'
+"c2_dat3"
 
 
 
