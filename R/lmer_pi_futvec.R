@@ -6,8 +6,10 @@
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
-#' on which the model depends
-#' @param m number of future observations
+#' on which  \code{model} depends
+#' @param futvec an integer vector that defines the structure of the future data based on the
+#' row numbers of the historical data. If length of \code{futvec} is one, a PI
+#' for one future observation is computed
 #' @param alternative either "both", "upper" or "lower". \code{alternative} specifies
 #' if a prediction interval or an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-\code{alpha})
@@ -24,18 +26,26 @@
 #' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
 #' approximates a multivariate t-distribution. \cr
 #' Please note that this function relies on linear random effects models that are
-#' fitted with lmer() from the lme4 package.Random effects have to be specified as
-#' \code{(1|random_effect)}.\cr
-#' If traceplot=TRUE, a graphical overview about the bisection process is given.
+#' fitted with \code{lmer()} from the lme4 package. Random effects have to be specified as
+#' \code{(1|random_effect)}.
+#'
+#' Be aware that the sampling structure of the historical data must contain the structure of the
+#' future data. This means that the observations per random factor must be less or
+#' equal in the future data compared to the historical data.
+#' This function is similar to the PI given in Menssen and Schaarschmidt 2021 section 3.2.4
+#' except that the bootstrap calibration values are drawn from bootstrap samples that
+#' mimic the future data.
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se), the prediction interval (lower and upper)
-#'  and a statement if the prediction interval covers the future observation (cover).
+#'  and a statement if the prediction interval covers the future observations (cover).
 #'
-#'  If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
+#'  If only \code{futvec} is specified:
+#'  A \code{data.frame} that contains the number of future observations (m)
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
+#'  If \code{futvec} is set to 1, the PI is calculated for one future observation.
 #'
 #'  If \code{alternative} is set to "lower": Lower prediction limits are computed instead
 #'  of a prediction interval.
@@ -43,11 +53,18 @@
 #'  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
 #'  of a prediction interval.
 #'
+#'  If traceplot=TRUE, a graphical overview about the bisection process is given.
+#'
 #' @export
 #'
 #' @importFrom graphics abline lines
 #' @importFrom lme4 fixef VarCorr bootMer
 #' @importFrom stats vcov
+#' @importFrom stats na.omit
+#'
+#' @references Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
+#' future observations based on linear random effects models. Statistica Neerlandica.
+#' \url{https://doi.org/10.1111/stan.12260}
 #'
 #' @examples
 #'
@@ -58,27 +75,45 @@
 #' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 #' summary(fit)
 #'
-#' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+#' #----------------------------------------------------------------------------
 #'
-#' # Upper prediction limit for m=3 future observations
-#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+#' ### Prediction interval using c2_dat3 as future data
+#' # without printing c2_dat3 in the output
+#' \donttest{
+#' # Row numbers of the historical data c2_dat1 that define the structure of
+#' # the future data c2_dat3
+#' futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
+#'
+#' # Calculating the PI
+#' lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
+#'
+#' #----------------------------------------------------------------------------
+#'
+#' ### Calculating the PI with c2_dat3 printed in the output
+#' \donttest{lmer_pi_futvec(model=fit, futvec=futvec, newdat=c2_dat3, alternative="both", nboot=100)}
+#'
+#' #----------------------------------------------------------------------------
+#'
+#' ### Upper prediction limit for m=1 future observation
+#' \donttest{lmer_pi_futvec(model=fit, futvec=1, alternative="upper", nboot=100)}
+#'
+#'#----------------------------------------------------------------------------
 #'
 #' # Please note that nboot was set to 100 in order to increase computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 lmer_pi_futvec <- function(model,
-                    newdat=NULL,
-                    m=NULL,
-                    alternative="both",
-                    alpha=0.05,
-                    nboot=10000,
-                    lambda_min=0.01,
-                    lambda_max=10,
-                    traceplot=TRUE,
-                    n_bisec=30){
+                           futvec,
+                           newdat=NULL,
+                           alternative="both",
+                           alpha=0.05,
+                           nboot=10000,
+                           lambda_min=0.01,
+                           lambda_max=10,
+                           traceplot=TRUE,
+                           n_bisec=30){
 
-        warning("This function needs some work.")
+        # warning("This function needs some work.")
 
         # Model must be of class lmerMod
         if(class(model) != "lmerMod"){
@@ -100,11 +135,11 @@ lmer_pi_futvec <- function(model,
         fs <- as.character(f)[3]
 
 
-        # First substitue all whitespace characters with nothing ("") to make shure they don't disturb.
+        # First substitue all whitespace characters with nothing ("") to make sure they don't disturb.
         # '\\s' is regex for 'all whitespace characters like space, tab, line break, ...)'
         fs <- gsub("\\s", "", fs)
 
-        # Are there any occurances where '|' is not preceded by a '1'?
+        # Are there any occurrences where '|' is not preceded by a '1'?
         # '[^1]' is regex for 'not 1' and '\\|' is just regex for '|'.
         wrong_formula <- grepl('[^1]\\|', fs)
 
@@ -112,30 +147,41 @@ lmer_pi_futvec <- function(model,
                 stop("Random effects must be specified as (1|random_effect)")
         }
 
+        ### futvec
 
-
-        # Relationship between newdat and m
-        if(is.null(newdat) & is.null(m)){
-                stop("newdat and m are both NULL")
+        if((is.numeric(futvec) | is.integer(futvec))==FALSE){
+                stop("futvec needs to be an integer or numeric vector that contains only integer values")
+        }
+        # are some elements the same
+        if(length(unique(futvec)) != length(futvec)){
+                stop("some of the elements in futvec are equal")
         }
 
-        if(!is.null(newdat) & !is.null(m)){
-                stop("newdat and m are both defined")
+        # all elements must be integer values
+        if(!isTRUE(all(futvec == floor(futvec)))){
+                stop("futvec must only contain integer values")
         }
 
-        ### m
-        if(is.null(m) == FALSE){
-                # m must be integer
-                if(!isTRUE(m == floor(m))){
-                        stop("m must be integer")
-                }
-
-                if(length(m) > 1){
-                        stop("length(m) > 1")
-                }
-
-
+        # futvec is not allowed to be longer than histdat
+        if(length(futvec) > nrow(model@frame)){
+                stop("length(futvec) > nrow(histdat): futvec and historical data do not match")
         }
+
+        # The max of futvec can not be higher than nrow histdat
+        if(max(futvec) > nrow(model@frame)){
+                stop("max(futvec) > nrow(histdat): futvec and historical data do not match")
+        }
+
+        # min of futvec must be at least 1
+        if(min(futvec) < 1){
+                stop("min(futvec) must at least 1")
+        }
+
+        # futvec can not contain any NA
+        if(length(futvec) != length(na.omit(futvec))){
+                stop("futvec contains at least one NA")
+        }
+
 
 
         ### Actual data
@@ -151,8 +197,12 @@ lmer_pi_futvec <- function(model,
                         stop("columnames of historical data and newdat are not the same")
                 }
 
-                # Define m
-                m <- nrow(newdat)
+                #
+                if(length(futvec) != nrow(newdat)){
+                        stop("length(futvec) != nrow(newdat)")
+                }
+
+                warning("NOTE: The elements of futvec must reflect the structure of newdat in histdat")
 
 
         }
@@ -172,19 +222,6 @@ lmer_pi_futvec <- function(model,
         se_y_star_hat <- sqrt(sum(c(as.vector(vcov(model)),
                                     data.frame(VarCorr(model))$vcov)))
 
-        # Number of observations
-        n_obs <- nrow(model@frame)
-
-        # stop if m > n_obs
-        if(m > n_obs){
-                stop("m > numbers of original observations")
-        }
-
-        # stop if m < 1
-        if(m > n_obs){
-                stop("m < 1")
-        }
-
         #----------------------------------------------------------------------
         ### Bootstrapping future observations
 
@@ -196,25 +233,37 @@ lmer_pi_futvec <- function(model,
         # Bootstrap for the observations
         boot_obs <- bootMer(model, obs_fun, nsim = nboot)
 
-        # Smallest BS observation
-        bs_y_min <- min(t(boot_obs$t))
-
-        # Biggest BS observation
-        bs_y_max <- max(t(boot_obs$t))
+        # # Smallest BS observation
+        # bs_y_min <- min(t(boot_obs$t))
+        #
+        # # Biggest BS observation
+        # bs_y_max <- max(t(boot_obs$t))
 
         # Bootstrapped data sets
         bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
 
         # Take only m random observation per data set
         ystar_fun <- function(.){
-                y_star <- sample(x=., size=m)
 
-                y_star_min <- min(y_star)
-                y_star_max <- max(y_star)
+                if(length(futvec)==1){
+                        y_star <- sample(x=., size=1)
 
-                c("y_star_min"=y_star_min,
-                  "y_star_max"=y_star_max)
+                        y_star_min <- min(y_star)
+                        y_star_max <- max(y_star)
 
+                        c("y_star_min"=y_star_min,
+                          "y_star_max"=y_star_max)
+                }
+
+                else{
+                        y_star <- .[futvec]
+
+                        y_star_min <- min(y_star)
+                        y_star_max <- max(y_star)
+
+                        c("y_star_min"=y_star_min,
+                          "y_star_max"=y_star_max)
+                }
         }
 
         # List with future observations (y_star)
@@ -575,7 +624,7 @@ lmer_pi_futvec <- function(model,
         else if(is.null(newdat)){
 
                 if(alternative=="both"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=length(futvec),
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
@@ -584,7 +633,7 @@ lmer_pi_futvec <- function(model,
                 }
 
                 if(alternative=="lower"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=length(futvec),
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
@@ -592,7 +641,7 @@ lmer_pi_futvec <- function(model,
                 }
 
                 if(alternative=="upper"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=length(futvec),
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
