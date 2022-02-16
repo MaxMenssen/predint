@@ -203,11 +203,11 @@ lmer_pi_unsrtuc <- function(model,
         # Bootstrap for the observations
         boot_obs <- bootMer(model, obs_fun, nsim = nboot)
 
-        # Smallest BS observation
-        bs_y_min <- min(t(boot_obs$t))
-
-        # Biggest BS observation
-        bs_y_max <- max(t(boot_obs$t))
+        # # Smallest BS observation
+        # bs_y_min <- min(t(boot_obs$t))
+        #
+        # # Biggest BS observation
+        # bs_y_max <- max(t(boot_obs$t))
 
         # Bootstrapped data sets
         bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
