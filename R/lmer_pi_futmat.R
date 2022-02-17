@@ -68,17 +68,14 @@
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 lmer_pi_futmat <- function(model,
-                    newdat=NULL,
-                    m=NULL,
-                    alternative="both",
-                    alpha=0.05,
-                    nboot=10000,
-                    lambda_min=0.01,
-                    lambda_max=10,
-                    traceplot=TRUE,
-                    n_bisec=30){
-
-        warning("This function needs some work.")
+                           newdat,
+                           alternative="both",
+                           alpha=0.05,
+                           nboot=10000,
+                           lambda_min=0.01,
+                           lambda_max=10,
+                           traceplot=TRUE,
+                           n_bisec=30){
 
         # Model must be of class lmerMod
         if(class(model) != "lmerMod"){
@@ -112,58 +109,32 @@ lmer_pi_futmat <- function(model,
                 stop("Random effects must be specified as (1|random_effect)")
         }
 
-
-
-        # Relationship between newdat and m
-        if(is.null(newdat) & is.null(m)){
-                stop("newdat and m are both NULL")
-        }
-
-        if(!is.null(newdat) & !is.null(m)){
-                stop("newdat and m are both defined")
-        }
-
-        ### m
-        if(is.null(m) == FALSE){
-                # m must be integer
-                if(!isTRUE(m == floor(m))){
-                        stop("m must be integer")
-                }
-
-                if(length(m) > 1){
-                        stop("length(m) > 1")
-                }
-
-
-        }
-
-
         ### Actual data
-        if(is.null(newdat) == FALSE){
 
-                # newdat needs to be a data.frame
-                if(is.data.frame(newdat)==FALSE){
-                        stop("newdat is not a data.frame")
+        # newdat needs to be a data.frame or 1
+        if(is.data.frame(newdat)==FALSE){
+                if(newdat != 1){
+                        stop("newdat has to be a data.frame or equal 1")
                 }
+
+        }
+
+        # Check conditions if newdat is a data frame
+        if(is.data.frame(newdat)){
 
                 # colnames of historical data and new data must be the same
                 if(all(colnames(model@frame) == colnames(newdat))==FALSE){
                         stop("columnames of historical data and newdat are not the same")
                 }
 
-                # Define m
-                m <- nrow(newdat)
-
-
+                # alternative must be defined
+                if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+                        stop("alternative must be either both, lower or upper")
+                }
         }
 
-        # alternative must be defined
-        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
-                stop("alternative must be either both, lower or upper")
-        }
 
         #----------------------------------------------------------------------
-
 
         # Extraction of the intercept
         mu_hat <- unname(fixef(model))
@@ -175,50 +146,104 @@ lmer_pi_futmat <- function(model,
         # Number of observations
         n_obs <- nrow(model@frame)
 
-        # stop if m > n_obs
-        if(m > n_obs){
-                stop("m > numbers of original observations")
-        }
-
-        # stop if m < 1
-        if(m > n_obs){
-                stop("m < 1")
-        }
 
         #----------------------------------------------------------------------
         ### Bootstrapping future observations
 
-        # Extracting the observations
-        obs_fun <- function(.){
-                bs_dat <- .@frame[,1]
+        if(is.data.frame(newdat)==FALSE){
+
+                # Extracting the observations
+                obs_fun <- function(.){
+                        bs_dat <- .@frame[,1]
+                }
+
+                # Bootstrap for the observations
+                boot_obs <- bootMer(model, obs_fun, nsim = nboot)
+
+                # Bootstrapped data sets
+                bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
+
+                # Take only m random observation per data set
+                ystar_fun <- function(.){
+                        y_star <- sample(x=., size=1)
+
+                        y_star_min <- min(y_star)
+                        y_star_max <- max(y_star)
+
+                        c("y_star_min"=y_star_min,
+                          "y_star_max"=y_star_max)
+
+                }
+
+                # List with future observations (y_star)
+                ystar_list <- lapply(bsdat_list, ystar_fun)
+
         }
 
-        # Bootstrap for the observations
-        boot_obs <- bootMer(model, obs_fun, nsim = nboot)
+        else{
+                # SD for the random factors
+                sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
-        # Smallest BS observation
-        bs_y_min <- min(t(boot_obs$t))
+                # Model Frame for the new data without fitting the data
+                modelframe_list <- lFormula(eval(model@call), data=newdat)
 
-        # Biggest BS observation
-        bs_y_max <- max(t(boot_obs$t))
+                # Intercept (fixed effect)
+                mu <- matrix(unname(modelframe_list$X * fixef(model)))
 
-        # Bootstrapped data sets
-        bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
+                # number of future observations
+                n_fut <- length(modelframe_list$X)
 
-        # Take only m random observation per data set
-        ystar_fun <- function(.){
-                y_star <- sample(x=., size=m)
+                # Random effects matrix
+                Zt_list <- modelframe_list$reTrms$Ztlist
 
-                y_star_min <- min(y_star)
-                y_star_max <- max(y_star)
+                # Names of Zt_list should be the same as for the SD in sd_hist
+                names(Zt_list) <- gsub("\\s", "", gsub("[1|]", "", names(Zt_list)))
 
-                c("y_star_min"=y_star_min,
-                  "y_star_max"=y_star_max)
+                # Design Matrix for random effects with residuals
+                Z_list <- c(lapply(X=Zt_list, FUN=t), Residual=list(diag(1, nrow=n_fut)))
+                Z_list <- lapply(X=Z_list, as.matrix)
+
+                # Sampling of B bootstrap samples
+                bsdat_list <- vector(length=nboot, "list")
+
+                for(b in 1:length(bsdat_list)){
+
+                        # Sampling of random effects
+                        u_list <- vector("list",nrow(sd_hist))
+                        names(u_list) <- names(Z_list)
+
+                        for(c in 1:length(u_list)){
+                                u_c <- rnorm(n=ncol(Z_list[[c]]), mean=0, sd=sd_hist[c, 2])
+                                u_list[[c]] <- u_c
+                        }
+
+                        # Random effects times design matrix
+                        ZU_list <- Map(function(x, y)  x%*%y, Z_list, u_list)
+                        ZU_list[["mu"]] <- mu
+
+                        # Bootstrap data
+                        bsdat_list[[b]] <- rowSums(matrix(unlist(ZU_list), ncol = length(ZU_list)))
+
+                }
+
+                # Take only m random observation per data set
+                ystar_fun <- function(.){
+                        # y_star <- sample(x=., size=m)
+
+                        y_star_min <- min(.)
+                        y_star_max <- max(.)
+
+                        c("y_star_min"=y_star_min,
+                          "y_star_max"=y_star_max)
+
+                }
+
+                # List with future observations (y_star)
+                ystar_list <- lapply(bsdat_list, ystar_fun)
+
 
         }
 
-        # List with future observations (y_star)
-        ystar_list <- lapply(bsdat_list, ystar_fun)
 
         #----------------------------------------------------------------------
         ### Bootstrapping the variance of y_star
@@ -499,7 +524,7 @@ lmer_pi_futmat <- function(model,
         upper <- mu_hat+quant_calib*se_y_star_hat
 
         # Define output if newdat is given
-        if(is.null(newdat)==FALSE){
+        if(is.data.frame(newdat)){
 
 
                 if(alternative=="both"){
@@ -571,11 +596,11 @@ lmer_pi_futmat <- function(model,
 
         }
 
-        # if m is given
-        else if(is.null(newdat)){
+        # if newdat==1
+        else if(is.data.frame(newdat)==FALSE){
 
                 if(alternative=="both"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=1,
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
@@ -584,7 +609,7 @@ lmer_pi_futmat <- function(model,
                 }
 
                 if(alternative=="lower"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=1,
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
@@ -592,7 +617,7 @@ lmer_pi_futmat <- function(model,
                 }
 
                 if(alternative=="upper"){
-                        out <- data.frame("m"=m,
+                        out <- data.frame("m"=1,
                                           "hist_mean"=mu_hat,
                                           "quant_calib"=quant_calib,
                                           "pred_se"=se_y_star_hat,
@@ -607,3 +632,13 @@ lmer_pi_futmat <- function(model,
 
 }
 
+
+library(predint)
+library(lme4)
+fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
+
+lmer_pi_futmat(model=fit, newdat=c2_dat3, nboot=100)
+lmer_pi_futmat(model=fit, newdat=1, nboot=100)
+
+
+lmer_pi_futmat(model=fit, newdat="a", nboot=100)
