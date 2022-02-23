@@ -31,7 +31,7 @@
 #' Please note that this function relies on linear random effects models that are
 #' fitted with lmer() from the lme4 package. Random effects have to be specified as
 #' \code{(1|random_effect)}.\cr
-#' If traceplot=TRUE, a graphical overview about the bisection process is given.
+#'
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
@@ -47,6 +47,8 @@
 #'
 #'  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
 #'  of a prediction interval.
+#'
+#'  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 #'
 #' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
