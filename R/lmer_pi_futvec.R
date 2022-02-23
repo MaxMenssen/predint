@@ -2,13 +2,14 @@
 #' Prediction intervals for future observations based on linear random effects models
 #'
 #' lmer_pi_futvec calculates a bootstrap calibrated prediction interval for one or more
-#' future observation(s) based on linear random effects models
+#' future observation(s) based on linear random effects models. With this approach,
+#' the sampling structure of the future data is taken into account (see below).
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
 #' on which  \code{model} depends
 #' @param futvec an integer vector that defines the structure of the future data based on the
-#' row numbers of the historical data. If length of \code{futvec} is one, a PI
+#' row numbers of the historical data. If \code{length(futvec)} is one, a PI
 #' for one future observation is computed
 #' @param alternative either "both", "upper" or "lower". \code{alternative} specifies
 #' if a prediction interval or an upper or a lower prediction limit should be computed
@@ -79,13 +80,13 @@
 #'
 #' ### Prediction interval using c2_dat3 as future data
 #' # without printing c2_dat3 in the output
-#' \donttest{
+#'
 #' # Row numbers of the historical data c2_dat1 that define the structure of
 #' # the future data c2_dat3
 #' futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
 #'
 #' # Calculating the PI
-#' lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
+#' \donttest{lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
 #'
 #' #----------------------------------------------------------------------------
 #'
