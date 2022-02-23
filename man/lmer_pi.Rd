@@ -57,8 +57,8 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
  of a prediction interval.
 }
 \description{
-lmer_pi calculates a bootstrap calibrated prediction interval for one or more
-future observation(s) based on linear random effects models
+This function is deprecated. Instead, please use \code{lmer_pi_unstruc()},
+\code{lmer_pi_futvec()} or \code{lmer_pi_futmat()}.
 }
 \details{
 This function returns a bootstrap calibrated prediction interval

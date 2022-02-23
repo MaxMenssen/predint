@@ -7,7 +7,7 @@
 lmer_pi_futmat(
   model,
   newdat = NULL,
-  m = NULL,
+  futmat_list = NULL,
   alternative = "both",
   alpha = 0.05,
   nboot = 10000,
@@ -20,10 +20,8 @@ lmer_pi_futmat(
 \arguments{
 \item{model}{a random effects model of class lmerMod}
 
-\item{newdat}{a \code{data.frame} with the same column names as the historical data
-on which the model depends}
-
-\item{m}{number of future observations}
+\item{newdat}{either 1 or a \code{data.frame} with the same column names as the historical data
+on which \code{model} depends}
 
 \item{alternative}{either "both", "upper" or "lower". \code{alternative} specifies
 if a prediction interval or an upper or a lower prediction limit should be computed}
@@ -41,12 +39,12 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 \item{n_bisec}{maximal number of bisection steps}
 }
 \value{
-If \code{newdat} is specified: A \code{data.frame} that contains the future data,
+If \code{newdat} is a  \code{data.frame}: A \code{data.frame} that contains the future data,
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
  the prediction standard error (pred_se), the prediction interval (lower and upper)
  and a statement if the prediction interval covers the future observation (cover).
 
- If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
+ If \code{newdat=1}: A \code{data.frame} that contains a statement that m=1,
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 
@@ -55,10 +53,13 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
 
  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
  of a prediction interval.
+
+ If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
 lmer_pi_futmat calculates a bootstrap calibrated prediction interval for one or more
-future observation(s) based on linear random effects models
+future observation(s) based on linear random effects models. With this approach,
+the sampling structure of the future data is taken into account (see below).
 }
 \details{
 This function returns a bootstrap calibrated prediction interval
@@ -70,7 +71,17 @@ approximates a multivariate t-distribution. \cr
 Please note that this function relies on linear random effects models that are
 fitted with lmer() from the lme4 package.Random effects have to be specified as
 \code{(1|random_effect)}.\cr
-If traceplot=TRUE, a graphical overview about the bisection process is given.
+
+Be aware that the bootstrapped future observations used for the calibration
+process mimic the structure of the data set provided via \code{newdat}. The
+data sampling is based on the design matrix that can be obtained if \code{newdat}
+and the model formula are provided to \code{lme4::lFormula()}. Hence, each random
+factor that is part of the initial model must have at least two replicates in
+\code{newdat}.
+
+This function is similar to the PI given in Menssen and Schaarschmidt 2021
+section 3.2.4 except that the bootstrap calibration values are drawn from
+bootstrap samples that mimic the future data as described above.
 }
 \examples{
 
@@ -82,12 +93,17 @@ fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 summary(fit)
 
 # Prediction interval using c2_dat2 as future data
-\donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+lmer_pi_futmat(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
 
-# Upper prediction limit for m=3 future observations
-\donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+# Upper prediction limit for m=1 future observations
+lmer_pi_futmat(model=fit, newdat=1, alternative="upper", nboot=100)
 
 # Please note that nboot was set to 100 in order to increase computing time
 # of the example. For a valid analysis set nboot=10000.
 
+}
+\references{
+Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
+future observations based on linear random effects models. Statistica Neerlandica.
+\url{https://doi.org/10.1111/stan.12260}
 }

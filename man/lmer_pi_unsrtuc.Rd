@@ -55,6 +55,8 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
 
  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
  of a prediction interval.
+
+ If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
 lmer_pi_unstruc calculates a bootstrap calibrated prediction interval for one or more
@@ -74,7 +76,6 @@ approximates a multivariate t-distribution. \cr
 Please note that this function relies on linear random effects models that are
 fitted with lmer() from the lme4 package. Random effects have to be specified as
 \code{(1|random_effect)}.\cr
-If traceplot=TRUE, a graphical overview about the bisection process is given.
 }
 \examples{
 # loading lme4
