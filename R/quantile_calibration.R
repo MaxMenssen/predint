@@ -1,8 +1,8 @@
 
 #' Prediction intervals for future observations based on linear random effects models
 #'
-#' lmer_pi calculates a bootstrap calibrated prediction interval for one or more
-#' future observation(s) based on linear random effects models
+#' This function is deprecated. Instead, please use \code{lmer_pi_unstruc()},
+#' \code{lmer_pi_futvec()} or \code{lmer_pi_futmat()}.
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
