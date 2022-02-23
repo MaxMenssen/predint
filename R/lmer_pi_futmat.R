@@ -2,12 +2,12 @@
 #' Prediction intervals for future observations based on linear random effects models
 #'
 #' lmer_pi_futmat calculates a bootstrap calibrated prediction interval for one or more
-#' future observation(s) based on linear random effects models
+#' future observation(s) based on linear random effects models. With this approach,
+#' the sampling structure of the future data is taken into account (see below).
 #'
 #' @param model a random effects model of class lmerMod
-#' @param newdat a \code{data.frame} with the same column names as the historical data
-#' on which the model depends
-#' @param m number of future observations
+#' @param newdat either 1 or a \code{data.frame} with the same column names as the historical data
+#' on which \code{model} depends
 #' @param alternative either "both", "upper" or "lower". \code{alternative} specifies
 #' if a prediction interval or an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-\code{alpha})
@@ -26,14 +26,25 @@
 #' Please note that this function relies on linear random effects models that are
 #' fitted with lmer() from the lme4 package.Random effects have to be specified as
 #' \code{(1|random_effect)}.\cr
-#' If traceplot=TRUE, a graphical overview about the bisection process is given.
 #'
-#' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
+#' Be aware that the bootstrapped future observations used for the calibration
+#' process mimic the structure of the data set provided via \code{newdat}. The
+#' data sampling is based on the design matrix that can be obtained if \code{newdat}
+#' and the model formula are provided to \code{lme4::lFormula()}. Hence, each random
+#' factor that is part of the initial model must have at least two replicates in
+#' \code{newdat}.
+#'
+#' This function is similar to the PI given in Menssen and Schaarschmidt 2021
+#' section 3.2.4 except that the bootstrap calibration values are drawn from
+#' bootstrap samples that mimic the future data as described above.
+#'
+#'
+#' @return If \code{newdat} is a  \code{data.frame}: A \code{data.frame} that contains the future data,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se), the prediction interval (lower and upper)
 #'  and a statement if the prediction interval covers the future observation (cover).
 #'
-#'  If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
+#'  If \code{newdat=1}: A \code{data.frame} that contains a statement that m=1,
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 #'
@@ -43,11 +54,18 @@
 #'  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
 #'  of a prediction interval.
 #'
+#'  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
+#'
 #' @export
 #'
 #' @importFrom graphics abline lines
-#' @importFrom lme4 fixef VarCorr bootMer
-#' @importFrom stats vcov
+#' @importFrom lme4 fixef VarCorr bootMer lFormula
+#' @importFrom stats vcov rnorm
+#'
+#'
+#' @references Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
+#' future observations based on linear random effects models. Statistica Neerlandica.
+#' \url{https://doi.org/10.1111/stan.12260}
 #'
 #' @examples
 #'
@@ -59,16 +77,17 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+#' lmer_pi_futmat(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
 #'
-#' # Upper prediction limit for m=3 future observations
-#' \donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
+#' # Upper prediction limit for m=1 future observations
+#' lmer_pi_futmat(model=fit, newdat=1, alternative="upper", nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to increase computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 lmer_pi_futmat <- function(model,
-                           newdat,
+                           newdat=NULL,
+                           futmat_list=NULL,
                            alternative="both",
                            alpha=0.05,
                            nboot=10000,
@@ -109,29 +128,45 @@ lmer_pi_futmat <- function(model,
                 stop("Random effects must be specified as (1|random_effect)")
         }
 
+        #-----------------------------------------------------------------------
         ### Actual data
 
-        # newdat needs to be a data.frame or 1
-        if(is.data.frame(newdat)==FALSE){
-                if(newdat != 1){
-                        stop("newdat has to be a data.frame or equal 1")
-                }
-
+        if(is.null(newdat) & is.null(futmat_list)){
+                stop("newdat and futmat_list are both NULL")
         }
 
-        # Check conditions if newdat is a data frame
-        if(is.data.frame(newdat)){
+        if(!is.null(newdat) & !is.null(futmat_list)){
+                stop("newdat and futmat_list are both defined")
+        }
 
-                # colnames of historical data and new data must be the same
-                if(all(colnames(model@frame) == colnames(newdat))==FALSE){
-                        stop("columnames of historical data and newdat are not the same")
+        if(!is.null(newdat)){
+                # newdat needs to be a data.frame or 1
+                if(is.data.frame(newdat)==FALSE){
+                        if(newdat != 1){
+                                stop("newdat has to be a data.frame or equal 1")
+                        }
+
                 }
 
-                # alternative must be defined
-                if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
-                        stop("alternative must be either both, lower or upper")
+                # Check conditions if newdat is a data frame
+                if(is.data.frame(newdat)){
+
+                        # colnames of historical data and new data must be the same
+                        if(all(colnames(model@frame) == colnames(newdat))==FALSE){
+                                stop("columnames of historical data and newdat are not the same")
+                        }
+
+                        # alternative must be defined
+                        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+                                stop("alternative must be either both, lower or upper")
+                        }
                 }
         }
+
+        else if(!is.list(futmat_list)){
+                stop("futmat_list needs to be a list that contains the design matrices for each random effect")
+        }
+
 
 
         #----------------------------------------------------------------------
@@ -143,105 +178,201 @@ lmer_pi_futmat <- function(model,
         se_y_star_hat <- sqrt(sum(c(as.vector(vcov(model)),
                                     data.frame(VarCorr(model))$vcov)))
 
-        # Number of observations
-        n_obs <- nrow(model@frame)
-
-
         #----------------------------------------------------------------------
-        ### Bootstrapping future observations
+        ### Bootstrapping future observations if newdat is given
 
-        if(is.data.frame(newdat)==FALSE){
+        if(!is.null(newdat) & is.null(futmat_list)){
 
-                # Extracting the observations
-                obs_fun <- function(.){
-                        bs_dat <- .@frame[,1]
+                if(is.data.frame(newdat)==FALSE){
+
+                        # Extracting the observations
+                        obs_fun <- function(.){
+                                bs_dat <- .@frame[,1]
+                        }
+
+                        # Bootstrap for the observations
+                        boot_obs <- bootMer(model, obs_fun, nsim = nboot)
+
+                        # Bootstrapped data sets
+                        bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
+
+                        # Take only m random observation per data set
+                        ystar_fun <- function(.){
+                                y_star <- sample(x=., size=1)
+
+                                y_star_min <- min(y_star)
+                                y_star_max <- max(y_star)
+
+                                c("y_star_min"=y_star_min,
+                                  "y_star_max"=y_star_max)
+
+                        }
+
+                        # List with future observations (y_star)
+                        ystar_list <- lapply(bsdat_list, ystar_fun)
+
                 }
 
-                # Bootstrap for the observations
-                boot_obs <- bootMer(model, obs_fun, nsim = nboot)
+                else{
+                        # SD for the random factors
+                        sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
-                # Bootstrapped data sets
-                bsdat_list <- as.list(as.data.frame(t(boot_obs$t)))
+                        # Model Frame for the new data without fitting the data
+                        modelframe_list <- lFormula(eval(model@call), data=newdat)
 
-                # Take only m random observation per data set
-                ystar_fun <- function(.){
-                        y_star <- sample(x=., size=1)
+                        # Intercept (fixed effect)
+                        mu <- matrix(unname(modelframe_list$X * fixef(model)))
 
-                        y_star_min <- min(y_star)
-                        y_star_max <- max(y_star)
+                        # number of future observations
+                        n_fut <- length(modelframe_list$X)
 
-                        c("y_star_min"=y_star_min,
-                          "y_star_max"=y_star_max)
+                        # Random effects matrix
+                        Zt_list <- modelframe_list$reTrms$Ztlist
+
+                        # Names of Zt_list should be the same as for the SD in sd_hist
+                        names(Zt_list) <- gsub("\\s", "", gsub("[1|]", "", names(Zt_list)))
+
+                        # Design Matrix for random effects with residuals
+                        Zt_list <- lapply(X=Zt_list, as.matrix)
+                        Z_list <- c(lapply(X=Zt_list, FUN=t), Residual=list(diag(1, nrow=n_fut)))
+
+                        # Sampling of B bootstrap samples
+                        bsdat_list <- vector(length=nboot, "list")
+
+                        for(b in 1:length(bsdat_list)){
+
+                                # Sampling of random effects
+                                u_list <- vector("list",nrow(sd_hist))
+                                names(u_list) <- names(Z_list)
+
+                                for(c in 1:length(u_list)){
+                                        u_c <- rnorm(n=ncol(Z_list[[c]]), mean=0, sd=sd_hist[c, 2])
+                                        u_list[[c]] <- u_c
+                                }
+
+                                # Random effects times design matrix
+                                ZU_list <- Map(function(x, y)  x%*%y, Z_list, u_list)
+                                ZU_list[["mu"]] <- mu
+
+                                # Bootstrap data
+                                bsdat_list[[b]] <- rowSums(matrix(unlist(ZU_list), ncol = length(ZU_list)))
+
+                        }
+
+                        # Take only m random observation per data set
+                        ystar_fun <- function(.){
+                                # y_star <- sample(x=., size=m)
+
+                                y_star_min <- min(.)
+                                y_star_max <- max(.)
+
+                                c("y_star_min"=y_star_min,
+                                  "y_star_max"=y_star_max)
+
+                        }
+
+                        # List with future observations (y_star)
+                        ystar_list <- lapply(bsdat_list, ystar_fun)
+
 
                 }
-
-                # List with future observations (y_star)
-                ystar_list <- lapply(bsdat_list, ystar_fun)
 
         }
 
-        else{
+        #-----------------------------------------------------------------------
+
+        ### Bootstrapping future observations if futmat_list is given
+
+        if(!is.null(futmat_list) & is.null(newdat)){
+
                 # SD for the random factors
                 sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
-                # Model Frame for the new data without fitting the data
-                modelframe_list <- lFormula(eval(model@call), data=newdat)
+                if(length(names(futmat_list)) != length(sd_hist$grp)){
+                        stop("length(names(futmat_list)) is not the same as the random effects plus the residuals")
+                }
 
-                # Intercept (fixed effect)
-                mu <- matrix(unname(modelframe_list$X * fixef(model)))
+                if(class(try(futmat_list[order(sd_hist$grp)])) == "try-error"){
+                        stop("futmat_list needs to have the same names as the random effects in the model. Maybe you forgot the residuals?")
+                }
 
-                # number of future observations
-                n_fut <- length(modelframe_list$X)
+                else{
+                        # Intercept (fixed effect)
+                        mu <- matrix(1, nrow(futmat_list[[1]])) * fixef(fit)
 
-                # Random effects matrix
-                Zt_list <- modelframe_list$reTrms$Ztlist
+                        # print("mu")
+                        # print(mu)
 
-                # Names of Zt_list should be the same as for the SD in sd_hist
-                names(Zt_list) <- gsub("\\s", "", gsub("[1|]", "", names(Zt_list)))
+                        Z_list <- futmat_list
+                        # Z_list <- futmat_list[order(sd_hist$grp)]
 
-                # Design Matrix for random effects with residuals
-                Z_list <- c(lapply(X=Zt_list, FUN=t), Residual=list(diag(1, nrow=n_fut)))
-                Z_list <- lapply(X=Z_list, as.matrix)
+                        # print("sd_hist$grp")
+                        # print(sd_hist$grp)
+                        #
+                        # print("futmat_list")
+                        # print(futmat_list)
+                        #
+                        # print("Z_list")
+                        # print(Z_list)
 
-                # Sampling of B bootstrap samples
-                bsdat_list <- vector(length=nboot, "list")
+                        # Sampling of B bootstrap samples
+                        bsdat_list <- vector(length=nboot, "list")
 
-                for(b in 1:length(bsdat_list)){
+                        for(b in 1:length(bsdat_list)){
 
-                        # Sampling of random effects
-                        u_list <- vector("list",nrow(sd_hist))
-                        names(u_list) <- names(Z_list)
+                                # Sampling of random effects
+                                u_list <- vector("list",nrow(sd_hist))
+                                names(u_list) <- names(Z_list)
 
-                        for(c in 1:length(u_list)){
-                                u_c <- rnorm(n=ncol(Z_list[[c]]), mean=0, sd=sd_hist[c, 2])
-                                u_list[[c]] <- u_c
+                                for(c in 1:length(u_list)){
+
+                                        u_c <- rnorm(n=ncol(Z_list[[c]]), mean=0,
+                                                     sd=sd_hist[c, 2])
+                                        u_list[[c]] <- u_c
+                                }
+
+                                # print("u_list")
+                                # print(u_list)
+
+                                # Random effects times design matrix
+                                ZU_list <- Map(function(x, y)  x%*%y, Z_list, u_list)
+                                ZU_list[["mu"]] <- mu
+
+                                # print("ZU_list")
+                                # print(ZU_list)
+                                #
+                                # print("matrix(unlist(ZU_list),
+                                #              ncol = length(ZU_list))")
+                                # print(matrix(unlist(ZU_list),
+                                #              ncol = length(ZU_list)))
+
+                                # Bootstrap data
+                                bsdat_list[[b]] <- rowSums(matrix(unlist(ZU_list),
+                                                                  ncol = length(ZU_list)))
+
                         }
 
-                        # Random effects times design matrix
-                        ZU_list <- Map(function(x, y)  x%*%y, Z_list, u_list)
-                        ZU_list[["mu"]] <- mu
+                        # print("bsdat_list[1:10]")
+                        # print(bsdat_list[1:10])
 
-                        # Bootstrap data
-                        bsdat_list[[b]] <- rowSums(matrix(unlist(ZU_list), ncol = length(ZU_list)))
+                        # Take only m random observation per data set
+                        ystar_fun <- function(.){
+                                # y_star <- sample(x=., size=m)
 
+                                y_star_min <- min(.)
+                                y_star_max <- max(.)
+
+                                c("y_star_min"=y_star_min,
+                                  "y_star_max"=y_star_max)
+
+                        }
+
+                        # List with future observations (y_star)
+                        ystar_list <- lapply(bsdat_list, ystar_fun)
+
+                        # print("ystar_list[1:10]")
+                        # print(ystar_list[1:10])
                 }
-
-                # Take only m random observation per data set
-                ystar_fun <- function(.){
-                        # y_star <- sample(x=., size=m)
-
-                        y_star_min <- min(.)
-                        y_star_max <- max(.)
-
-                        c("y_star_min"=y_star_min,
-                          "y_star_max"=y_star_max)
-
-                }
-
-                # List with future observations (y_star)
-                ystar_list <- lapply(bsdat_list, ystar_fun)
-
-
         }
 
 
@@ -267,20 +398,20 @@ lmer_pi_futmat <- function(model,
         # Bootstrapped se
         bs_se<- as.list(as.vector(bs_params$bs_se_y_star))
 
-        # Minimum bootstrapped se
-        bs_se_min <- min(as.vector(bs_params$bs_se_y_star))
-
-        # Maximum bootstrapped se
-        bs_se_max <- max(as.vector(bs_params$bs_se_y_star))
+        # # Minimum bootstrapped se
+        # bs_se_min <- min(as.vector(bs_params$bs_se_y_star))
+        #
+        # # Maximum bootstrapped se
+        # bs_se_max <- max(as.vector(bs_params$bs_se_y_star))
 
         # Bootstrapped mu
         bs_mu<- as.list(as.vector(bs_params$bs_mu))
 
         # Minimum bootstrapped mu
-        bs_mu_min <- min(as.vector(bs_params$bs_mu))
-
-        # Maximum bootstrapped mu
-        bs_mu_max <- max(as.vector(bs_params$bs_mu))
+        # bs_mu_min <- min(as.vector(bs_params$bs_mu))
+        #
+        # # Maximum bootstrapped mu
+        # bs_mu_max <- max(as.vector(bs_params$bs_mu))
 
 
         #----------------------------------------------------------------------
@@ -633,12 +764,35 @@ lmer_pi_futmat <- function(model,
 }
 
 
-library(predint)
+fml <- vector(length=4, "list")
+names(fml) <- c("a:b", "b", "a", "Residual")
+fml[["a:b"]] <- matrix(nrow=5, ncol=2, data=c(1,1,0,0,0,
+                                                      0,0,1,1,1))
+# fml[["a:b"]] <- matrix(nrow=5, ncol=2, data=c(0,0,0,0,0,
+#                                                       0,0,0,0,0))
+
+fml[["b"]] <- matrix(nrow=5, ncol=1, data=c(1,1,1,1,1))
+fml[["a"]] <- matrix(nrow=5, ncol=2, data=c(1,1,0,0,0,
+                                                    0,0,1,1,1))
+fml[["Residual"]] <- diag(5)
+fml
+
+nrow(fml[[1]])
+
+fml[order(c("a", "b", "a:b", "Residual"))]
+
 library(lme4)
+
+# Fitting a random effects model based on c2_dat_1
 fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
+summary(fit)
 
-lmer_pi_futmat(model=fit, newdat=c2_dat3, nboot=100)
-lmer_pi_futmat(model=fit, newdat=1, nboot=100)
+# Prediction interval using c2_dat2 as future data
+
+lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=10000, traceplot=TRUE)
+
+#
+lmer_pi_futmat(model=fit, newdat=c2_dat3, alternative="both", nboot=10000, traceplot=FALSE)
 
 
-lmer_pi_futmat(model=fit, newdat="a", nboot=100)
+# matrix(1,5) * fixef(fit)
