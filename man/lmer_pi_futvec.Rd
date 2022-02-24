@@ -81,7 +81,8 @@ fitted with \code{lmer()} from the lme4 package. Random effects have to be speci
 Be aware that the sampling structure of the historical data must contain the structure of the
 future data. This means that the observations per random factor must be less or
 equal in the future data compared to the historical data.
-This function is similar to the PI given in Menssen and Schaarschmidt 2021 section 3.2.4
+
+This function is an implementation of the PI given in Menssen and Schaarschmidt 2021 section 3.2.4
 except that the bootstrap calibration values are drawn from bootstrap samples that
 mimic the future data.
 }
