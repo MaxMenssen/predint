@@ -32,8 +32,7 @@
 #' data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the
 #' prediction intervals \eqn{[l,u]_m} are different for each of the \eqn{m} future clusters,
 #' if their size is not the same. \cr
-#' If traceplot=TRUE, a graphical
-#' overview about the bisection process is given.
+#' If traceplot=TRUE, a graphical overview about the bisection process is given.
 #'
 #' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
 #'  the historical proportion (hist_prob),
@@ -54,6 +53,8 @@
 #'  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
 #'  of a prediction interval.
 #'
+#'  If traceplot=TRUE, a graphical overview about the bisection process is given.
+#'
 #' @export
 #'
 #' @importFrom graphics abline lines
@@ -68,7 +69,7 @@
 #' # Prediction interval using bb_dat2 as future data
 #' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
 #'
-#' # Upper prediction bound for m=3 future number of successes
+#' # Upper prediction bound for m=3 future numbers of success
 #' # that are based on cluster sizes 40, 50, 60 respectively
 #' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 #'
