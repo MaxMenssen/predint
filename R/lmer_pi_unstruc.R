@@ -27,7 +27,7 @@
 #' with \eqn{\hat{y}} as the predicted future observation,
 #' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 #' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a multivariate t-distribution. \cr
+#' approximates a quantile of the multivariate t-distribution. \cr
 #' Please note that this function relies on linear random effects models that are
 #' fitted with lmer() from the lme4 package. Random effects have to be specified as
 #' \code{(1|random_effect)}.\cr
