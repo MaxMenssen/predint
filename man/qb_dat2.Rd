@@ -7,8 +7,8 @@
 \format{
 A \code{data.frame} with 3 rows and 2 columns:
 \describe{
-  \item{succ}{number of successes}
-  \item{fail}{number of failures}
+  \item{succ}{numbers of success}
+  \item{fail}{numbers of failure}
 }
 }
 \usage{

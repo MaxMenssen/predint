@@ -59,6 +59,8 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
 
  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
  of a prediction interval.
+
+ If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
 quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
@@ -70,22 +72,15 @@ This function returns bootstrap calibrated prediction intervals
 with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
 \eqn{y_m} as the observed future number of successes, \eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}}
 as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-approximates a quantile from a multivariate normal. \cr
+approximates a quantile from a multivariate normal distribution. \cr
 Please note that the predicted future number of successes is based on the future
 cluster size \eqn{n_m} and the success probability estimated from the historical
 data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
-different for each of the \eqn{m} future clusters, if their size is not the same. \cr
-If traceplot=TRUE, a graphical overview about the bisection process is given.
+different for each of the \eqn{m} future clusters, if their size is not the same.
 }
 \examples{
-#' # Historical data
-qb_dat1
-
-# Future data
-qb_dat2
-
 # Prediction interval using qb_dat2 as future data
-quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat1, nboot=100)
+quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 
 # Upper prediction bound for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively

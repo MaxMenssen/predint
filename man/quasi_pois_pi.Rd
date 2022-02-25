@@ -55,6 +55,8 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
 
  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
  of a prediction interval.
+
+ If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
 quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
@@ -67,8 +69,6 @@ with \eqn{\hat{y}} as the predicted future observation,
 \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
 approximates a quantile of a multivariate normal distribution. \cr
-If traceplot=TRUE, a graphical
-overview about the bisection process is given.
 }
 \examples{
 #' # Historical data

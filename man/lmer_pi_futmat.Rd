@@ -50,7 +50,7 @@ If \code{newdat} is a  \code{data.frame}: A \code{data.frame} that contains the 
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 
- If \code{futmat_list} is defined: A \code{data.frame} that contains the number of future observations,
+ If \code{futmat_list} is defined: A \code{data.frame} that contains the number of future observations (m),
  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 
@@ -73,9 +73,9 @@ This function returns a bootstrap calibrated prediction interval
 with \eqn{\hat{y}} as the predicted future observation,
 \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-approximates a multivariate t-distribution. \cr
+approximates a quantile of the multivariate t-distribution. \cr
 Please note that this function relies on linear random effects models that are
-fitted with lmer() from the lme4 package.Random effects have to be specified as
+fitted with lmer() from the lme4 package. Random effects have to be specified as
 \code{(1|random_effect)}.
 
 If \code{newdat} is defined, the bootstrapped future observations used for the calibration
@@ -85,8 +85,7 @@ that can be obtained if \code{newdat} and the model formula are provided to
 \code{lme4::lFormula()}. Hence, each random factor that is part of the initial
 model must have at least two replicates in \code{newdat}. \cr
 If a random factor in the future data set does not have any replicate, a list
-that contains design matrices for each random factor (\eqn{Z_c} in Menssen and
-Schaarschmidt 2021 section 3.1) can be provided via \code{futmat_list}.
+that contains design matrices (one for each random factor) can be provided via \code{futmat_list}.
 
 This function is an implementation of the PI given in Menssen and Schaarschmidt 2021
 section 3.2.4 except that the bootstrap calibration values are drawn from
@@ -125,11 +124,11 @@ fml <- vector(length=4, "list")
 
 names(fml) <- c("a:b", "b", "a", "Residual")
 
-fml[["a:b"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0, 0,0,1,1,1,1))
+fml[["a:b"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
 
 fml[["b"]] <- matrix(nrow=6, ncol=1, data=c(1,1,1,1,1,1))
 
-fml[["a"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0, 0,0,1,1,1,1))
+fml[["a"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
 
 fml[["Residual"]] <- diag(6)
 
