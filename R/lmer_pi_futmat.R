@@ -23,9 +23,9 @@
 #' with \eqn{\hat{y}} as the predicted future observation,
 #' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
 #' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a multivariate t-distribution. \cr
+#' approximates a quantile of the multivariate t-distribution. \cr
 #' Please note that this function relies on linear random effects models that are
-#' fitted with lmer() from the lme4 package.Random effects have to be specified as
+#' fitted with lmer() from the lme4 package. Random effects have to be specified as
 #' \code{(1|random_effect)}.
 #'
 #' If \code{newdat} is defined, the bootstrapped future observations used for the calibration
@@ -35,8 +35,7 @@
 #' \code{lme4::lFormula()}. Hence, each random factor that is part of the initial
 #' model must have at least two replicates in \code{newdat}. \cr
 #' If a random factor in the future data set does not have any replicate, a list
-#' that contains design matrices for each random factor (\eqn{Z_c} in Menssen and
-#' Schaarschmidt 2021 section 3.1) can be provided via \code{futmat_list}.
+#' that contains design matrices (one for each random factor) can be provided via \code{futmat_list}.
 #'
 #' This function is an implementation of the PI given in Menssen and Schaarschmidt 2021
 #' section 3.2.4 except that the bootstrap calibration values are drawn from
@@ -52,7 +51,7 @@
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 #'
-#'  If \code{futmat_list} is defined: A \code{data.frame} that contains the number of future observations,
+#'  If \code{futmat_list} is defined: A \code{data.frame} that contains the number of future observations (m),
 #'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
 #'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
 #'
@@ -108,11 +107,11 @@
 #'
 #' names(fml) <- c("a:b", "b", "a", "Residual")
 #'
-#' fml[["a:b"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0, 0,0,1,1,1,1))
+#' fml[["a:b"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
 #'
 #' fml[["b"]] <- matrix(nrow=6, ncol=1, data=c(1,1,1,1,1,1))
 #'
-#' fml[["a"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0, 0,0,1,1,1,1))
+#' fml[["a"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
 #'
 #' fml[["Residual"]] <- diag(6)
 #'
@@ -189,10 +188,14 @@ lmer_pi_futmat <- function(model,
         if(!is.null(newdat)){
                 # newdat needs to be a data.frame or 1
                 if(is.data.frame(newdat)==FALSE){
-                        if(newdat != 1){
+
+                        if(length(newdat) != 1){
                                 stop("newdat has to be a data.frame or equal 1")
                         }
 
+                        else if(newdat != 1){
+                                stop("newdat has to be a data.frame or equal 1")
+                        }
                 }
 
                 # Check conditions if newdat is a data frame
@@ -202,11 +205,6 @@ lmer_pi_futmat <- function(model,
                         if(all(colnames(model@frame) == colnames(newdat))==FALSE){
                                 stop("columnames of historical data and newdat are not the same")
                         }
-
-                        # alternative must be defined
-                        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
-                                stop("alternative must be either both, lower or upper")
-                        }
                 }
         }
 
@@ -215,7 +213,12 @@ lmer_pi_futmat <- function(model,
                 stop("futmat_list needs to be a list that contains the design matrices for each random effect")
         }
 
+        #-----------------------------------------------------------------------
 
+        # alternative must be defined
+        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+                stop("alternative must be either both, lower or upper")
+        }
 
         #----------------------------------------------------------------------
 
