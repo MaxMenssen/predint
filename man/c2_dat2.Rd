@@ -29,7 +29,7 @@ summary(fit)
 # Prediction interval using c2_dat2 as future data
 \donttest{lmer_pi_unsrtuc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 
-# Please note that nboot was set to 100 in order to increase computing time
+# Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
 
 }
