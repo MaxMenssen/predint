@@ -19,8 +19,8 @@ main functions are:
     between clusters)  
 -   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
 -   `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
--   `lmer_pi()` for data that is modeled by a linear random effects
-    model
+-   `lmer_pi_unstruc()`, `lmer_pi_futvec()`, `lmer_pi_futmat()` for data that
+     is modeled based on linear random effects models
 
 For all of these functions, it is assumed that the historical, as well
 as the actual (or future) data descend from the same data generating
