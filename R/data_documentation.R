@@ -18,7 +18,7 @@
 #' # that are based on cluster sizes 40, 50, 60 respectively
 #' beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "bb_dat1"
@@ -28,8 +28,8 @@
 
 #' Beta-binomial data (example 2)
 #'
-#' This data set contains sampled beta-binomial data from 3 clusters with
-#' different size, each. The data set was sampled with \code{rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.06)}.
+#' This data set contains sampled beta-binomial data from 3 clusters each of
+#' different size. The data set was sampled with \code{rbbinom(n=3, size=c(40, 50, 60), prob=0.1, rho=0.06)}.
 #'
 #' @format A \code{data.frame} with 3 rows and 2 columns:
 #' \describe{
@@ -42,7 +42,7 @@
 #' # Prediction interval using bb_dat2 as future data
 #' beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "bb_dat2"
@@ -68,7 +68,7 @@
 #' # that are based on cluster sizes 40, 50, 60 respectively
 #' quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "qb_dat1"
@@ -92,7 +92,7 @@
 #' # Prediction interval using qb_dat2 as future data
 #' quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "qb_dat2"
@@ -101,18 +101,18 @@
 #-------------------------------------------------------------------------------
 # qp_dat1
 
-#' Quasi-poisson data (example 1)
+#' Quasi-Poisson data (example 1)
 #'
 #' This data set contains sampled quasi-poisson data for 10 clusters.
 #' The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 #'
-#' @format An integer vector with ten entries containing quasi poisson data
+#' @format An integer vector with ten entries containing quasi-Poisson data
 #'
 #' @examples
 #' # Upper prediction limit for m=3 future observations
 #' quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "qp_dat1"
@@ -120,18 +120,18 @@
 #-------------------------------------------------------------------------------
 # qp_dat2
 
-#' Quasi-poisson data (example 2)
+#' Quasi-Poisson data (example 2)
 #'
 #' This data set contains sampled quasi-poisson data for 3 clusters.
 #' The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 #'
-#' @format An integer vector with three entries containing quasi poisson data
+#' @format An integer vector with three entries containing quasi-Poisson data
 #'
 #' @examples
 #' # Prediction interval using qp_dat2 as future data
 #' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "qp_dat2"
@@ -163,7 +163,7 @@
 #' # Upper prediction limit for m=3 future observations
 #' \donttest{lmer_pi_unsrtuc(model=fit, m=3, alternative="upper", nboot=100)}
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat1"
@@ -194,7 +194,7 @@
 #' # Prediction interval using c2_dat2 as future data
 #' \donttest{lmer_pi_unsrtuc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat2"
@@ -234,7 +234,7 @@
 #' # Calculating the PI
 #' lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat3"
@@ -295,7 +295,7 @@
 #' # Calculate the PI
 #' lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat4"
