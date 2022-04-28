@@ -59,7 +59,7 @@
 #' @format A \code{data.frame} with 3 rows and 2 columns:
 #' \describe{
 #'   \item{succ}{numbers of success}
-#'   \item{fail}{numbers of failur}
+#'   \item{fail}{numbers of failures}
 #' }
 #'
 #'
@@ -84,7 +84,7 @@
 #' @format A \code{data.frame} with 3 rows and 2 columns:
 #' \describe{
 #'   \item{succ}{numbers of success}
-#'   \item{fail}{numbers of failure}
+#'   \item{fail}{numbers of failures}
 #' }
 #'
 #'
