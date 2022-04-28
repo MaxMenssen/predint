@@ -80,8 +80,7 @@ Please note that the predicted future number of successes is based on the future
 cluster size \eqn{n_m} and the success probability estimated from the historical
 data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the
 prediction intervals \eqn{[l,u]_m} are different for each of the \eqn{m} future clusters,
-if their size is not the same. \cr
-If traceplot=TRUE, a graphical overview about the bisection process is given.
+if their size is not the same.
 }
 \examples{
 # Historical data
