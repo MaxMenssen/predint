@@ -121,7 +121,7 @@ pi_m4
 In this case, the untreated control group that contains 50 animals is in line 
 with the historical control data if its mortality falls between `r round(pi_m4$lower[1], 5)`
 and `r round(pi_m4$upper[1], 5)`. 
-Similarly, the control groups that contain 30 animalsare in line with the historical knowledge
+Similarly, the control groups that contain 30 animals are in line with the historical knowledge
 if their mortality ranges between `r round(pi_m4$lower[2], 5)`
 and `r round(pi_m4$upper[2], 5)`.
 
@@ -129,9 +129,9 @@ and `r round(pi_m4$upper[2], 5)`.
 ## References
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
 with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-https://doi.org/10.1002/sim.8124  
+\url{https://doi.org/10.1002/sim.8124}  
 
 
-NTP 2017: Tables of historical controls: pathology tables by route/vehicle. https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html.
+NTP 2017: Tables of historical controls: pathology tables by route/vehicle. \url{https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html},
 Accessed May 17, 2017.
 
