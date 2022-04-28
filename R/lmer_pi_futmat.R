@@ -339,7 +339,6 @@ lmer_pi_futmat <- function(model,
                 # SD for the random factors
                 sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
-
                 if(length(names(futmat_list)) != length(sd_hist$grp)){
                         stop("length(names(futmat_list)) is not the same as the random effects plus the residuals")
                 }
@@ -358,7 +357,7 @@ lmer_pi_futmat <- function(model,
                         stop("all matrices need to have the same numbers of rows")
                 }
 
-                if(class(try(futmat_list[sd_hist$grp])) == "try-error"){
+                if(all(sd_hist$grp == names(futmat_list))==FALSE){
                         stop("futmat_list needs to have the same names as the random effects in the model. Maybe you forgot the residuals?")
                 }
 
