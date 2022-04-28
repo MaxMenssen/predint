@@ -63,7 +63,7 @@
 #' # Upper prediction bound for m=3 future observations
 #' quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 quasi_pois_pi <- function(histdat,

@@ -127,7 +127,7 @@
 #'
 #' #----------------------------------------------------------------------------
 #'
-#' # Please note that nboot was set to 100 in order to increase computing time
+#' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 lmer_pi_futmat <- function(model,
@@ -269,7 +269,7 @@ lmer_pi_futmat <- function(model,
                         sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
                         # Model Frame for the new data without fitting the data
-                        modelframe_list <- lFormula(eval(model@call), data=newdat)
+                        modelframe_list <- lFormula(eval(model), data=newdat)
 
                         # Intercept (fixed effect)
                         mu <- matrix(unname(modelframe_list$X * fixef(model)))

@@ -86,7 +86,7 @@ quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
 # that are based on cluster sizes 40, 50, 60 respectively
 quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
 
-# Please note that nboot was set to 100 in order to increase computing time
+# Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
 
 }

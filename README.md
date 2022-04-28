@@ -19,8 +19,8 @@ main functions are:
     between clusters)  
 -   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
 -   `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
--   `lmer_pi()` for data that is modeled by a linear random effects
-    model
+-   `lmer_pi_unstruc()`, `lmer_pi_futvec()`, `lmer_pi_futmat()` for data that
+     is modeled based on linear random effects models
 
 For all of these functions, it is assumed that the historical, as well
 as the actual (or future) data descend from the same data generating
@@ -128,12 +128,15 @@ pi_m4
 In this case, the untreated control group that contains 50 animals is in
 line with the historical control data if its mortality falls between
 2.48179 and 25.11821. Similarly, the control groups that contain 30
-animalsare in line with the historical knowledge if their mortality
+animals are in line with the historical knowledge if their mortality
 ranges between 1.12173 and 15.43827.
 
 ## References
+Menssen M, Schaarschmidt F. (2021): Prediction intervals for all of M future 
+observations based on linear random effects models. Statistica Neerlandica.
+<https://doi.org/10.1111/stan.12260>
 
-Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
+Menssen M, Schaarschmidt F. (2019): Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
 Medicine. 2019;38:2652-2663. <https://doi.org/10.1002/sim.8124>
 
