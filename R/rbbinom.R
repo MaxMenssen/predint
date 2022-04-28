@@ -34,7 +34,7 @@
 #' @references
 #' Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
 #' with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-#' \url{https://doi.org/10.1002/sim.8124}
+#' \doi{10.1002/sim.8124}
 #'
 #' @examples
 #' # Sampling of example data

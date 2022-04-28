@@ -14,7 +14,7 @@
 #' @references
 #' Lui, K.-J., Mayer, J.A. and Eckhardt, L: Confidence intervals for the risk ratio
 #' under cluster sampling based on the beta-binomial model. Statistics in Medicine.2000;19:2933-2942.
-#' \url{https://doi.org/10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
+#' \doi{10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
 #'
 #'
 #' @examples

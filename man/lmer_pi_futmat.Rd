@@ -151,5 +151,5 @@ lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=100)
 \references{
 Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
 future observations based on linear random effects models. Statistica Neerlandica.
-\url{https://doi.org/10.1111/stan.12260}
+\doi{10.1111/stan.12260}
 }

@@ -33,7 +33,7 @@
 #' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
 #' Using historical control information for the design and analysis of clinical
 #' trials with overdispersed count data. Statist. Med., 32: 3609-3622.
-#' \url{https://doi.org/10.1002/sim.5851}
+#' \doi{10.1002/sim.5851}
 #'
 #' @examples
 #' set.seed(123)
