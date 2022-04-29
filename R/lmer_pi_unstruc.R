@@ -52,7 +52,7 @@
 #'
 #' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
-#'  \url{https://onlinelibrary.wiley.com/doi/10.1111/stan.12260}
+#'  \doi{10.1111/stan.12260}
 #'
 #'
 #' @export
