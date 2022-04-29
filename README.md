@@ -87,16 +87,16 @@ pi_m1 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m1
 #>   total hist_prob quant_calib pred_se    lower    upper
-#> 1    30     0.276    1.024609     5.6 2.542187 14.01781
+#> 1    30     0.276    1.044121     5.6 2.432922 14.12708
 ```
 
 The historical binomial probability of success (historical mortality
-rate) is 0.276, the bootstrap calibrated coefficient is 1.02461 and the
+rate) is 0.276, the bootstrap calibrated coefficient is 1.04412 and the
 standard error of the prediction is 5.6. The lower limit of the
-bootstrap calibrated asymptotic prediction interval is 2.54219 and its
-upper limit is given by 14.01781.
+bootstrap calibrated asymptotic prediction interval is 2.43292 and its
+upper limit is given by 14.12708.
 
-If the mortality is lower than 2.54219 it can be treated as unusual low.
+If the mortality is lower than 2.43292 it can be treated as unusual low.
 Consequently, mean comparisons between the control and the treatment
 groups might result in too many differences that are considered as
 significant and the compound of interest might be treated as more
@@ -104,7 +104,7 @@ hazardous than it actually is.
 
 On the other hand, the compound of interest might be treated as less
 hazardous if the mortality in the untreated control group is unusual
-high. This might be the case, if its mortality exceeds 14.01781.
+high. This might be the case, if its mortality exceeds 14.12708.
 
 ### Evaluation of several control groups
 
@@ -119,27 +119,31 @@ pi_m4 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276    1.288018 8.854377 2.395406 25.20459
-#> 2    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 3    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 4    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 1    50     0.276    1.278262 8.854377 2.481788 25.11821
+#> 2    30     0.276    1.278262 5.600000 1.121734 15.43827
+#> 3    30     0.276    1.278262 5.600000 1.121734 15.43827
+#> 4    30     0.276    1.278262 5.600000 1.121734 15.43827
 ```
 
 In this case, the untreated control group that contains 50 animals is in
 line with the historical control data if its mortality falls between
-2.39541 and 25.20459. Similarly, the control groups that contain 30
+2.48179 and 25.11821. Similarly, the control groups that contain 30
 animals are in line with the historical knowledge if their mortality
-ranges between 1.0671 and 15.4929.
+ranges between 1.12173 and 15.43827.
 
 ## References
 
 Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M future
 observations based on linear random effects models. Statistica
 Neerlandica. 2021.
+[](https://onlinelibrary.wiley.com/doi/10.1111/stan.12260?af=R)
 
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
 Medicine. 2019;38:2652-2663.
+[](https://onlinelibrary.wiley.com/doi/10.1002/sim.8124)
 
 NTP 2017: Tables of historical controls: pathology tables by
-route/vehicle. , Accessed May 17, 2017.
+route/vehicle.
+[](https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html),
+Accessed May 17, 2017.
