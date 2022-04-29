@@ -19,8 +19,8 @@ main functions are:
     between clusters)  
 -   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
 -   `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
--   `lmer_pi_unstruc()`, `lmer_pi_futvec()`, `lmer_pi_futmat()` for data that
-     is modeled based on linear random effects models
+-   `lmer_pi()` for data that is modeled by a linear random effects
+    model
 
 For all of these functions, it is assumed that the historical, as well
 as the actual (or future) data descend from the same data generating
@@ -119,28 +119,27 @@ pi_m4 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276    1.278262 8.854377 2.481788 25.11821
-#> 2    30     0.276    1.278262 5.600000 1.121734 15.43827
-#> 3    30     0.276    1.278262 5.600000 1.121734 15.43827
-#> 4    30     0.276    1.278262 5.600000 1.121734 15.43827
+#> 1    50     0.276    1.288018 8.854377 2.395406 25.20459
+#> 2    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 3    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 4    30     0.276    1.288018 5.600000 1.067102 15.49290
 ```
 
 In this case, the untreated control group that contains 50 animals is in
 line with the historical control data if its mortality falls between
-2.48179 and 25.11821. Similarly, the control groups that contain 30
+2.39541 and 25.20459. Similarly, the control groups that contain 30
 animals are in line with the historical knowledge if their mortality
-ranges between 1.12173 and 15.43827.
+ranges between 1.0671 and 15.4929.
 
 ## References
-Menssen M, Schaarschmidt F. (2021): Prediction intervals for all of M future 
-observations based on linear random effects models. Statistica Neerlandica.
-<https://doi.org/10.1111/stan.12260>
 
-Menssen M, Schaarschmidt F. (2019): Prediction intervals for overdispersed
+Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M future
+observations based on linear random effects models. Statistica
+Neerlandica. 2021.
+
+Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
-Medicine. 2019;38:2652-2663. <https://doi.org/10.1002/sim.8124>
+Medicine. 2019;38:2652-2663.
 
 NTP 2017: Tables of historical controls: pathology tables by
-route/vehicle.
-<https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html>.
-Accessed May 17, 2017.
+route/vehicle. , Accessed May 17, 2017.
