@@ -31,5 +31,9 @@ Found the following (possibly) invalid URLs:
     Status: 503
     Message: Service Unavailable
     
+I checked the README on Github and all links work fine.
+
 Due to Hadley Wickham these Notes can be ignored (see link below). Hope that´s right.
 https://twitter.com/hadleywickham/status/1358170607314235392
+
+
