@@ -130,13 +130,13 @@ and `r round(pi_m4$upper[2], 5)`.
 
 Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
 future observations based on linear random effects models. Statistica Neerlandica. 
-2021. [](https://onlinelibrary.wiley.com/doi/10.1111/stan.12260?af=R)
+2021. [DOI: 10.1111/stan.12260](https://onlinelibrary.wiley.com/doi/10.1111/stan.12260?af=R)
 
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed binomial data
 with application to historical controls. Statistics in Medicine. 2019;38:2652-2663.
-[](https://onlinelibrary.wiley.com/doi/10.1002/sim.8124)
+[DOI:10.1002/sim.8124](https://onlinelibrary.wiley.com/doi/10.1002/sim.8124)
 
 
-NTP 2017: Tables of historical controls: pathology tables by route/vehicle. [](https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html), Accessed 
+NTP 2017: [Tables of historical controls: pathology tables by route/vehicle.](https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html), Accessed 
 May 17, 2017.
 
