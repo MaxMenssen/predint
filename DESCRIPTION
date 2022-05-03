@@ -1,7 +1,7 @@
 Package: predint
 Type: Package
 Title: Prediction Intervals
-Version: 1.1.0
+Version: 1.1.0.9000
 Authors@R: person("Max", "Menssen", email = "menssen@cell.uni-hannover.de",
                   role = c("aut", "cre"))
 Description: An implementation of prediction intervals for overdispersed count data,
