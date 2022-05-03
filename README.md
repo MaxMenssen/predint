@@ -10,17 +10,51 @@ In many pharmaceutical and biomedical applications such as assay
 validation, assessment of historical control data or the detection of
 anti-drug antibodies, prediction intervals are of use. The package
 predint provides functions to calculate bootstrap calibrated prediction
-intervals for one or more future observation8s) based on overdispersed
+intervals for one or more future observations based on overdispersed
 binomial data, overdispersed poisson data, as well as data that is
 modeled by linear random effects models fitted with lme4::lmer(). The
 main functions are:
 
 -   `beta_bin_pi()` for beta-binomial data (overdispersion differs
-    between clusters)  
--   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)  
+    between clusters)
+
+-   `quasi_bin_pi()` for quasi-binomial data (constant overdispersion)
+
 -   `quasi_pois_pi()` for quasi-poisson data (constant overdispersion)
+
 -   `lmer_pi()` for data that is modeled by a linear random effects
-    model
+    model (deprecated)
+
+-   `lmer_pi_unstruc()` for data that is modeled by a linear random
+    effects model. For
+    ![m = 1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%20%3D%201 "m = 1"):
+    The function follows the same methodology as `lmer_pi_futvec()` and
+    `lmer_pi_futmat()`. For
+    ![m\>1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%3E1 "m>1"):
+    This function treats the future data to be a random sample from the
+    historical experimental design. This may happen if the future trial
+    was planned to follow the same design as the historical trial, but
+    some observations are randomly missing in the future data.
+
+-   `lmer_pi_futvec()` for data that is modeled by a linear random
+    effects model. For
+    ![m = 1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%20%3D%201 "m = 1"):
+    The function follows the same methodology as `lmer_pi_futunstruc()`
+    and `lmer_pi_futmat()`. For
+    ![m\>1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%3E1 "m>1"):
+    This function takes care of the experimental design of the future
+    data. Anyhow, it is mandatory that the design of the future data is
+    part of the historical data.
+
+-   `lmer_pi_futmat()` for data that is modeled by a linear random
+    effects model. For
+    ![m = 1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%20%3D%201 "m = 1"):
+    The function follows the same methodology as `lmer_pi_futunstruc()`
+    and `lmer_pi_futvec()`. For
+    ![m\>1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m%3E1 "m>1"):
+    This function takes care of the experimental design of the future
+    data, which can be provided directly to the function. Alternatively
+    the random effects design matrices can be provided.
 
 For all of these functions, it is assumed that the historical, as well
 as the actual (or future) data descend from the same data generating
@@ -119,17 +153,17 @@ pi_m4 <- quasi_bin_pi(histdat=dat_real,
                       alpha=0.05)
 pi_m4
 #>   total hist_prob quant_calib  pred_se    lower    upper
-#> 1    50     0.276    1.288018 8.854377 2.395406 25.20459
-#> 2    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 3    30     0.276    1.288018 5.600000 1.067102 15.49290
-#> 4    30     0.276    1.288018 5.600000 1.067102 15.49290
+#> 1    50     0.276    1.297773 8.854377 2.309024 25.29098
+#> 2    30     0.276    1.297773 5.600000 1.012469 15.54753
+#> 3    30     0.276    1.297773 5.600000 1.012469 15.54753
+#> 4    30     0.276    1.297773 5.600000 1.012469 15.54753
 ```
 
 In this case, the untreated control group that contains 50 animals is in
 line with the historical control data if its mortality falls between
-2.39541 and 25.20459. Similarly, the control groups that contain 30
+2.30902 and 25.29098. Similarly, the control groups that contain 30
 animals are in line with the historical knowledge if their mortality
-ranges between 1.0671 and 15.4929.
+ranges between 1.01247 and 15.54753.
 
 ## References
 
