@@ -35,22 +35,22 @@ linear random effects models fitted with lme4::lmer(). The main functions are:
 * `lmer_pi()` for data that is modeled by a linear random effects model (deprecated)
 
 * `lmer_pi_unstruc()` for data that is modeled by a linear random effects model. 
-For $m = 1$: The function follows the same methodology as `lmer_pi_futvec()` 
+For m = 1: The function follows the same methodology as `lmer_pi_futvec()` 
 and `lmer_pi_futmat()`. 
-For $m>1$: This function treats the future data to be a random sample from the historical experimental design. 
+For m > 1: This function treats the future data to be a random sample from the historical experimental design. 
 This may happen if the future trial was planned to follow the same design as the historical trial,
 but some observations are randomly missing in the future data. 
 
 * `lmer_pi_futvec()` for data that is modeled by a linear random effects model. 
-For $m = 1$: The function follows the same methodology as `lmer_pi_futunstruc()` 
+For m = 1: The function follows the same methodology as `lmer_pi_futunstruc()` 
 and `lmer_pi_futmat()`. 
-For $m>1$: This function takes care of the experimental design of the future data. 
+For m > 1: This function takes care of the experimental design of the future data. 
 Anyhow, it is mandatory that the design of the future data is part of the historical data.
 
 * `lmer_pi_futmat()` for data that is modeled by a linear random effects model. 
-For $m = 1$: The function follows the same methodology as `lmer_pi_futunstruc()` 
+For m = 1: The function follows the same methodology as `lmer_pi_futunstruc()` 
 and `lmer_pi_futvec()`. 
-For $m>1$: This function takes care of the experimental design of the future data,
+For m > 1: This function takes care of the experimental design of the future data,
 which can be provided directly to the function. Alternatively the random effects
 design matrices can be provided.
 
