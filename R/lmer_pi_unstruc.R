@@ -19,6 +19,7 @@
 #' @param nboot number of bootstraps
 #' @param lambda_min lower start value for bisection
 #' @param lambda_max upper start value for bisection
+#' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #'
@@ -86,6 +87,7 @@ lmer_pi_unstruc <- function(model,
                     nboot=10000,
                     lambda_min=0.01,
                     lambda_max=10,
+                    tolerance = 1e-3,
                     traceplot=TRUE,
                     n_bisec=30){
 
@@ -371,7 +373,7 @@ lmer_pi_unstruc <- function(model,
         #----------------------------------------------------------------------
         ### Bisection
 
-        bisection <- function(f, quant_min, quant_max, n, tol = 1e-3) {
+        bisection <- function(f, quant_min, quant_max, n, tol = tolerance) {
 
 
                 c_i <- vector()
