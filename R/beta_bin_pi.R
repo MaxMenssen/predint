@@ -122,6 +122,7 @@ beta_bin_pi <- function(histdat,
         histdat$total <- histdat[,1] + histdat[,2]
 
         n <- nrow(histdat)
+        N_hist <- sum(histdat$total)
 
         #-----------------------------------------------------------------------
 
@@ -198,7 +199,7 @@ beta_bin_pi <- function(histdat,
         }
 
         #-----------------------------------------------------------------------
-        ### Sampling of future data
+        ### Sampling of bootstrap data
 
         fut_dat_list <- vector(length=nboot, "list")
 
@@ -211,7 +212,7 @@ beta_bin_pi <- function(histdat,
                 # Total number of future trials
                 fut_dat$total <- fut_dat[,1] + fut_dat[,2]
 
-                # Sampling of the data on which pi and phi is estimated
+                # Sampling of historical data on which pi and phi is estimated
                 bs_pi_se_dat <- rbbinom(n = n, size = histdat$total,
                                         prob = pi_hat, rho = rho_hat)
 
@@ -244,6 +245,10 @@ beta_bin_pi <- function(histdat,
                 bs_rho <- unname(max(1e-5, bs_pi_rho[2]))
                 fut_dat$bs_rho <- bs_rho
 
+                # Total number of observations per hist. bs-data
+                bs_N <- sum(bs_pi_se_dat$total)
+                fut_dat$bs_N <- bs_N
+
                 # calculation of the prediction se and y_hat
                 fut_dat$pred_se <- NA
 
@@ -252,23 +257,19 @@ beta_bin_pi <- function(histdat,
 
                         bs_n_fut <- fut_dat$total[d]
 
+                        # Variance for the fut. random variable
                         bs_fut_var_y <-(bs_n_fut*bs_pi*(1-bs_pi))*(1+(bs_n_fut-1)*bs_rho)
 
-                        bs_fut_var <- bs_fut_var_y*(1+bs_n_fut/sum(bs_pi_se_dat$total))
+                        # Variance for the prediction
+                        bs_fut_var_y_hat <- bs_n_fut* (bs_pi*(1-bs_pi))/bs_N +
+                                bs_n_fut * bs_pi*(1-bs_pi) * bs_rho * (bs_N-1)/bs_N
+
+                        # bs_fut_var_old <- bs_fut_var_y*(1+bs_n_fut/sum(bs_pi_se_dat$total))
+
+                        bs_fut_var <- bs_fut_var_y + bs_fut_var_y_hat
 
                         fut_dat$pred_se[d] <- sqrt(bs_fut_var)
-
-                        if(is.na(sqrt(bs_fut_var))){
-                                print("c(bs_n_fut, bs_pi, bs_rho, bs_fut_var_y, bs_fut_var)")
-                                print(c(bs_n_fut, bs_pi, bs_rho, bs_fut_var_y, bs_fut_var))
-
-                                print("fut_dat")
-                                print(fut_dat)
-                        }
-
                 }
-
-
 
                 # calculation of y_hat
                 fut_dat$y_hat <- fut_dat$total * fut_dat$bs_pi
@@ -512,8 +513,12 @@ beta_bin_pi <- function(histdat,
                 # variance of y
                 bs_fut_var_y <-(n_fut*pi_hat*(1-pi_hat))*(1+(n_fut-1)*rho_hat)
 
+                # variance of y_hat
+                bs_fut_var_y_hat <- n_fut * pi_hat * (1-pi_hat) / N_hist +
+                        n_fut * pi_hat * (1-pi_hat) * rho_hat * (N_hist-1)/N_hist
+
                 # var(y_hat-y)
-                fut_var <- bs_fut_var_y*(1+n_fut/sum(histdat$total))
+                fut_var <- bs_fut_var_y + bs_fut_var_y_hat
 
                 # se(y_hat-y)
                 newdat$pred_se[d] <- sqrt(fut_var)
