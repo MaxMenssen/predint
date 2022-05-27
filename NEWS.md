@@ -12,3 +12,6 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * Argument for the tolerance in the bisection
 * Small changes in the readme
 * Bugfix in beta_bin_pi
+* Changed lambda_min and lambda_max to delta_min and delta_max according in order
+        to reflect the notation of the manuscript
+
