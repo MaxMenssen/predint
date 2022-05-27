@@ -11,8 +11,8 @@ quasi_bin_pi(
   alternative = "both",
   alpha = 0.05,
   nboot = 10000,
-  lambda_min = 0.01,
-  lambda_max = 10,
+  delta_min = 0.01,
+  delta_max = 10,
   tolerance = 0.001,
   traceplot = TRUE,
   n_bisec = 30
@@ -33,9 +33,9 @@ should be computed}
 
 \item{nboot}{number of bootstraps}
 
-\item{lambda_min}{lower start value for bisection}
+\item{delta_min}{lower start value for bisection}
 
-\item{lambda_max}{upper start value for bisection}
+\item{delta_max}{upper start value for bisection}
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 

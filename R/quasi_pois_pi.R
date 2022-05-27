@@ -15,8 +15,8 @@
 #' an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-alpha)
 #' @param nboot number of bootstraps
-#' @param lambda_min lower start value for bisection
-#' @param lambda_max upper start value for bisection
+#' @param delta_min lower start value for bisection
+#' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
@@ -73,8 +73,8 @@ quasi_pois_pi <- function(histdat,
                           alternative="both",
                           alpha=0.05,
                           nboot=10000,
-                          lambda_min=0.01,
-                          lambda_max=10,
+                          delta_min=0.01,
+                          delta_max=10,
                           tolerance = 1e-3,
                           traceplot=TRUE,
                           n_bisec=30){
@@ -215,7 +215,7 @@ quasi_pois_pi <- function(histdat,
         #-----------------------------------------------------------------------
         ### Calculation of the PIs
 
-        pi_cover_fun <- function(input, lambda){
+        pi_cover_fun <- function(input, delta){
 
                 input$lower <- NA
                 input$upper <- NA
@@ -230,8 +230,8 @@ quasi_pois_pi <- function(histdat,
 
                         # Prediction interval
                         if(alternative=="both"){
-                                lower <- y_hat - lambda * pred_se
-                                upper <- y_hat + lambda * pred_se
+                                lower <- y_hat - delta * pred_se
+                                upper <- y_hat + delta * pred_se
 
                                 input$lower[e] <- lower
                                 input$upper[e] <- upper
@@ -241,7 +241,7 @@ quasi_pois_pi <- function(histdat,
 
                         # Lower prediction bound
                         if(alternative=="lower"){
-                                lower <- y_hat - lambda * pred_se
+                                lower <- y_hat - delta * pred_se
 
                                 input$lower[e] <- lower
 
@@ -251,7 +251,7 @@ quasi_pois_pi <- function(histdat,
 
                         # Upper prediction bound
                         if(alternative=="upper"){
-                                upper <- y_hat + lambda * pred_se
+                                upper <- y_hat + delta * pred_se
 
                                 input$upper[e] <- upper
 
@@ -266,10 +266,10 @@ quasi_pois_pi <- function(histdat,
                 return(cover)
         }
 
-        # Coverage for one lambda based on the BS samples
-        cover_fun <- function(lambda){
+        # Coverage for one delta based on the BS samples
+        cover_fun <- function(delta){
 
-                fut_cover_list <- lapply(X=fut_dat_list, FUN=pi_cover_fun, lambda=lambda)
+                fut_cover_list <- lapply(X=fut_dat_list, FUN=pi_cover_fun, delta=delta)
 
                 fut_cover_vec <- as.logical(fut_cover_list)
 
@@ -402,7 +402,7 @@ quasi_pois_pi <- function(histdat,
         }
 
         # Calculation of the calibrated quantile
-        quant_calib <- bisection(f=cover_fun, quant_min=lambda_min, quant_max=lambda_max, n=n_bisec)
+        quant_calib <- bisection(f=cover_fun, quant_min=delta_min, quant_max=delta_max, n=n_bisec)
 
         # Assign the qalibrated quantile to the output object
         newdat$quant_calib <- quant_calib

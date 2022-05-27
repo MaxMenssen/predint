@@ -13,8 +13,8 @@
 #' if a prediction interval or an upper or a lower prediction limit should be computed
 #' @param alpha defines the level of confidence (1-\code{alpha})
 #' @param nboot number of bootstraps
-#' @param lambda_min lower start value for bisection
-#' @param lambda_max upper start value for bisection
+#' @param delta_min lower start value for bisection
+#' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
@@ -137,8 +137,8 @@ lmer_pi_futmat <- function(model,
                            alternative="both",
                            alpha=0.05,
                            nboot=10000,
-                           lambda_min=0.01,
-                           lambda_max=10,
+                           delta_min=0.01,
+                           delta_max=10,
                            tolerance = 1e-3,
                            traceplot=TRUE,
                            n_bisec=30){
@@ -669,7 +669,7 @@ lmer_pi_futmat <- function(model,
         }
 
         # Calculation of the calibrated coefficient
-        quant_calib <- bisection(f=coverfun, quant_min=lambda_min, quant_max=lambda_max, n=n_bisec)
+        quant_calib <- bisection(f=coverfun, quant_min=delta_min, quant_max=delta_max, n=n_bisec)
 
         #----------------------------------------------------------------------
 
