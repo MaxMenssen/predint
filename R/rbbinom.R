@@ -78,7 +78,12 @@ rbbinom <- function(n, size, prob, rho){
 
         # Rho must be bigger than 0
         if(rho<=0){
-                stop("rho<=0")
+                stop("rho <= 0")
+        }
+
+        # Rho must be smaller than 1
+        if(rho>=1){
+                stop("rho > 1")
         }
 
         # Same clustersise for all clusters (one size given)
