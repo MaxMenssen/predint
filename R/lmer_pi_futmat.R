@@ -1,7 +1,7 @@
 
 #' Prediction intervals for future observations based on linear random effects models
 #'
-#' lmer_pi_futmat calculates a bootstrap calibrated prediction interval for one or more
+#' \code{lmer_pi_futmat()} calculates a bootstrap calibrated prediction interval for one or more
 #' future observation(s) based on linear random effects models. With this approach,
 #' the sampling structure of the future data is taken into account (see below).
 #'
@@ -80,7 +80,7 @@
 #' # loading lme4
 #' library(lme4)
 #'
-#' # Fitting a random effects model based on c2_dat_1
+#' # Fitting a random effects model based on c2_dat1
 #' \donttest{fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)}
 #' \donttest{summary(fit)}
 #'
@@ -232,8 +232,9 @@ lmer_pi_futmat <- function(model,
                                     data.frame(VarCorr(model))$vcov)))
 
         #----------------------------------------------------------------------
-        ### Bootstrapping future observations if newdat is given
+        ### Bootstrapping of future observations
 
+        # If newdat=1
         if(!is.null(newdat) & is.null(futmat_list)){
 
                 if(is.data.frame(newdat)==FALSE){
@@ -266,6 +267,7 @@ lmer_pi_futmat <- function(model,
 
                 }
 
+                # If newdat is a data.frame
                 else{
                         # SD for the random factors
                         sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
@@ -342,7 +344,7 @@ lmer_pi_futmat <- function(model,
                 sd_hist <- as.data.frame(VarCorr(model))[,c("grp", "sdcor")]
 
                 if(length(names(futmat_list)) != length(sd_hist$grp)){
-                        stop("length(names(futmat_list)) is not the same as the random effects plus the residuals")
+                        stop("length(names(futmat_list)) is not the same as the number of random factors plus the residuals")
                 }
 
                 if(!all(unlist(lapply(X=futmat_list, FUN=is.matrix)))){
@@ -360,7 +362,7 @@ lmer_pi_futmat <- function(model,
                 }
 
                 if(all(sd_hist$grp == names(futmat_list))==FALSE){
-                        stop("futmat_list needs to have the same names as the random effects in the model. Maybe you forgot the residuals?")
+                        stop("futmat_list needs to have the same names as the random factors in the model. Maybe you forgot the residuals?")
                 }
 
                 else{
