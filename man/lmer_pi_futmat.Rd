@@ -66,7 +66,7 @@ If \code{newdat} is a  \code{data.frame}: A \code{data.frame} that contains the 
  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
-lmer_pi_futmat calculates a bootstrap calibrated prediction interval for one or more
+\code{lmer_pi_futmat()} calculates a bootstrap calibrated prediction interval for one or more
 future observation(s) based on linear random effects models. With this approach,
 the sampling structure of the future data is taken into account (see below).
 }
@@ -99,7 +99,7 @@ bootstrap samples that mimic the future data as described above.
 # loading lme4
 library(lme4)
 
-# Fitting a random effects model based on c2_dat_1
+# Fitting a random effects model based on c2_dat1
 \donttest{fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)}
 \donttest{summary(fit)}
 
