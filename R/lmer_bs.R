@@ -34,7 +34,8 @@
 #' library(lme4)
 #'
 #' # Fitting a random effects model based on c2_dat1
-#' \donttest{fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)}
+#'
+#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
 #' \donttest{summary(fit)}
 #'
 #' #----------------------------------------------------------------------------
