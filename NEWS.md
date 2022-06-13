@@ -26,3 +26,5 @@ TO DO
 - Quasi-poisson with offsets
         - rqpois
         - quasi_pois_pi
+- lmer_pi_futvec(): Change warning if newdat is given such that only a note is 
+        printed, but formally no warning is given
