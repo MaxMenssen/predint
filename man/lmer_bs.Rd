@@ -21,7 +21,7 @@ A list of length \code{nboot} containing the bootstrapped observations.
 }
 \description{
 \code{lmer_bs()} draws bootstrap samples based on the estimates for the mean
-and the variance components based on a random effects model fit with \code{lme4::lmer()}.
+and the variance components drawn from a random effects model fit with \code{lme4::lmer()}.
 Contrary to \code{lme4::bootMer()}, the number of observations for each random factor
 can vary between the original data set and the bootstrapped data. Random effects
 need to be specified as \code{(1|random effect)}.
