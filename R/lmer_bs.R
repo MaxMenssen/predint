@@ -1,7 +1,7 @@
 #' Sampling of bootstrap data from a given random effects model fit with \code{lme4::lmer()}
 #'
 #' \code{lmer_bs()} draws bootstrap samples based on the estimates for the mean
-#' and the variance components based on a random effects model fit with \code{lme4::lmer()}.
+#' and the variance components drawn from a random effects model fit with \code{lme4::lmer()}.
 #' Contrary to \code{lme4::bootMer()}, the number of observations for each random factor
 #' can vary between the original data set and the bootstrapped data. Random effects
 #' need to be specified as \code{(1|random effect)}.
@@ -73,7 +73,10 @@
 #'
 #' lmer_bs(model=fit, futmat_list=fml, nboot=100)
 #'
-lmer_bs <- function(model, newdat=NULL, futmat_list=NULL, nboot){
+lmer_bs <- function(model,
+                    newdat=NULL,
+                    futmat_list=NULL,
+                    nboot){
 
         # Model must be of class lmerMod
         if(class(model) != "lmerMod"){
