@@ -1,8 +1,6 @@
-This is a minor release including three new functions
+This is a patch release including one new function
 
-* lmer_pi_unstruc()
-* lmer_pi_futvec()
-* lmer_pi_futmat()
+* lmer_bs()
 
 
 ## R CMD check results (local on my MacBook)
