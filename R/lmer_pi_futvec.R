@@ -64,6 +64,7 @@
 #' @importFrom lme4 fixef VarCorr bootMer
 #' @importFrom stats vcov
 #' @importFrom stats na.omit
+#' @importFrom methods is
 #'
 #' @references Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
 #' future observations based on linear random effects models. Statistica Neerlandica.

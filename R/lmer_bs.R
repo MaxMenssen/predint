@@ -27,6 +27,7 @@
 #'
 #' @importFrom lme4 fixef VarCorr lFormula
 #' @importFrom stats rnorm var
+#' @importFrom methods is
 #'
 #' @examples
 #'

@@ -69,6 +69,7 @@
 #' @importFrom graphics abline lines
 #' @importFrom lme4 fixef VarCorr bootMer lFormula
 #' @importFrom stats vcov rnorm var
+#' @importFrom methods is
 #'
 #'
 #' @references Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M

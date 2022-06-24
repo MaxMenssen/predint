@@ -49,6 +49,7 @@
 #' @importFrom graphics abline lines
 #' @importFrom lme4 fixef VarCorr bootMer
 #' @importFrom stats vcov
+#' @importFrom methods is
 #'
 #' @examples
 #'
