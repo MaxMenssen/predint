@@ -92,7 +92,7 @@ lmer_pi_unstruc <- function(model,
                     n_bisec=30){
 
         # Model must be of class lmerMod
-        if(class(model) != "lmerMod"){
+        if(!is(model, "lmerMod")){
                 stop("class(model) != lmerMod")
         }
 

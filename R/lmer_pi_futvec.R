@@ -120,7 +120,7 @@ lmer_pi_futvec <- function(model,
         # warning("This function needs some work.")
 
         # Model must be of class lmerMod
-        if(class(model) != "lmerMod"){
+        if(!is(model, "lmerMod")){
                 stop("class(model) != lmerMod")
         }
 

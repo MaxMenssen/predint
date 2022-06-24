@@ -79,7 +79,7 @@ lmer_bs <- function(model,
                     nboot){
 
         # Model must be of class lmerMod
-        if(class(model) != "lmerMod"){
+        if(!is(model, "lmerMod")){
                 stop("class(model) != lmerMod")
         }
 
