@@ -13,18 +13,8 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * Small changes in the readme
 * Bugfix in beta_bin_pi
 * Changed lambda_min and lambda_max to delta_min and delta_max in order
-        to reflect the notation of the manuscript
+        to reflect the notation of the manuscript submitted to JSS
 * Bugfix in rbbinom: rho must be bigger than 0 but smaller than 1
 * Function for the sampling of bs-data based on a random effects model fit with lme4::lmer()
   as used in lmer_pi_futmat()
 
-TO DO
-- Include NTP example data from both papers
-- Include bs function used in lmer_pi_futmat as a single function in the package (done)
-        - Do a bug search
-        - Write tests for lmer_bs()
-- Quasi-poisson with offsets
-        - rqpois
-        - quasi_pois_pi
-- lmer_pi_futvec(): Change warning if newdat is given such that only a note is 
-        printed, but formally no warning is given
