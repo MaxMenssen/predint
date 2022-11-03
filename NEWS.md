@@ -17,4 +17,13 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * Bugfix in rbbinom: rho must be bigger than 0 but smaller than 1
 * Function for the sampling of bs-data based on a random effects model fit with lme4::lmer()
   as used in lmer_pi_futmat()
+  
+# predint 1.1.2
+* rqpois() can be used with offsets and returns a data.frame (instead of a vector
+        as before)
+
++ To do:
+        Add a citation (arxiv)
+        use offsets in quasi_pois_pi()
+        check everything
 
