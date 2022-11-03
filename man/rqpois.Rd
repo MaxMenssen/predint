@@ -4,7 +4,7 @@
 \alias{rqpois}
 \title{Sampling of overdispersed poisson data with constant overdispersion}
 \usage{
-rqpois(n, lambda, phi)
+rqpois(n, lambda, phi, offset = NULL)
 }
 \arguments{
 \item{n}{defines the number of clusters (\eqn{i})}
@@ -12,9 +12,11 @@ rqpois(n, lambda, phi)
 \item{lambda}{defines the overall poisson mean (\eqn{\lambda})}
 
 \item{phi}{dispersion parameter (\eqn{\Phi})}
+
+\item{offset}{defines the number of units (\eqn{n_i})}
 }
 \value{
-a vector containing the sampled observations (one per cluster)
+a data.frame containing the sampled observations and the offsets
 }
 \description{
 rqpois samples overdispersed poisson data with constant overdispersion from
@@ -25,12 +27,12 @@ used by Gsteiger et al. 2013.
 \details{
 It is assumed that the dispersion parameter (\eqn{\Phi})
 is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
-\deqn{var(y_i)= \lambda(1+\lambda \kappa) = \Phi \lambda.}
-For the sampling \eqn{\kappa} is defined as
-\deqn{\kappa=(\Phi-1)/(\lambda)}
-where \eqn{a=1/\kappa} and \eqn{b=1/(\kappa \lambda)}. Then, the poisson means
+\deqn{var(y_i)= \mu_i (1+\mu_i \kappa_i) = \Phi \mu_i}
+For the sampling \eqn{\kappa_i} is defined as
+\deqn{\kappa_i=(\Phi-1)/(\mu_i)}
+where \eqn{\mu_i=n_i \lambda}, \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i \mu_i)}. Then, the poisson means
 for each cluster are sampled from the gamma distribution
-\deqn{\lambda_i \sim Gamma(a, b)}
+\deqn{\lambda_i \sim Gamma(a_i, b_i)}
 and the observations per cluster are sampled to be
 \deqn{y_i \sim Pois(\lambda_i).}
 Please note, that the quasi-poisson assumption is not in contradiction with the
