@@ -235,9 +235,10 @@ lmer_pi_futmat <- function(model,
         #----------------------------------------------------------------------
         ### Bootstrapping of future observations
 
-        # If newdat=1
+        # If newdat is defined
         if(!is.null(newdat) & is.null(futmat_list)){
 
+                # If newdat=1
                 if(is.data.frame(newdat)==FALSE){
 
                         # Extracting the observations
@@ -315,7 +316,7 @@ lmer_pi_futmat <- function(model,
 
                         }
 
-                        # Take only m random observation per data set
+                        # Take the min and the max of the M future observations
                         ystar_fun <- function(.){
                                 # y_star <- sample(x=., size=m)
 
