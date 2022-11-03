@@ -9,26 +9,27 @@
 #' @param n defines the number of clusters (\eqn{i})
 #' @param lambda defines the overall poisson mean (\eqn{\lambda})
 #' @param phi dispersion parameter (\eqn{\Phi})
+#' @param offset defines the number of units (\eqn{n_i})
 #'
 #' @details It is assumed that the dispersion parameter (\eqn{\Phi})
 #' is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
-#' \deqn{var(y_i)= \lambda(1+\lambda \kappa) = \Phi \lambda.}
-#' For the sampling \eqn{\kappa} is defined as
-#' \deqn{\kappa=(\Phi-1)/(\lambda)}
-#' where \eqn{a=1/\kappa} and \eqn{b=1/(\kappa \lambda)}. Then, the poisson means
+#' \deqn{var(y_i)= \mu_i (1+\mu_i \kappa_i) = \Phi \mu_i}
+#' For the sampling \eqn{\kappa_i} is defined as
+#' \deqn{\kappa_i=(\Phi-1)/(\mu_i)}
+#' where \eqn{\mu_i=n_i \lambda}, \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i \mu_i)}. Then, the poisson means
 #' for each cluster are sampled from the gamma distribution
-#' \deqn{\lambda_i \sim Gamma(a, b)}
+#' \deqn{\lambda_i \sim Gamma(a_i, b_i)}
 #' and the observations per cluster are sampled to be
 #' \deqn{y_i \sim Pois(\lambda_i).}
 #' Please note, that the quasi-poisson assumption is not in contradiction with the
 #' negative-binomial distribution if the data structure is defined by the number
 #' of clusters only (which is the case here), rather than by a complex randomization structure.
 #'
-#' @return a vector containing the sampled observations (one per cluster)
+#' @return a data.frame containing the sampled observations and the offsets
 #'
 #' @export
 #'
-#'@importFrom stats rgamma rpois
+#' @importFrom stats rgamma rpois
 #'
 #' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
 #' Using historical control information for the design and analysis of clinical
@@ -45,7 +46,7 @@
 #' qp_dat2
 #'
 #'
-rqpois <- function(n, lambda, phi){
+rqpois <- function(n, lambda, phi, offset=NULL){
 
         # Phi must be bigger than 1
         if(phi<=1){
@@ -68,29 +69,73 @@ rqpois <- function(n, lambda, phi){
                 stop("lambda must be > 0")
         }
 
+        # If an offset is defined
+        if(!is.null(offset)){
 
+                # Offset must be numeric or integer
+                if(!(is.numeric(offset) | is.integer(offset))){
+                        stop("offset must be numeric or integer")
+                }
+
+                # Offset must have the same length as n
+                if(length(offset) != n){
+                        stop("offset must be of length n")
+                }
+        }
+
+
+        #-----------------------------------------------------------------------
         # Defining kappa following the parametrisation of the nb-distribution
         # of Gsteiger et al 2013 (Stats in Med)
-        kappa <- (phi-1)/lambda
 
-        # Gamma parameters
-        a <- 1/kappa
-        b <- 1/(kappa*lambda)
+        # List with one Poisson mean per cluster
+        if(is.null(offset)){
+                lambda <- as.list(rep(x=lambda,
+                                      times=n))
+        }
 
-        lambda_h <- rgamma(n=n, shape=a, rate = b)
+        if(!is.null(offset)){
+                lambda <- as.list(lambda*offset)
+        }
 
-        obs <- integer(length(lambda_h))
+        # List with kappas
+        kappa_fun <- function(x){(phi-1)/x}
+        kappa <- lapply(X=lambda,
+                        FUN=kappa_fun)
 
-        for(h in 1:length(obs)){
-                obs[h] <- rpois(n=1, lambda=lambda_h[h])
+
+        # Lits with gamma parameters
+        abfun <- function(x){1/x}
+        a <- lapply(X=kappa,
+                    FUN=abfun)
+
+        k_times_l <- Map("*", lambda, kappa)
+        b <- lapply(X=k_times_l,
+                    FUN=abfun)
+
+
+        # Sampling of the Poisson means from the gamma distribution
+        lambda_i <- mapply(FUN=rgamma,
+                           shape=a,
+                           rate=b,
+                           MoreArgs=as.list(1))
+
+        # Sampling of the observations
+        y <- unlist(lapply(X=lambda_i, FUN=rpois, n=1))
+
+        # Define the output object
+        obs <- data.frame("y"=y)
+
+        if(!is.null(offset)){
+                obs$offset <- offset
+        }
+
+        if(is.null(offset)){
+                obs$offset <- 1
         }
 
         return(obs)
 }
-
-
-
-
 
 
 
