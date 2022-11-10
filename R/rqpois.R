@@ -37,16 +37,21 @@
 #' \doi{10.1002/sim.5851}
 #'
 #' @examples
-#' set.seed(123)
-#' qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
-#' qp_dat1
+#' # set.seed(123)
+#' # qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
+#' # qp_dat1
 #'
-#' set.seed(123)
-#' qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
-#' qp_dat2
+#' # set.seed(123)
+#' # qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
+#' # qp_dat2
 #'
 #'
 rqpois <- function(n, lambda, phi, offset=NULL){
+
+        # Phi must be numeric or integer
+        if(!(is.numeric(phi) | is.integer(phi))){
+                stop("phi must be numeric or integer")
+        }
 
         # Phi must be bigger than 1
         if(phi<=1){
@@ -85,32 +90,30 @@ rqpois <- function(n, lambda, phi, offset=NULL){
 
 
         #-----------------------------------------------------------------------
-        # Defining kappa following the parametrisation of the nb-distribution
-        # of Gsteiger et al 2013 (Stats in Med)
 
         # List with one Poisson mean per cluster
         if(is.null(offset)){
-                lambda <- as.list(rep(x=lambda,
+                mu_i <- as.list(rep(x=lambda,
                                       times=n))
         }
 
         if(!is.null(offset)){
-                lambda <- as.list(lambda*offset)
+                mu_i <- as.list(lambda*offset)
         }
 
         # List with kappas
         kappa_fun <- function(x){(phi-1)/x}
-        kappa <- lapply(X=lambda,
+        kappa_i <- lapply(X=mu_i,
                         FUN=kappa_fun)
 
 
         # Lits with gamma parameters
         abfun <- function(x){1/x}
-        a <- lapply(X=kappa,
+        a <- lapply(X=kappa_i,
                     FUN=abfun)
 
-        k_times_l <- Map("*", lambda, kappa)
-        b <- lapply(X=k_times_l,
+        kmu_i <- Map("*", mu_i, kappa_i)
+        b <- lapply(X=kmu_i,
                     FUN=abfun)
 
 
@@ -137,5 +140,11 @@ rqpois <- function(n, lambda, phi, offset=NULL){
         return(obs)
 }
 
-
-
+# hdat <- rqpois(n=1000, lambda=10, phi=3, offset=sample(x=1:5, size=1000, replace=TRUE))
+# hdat
+#
+# fit <- glm(hdat[,1]~1,
+#            family=quasipoisson(link="log"),
+#            offset = log(hdat[,2]))
+#
+# summary(fit)
