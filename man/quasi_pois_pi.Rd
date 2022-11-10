@@ -2,12 +2,12 @@
 % Please edit documentation in R/quasi_pois_pi.R
 \name{quasi_pois_pi}
 \alias{quasi_pois_pi}
-\title{Prediction intervals for quasi-poisson data}
+\title{Prediction intervals for quasi-Poisson data}
 \usage{
 quasi_pois_pi(
   histdat,
   newdat = NULL,
-  m = NULL,
+  newoffset = NULL,
   alternative = "both",
   alpha = 0.05,
   nboot = 10000,
@@ -19,11 +19,16 @@ quasi_pois_pi(
 )
 }
 \arguments{
-\item{histdat}{a \code{data.frame} with one column containing the historical data}
+\item{histdat}{a \code{data.frame} with two columns. The first has to contain
+the historical observations. The second has to contain the number of experimental
+units per study (offsets).}
 
-\item{newdat}{a \code{data.frame} with one column containing the future data}
+\item{newdat}{a \code{data.frame} with two columns. The first has to contain
+the future observations. The second has to contain the number of experimental
+units per study (offsets).}
 
-\item{m}{number of future clusters}
+\item{newoffset}{vector with future number of experimental units per historical
+study.}
 
 \item{alternative}{either "both", "upper" or "lower".
 \code{alternative} specifies if a prediction interval or
@@ -62,8 +67,8 @@ If \code{newdat} is specified: A \code{data.frame} that contains the future data
  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
 }
 \description{
-quasi_pois_pi calculates bootstrap calibrated prediction intervals for poisson
-data with constant overdispersion (quasi-poisson).
+quasi_pois_pi calculates bootstrap calibrated prediction intervals for Poisson
+data with constant overdispersion (quasi-Poisson).
 }
 \details{
 This function returns a bootstrap calibrated prediction interval
