@@ -162,14 +162,6 @@ qp_pi <- function(newoffset,
 
 
 
-# test_pi <- qp_pi(newoffset=c(2,3),
-#                  lambda=10,
-#                  phi=3,
-#                  histoffset=1:9,
-#                  q=qnorm(1-0.05/2),
-#                  alternative="lower")
-# test_pi
-# inherits(test_pi, "predint")
 
 
 
