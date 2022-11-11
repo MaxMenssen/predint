@@ -106,11 +106,11 @@
 #' This data set contains sampled quasi-poisson data for 10 clusters.
 #' The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 #'
-#' @format An integer vector with ten entries containing quasi-Poisson data
+#' @format A data.frame with two columns
 #'
 #' @examples
-#' # Upper prediction limit for m=3 future observations
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+#' # Prediction interval using bb_dat2 as future data
+#' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
@@ -125,10 +125,10 @@
 #' This data set contains sampled quasi-poisson data for 3 clusters.
 #' The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 #'
-#' @format An integer vector with three entries containing quasi-Poisson data
+#' @format A data.frame with two columns
 #'
 #' @examples
-#' # Prediction interval using qp_dat2 as future data
+#' # Prediction interval using bb_dat2 as future data
 #' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
