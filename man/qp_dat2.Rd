@@ -5,7 +5,7 @@
 \alias{qp_dat2}
 \title{Quasi-Poisson data (example 2)}
 \format{
-An integer vector with three entries containing quasi-Poisson data
+A data.frame with two columns
 }
 \usage{
 qp_dat2
@@ -15,7 +15,7 @@ This data set contains sampled quasi-poisson data for 3 clusters.
 The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 }
 \examples{
-# Prediction interval using qp_dat2 as future data
+# Prediction interval using bb_dat2 as future data
 quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 
 # Please note that nboot was set to 100 in order to decrease computing time
