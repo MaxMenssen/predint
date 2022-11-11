@@ -7,7 +7,7 @@
 boot_predint(pred_int, nboot)
 }
 \arguments{
-\item{pred_int}{simple prediction interval}
+\item{pred_int}{simple prediction interval of class \code{c("quasiPoissonPI")}}
 
 \item{nboot}{number of bootstraps}
 }
@@ -21,7 +21,7 @@ and one for bootstrapped future observations.
 uncalibrated prediction intervals implemented in predint
 }
 \examples{
-test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=qnorm(1-0.05/2), alternative="both")
+test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=1.96, alternative="both")
 
 test_boot <- boot_predint(pred_int = test_pi, nboot=5)
 test_boot
