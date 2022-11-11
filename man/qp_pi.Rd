@@ -10,7 +10,9 @@ qp_pi(
   lambda,
   phi,
   q = qnorm(1 - 0.05/2),
-  alternative = "both"
+  alternative = "both",
+  newdat = NULL,
+  histdat = NULL
 )
 }
 \arguments{
@@ -27,9 +29,13 @@ qp_pi(
 \item{alternative}{either "both", "upper" or "lower".
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed.}
+
+\item{newdat}{additional argument to specivy the actual data set}
+
+\item{histdat}{additional argument to specivy the historical data set}
 }
 \value{
-\code{qp_pi} returns an object of class \code{c("predint", "qpUncalib")}.
+\code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
 }
 \description{
 \code{qp_pi()} is a helper fuction that is called in \code{quasi_pois_pi()}. It
