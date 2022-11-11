@@ -18,12 +18,12 @@
 #' @param alternative either "both", "upper" or "lower".
 #' \code{alternative} specifies if a prediction interval or
 #' an upper or a lower prediction limit should be computed
-#' @param alpha defines the level of confidence (1-alpha)
+#' @param alpha defines the level of confidence (\eqn{1-\alpha})
 #' @param nboot number of bootstraps
 #' @param delta_min lower start value for bisection
 #' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
-#' @param traceplot plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #'
 #' @details This function returns a bootstrap calibrated prediction interval
@@ -67,7 +67,7 @@
 #' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+#' quasi_pois_pi(histdat=data.frame(qp_dat1), newoffset=c(1,1,1), alternative="upper", nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
@@ -121,7 +121,7 @@ quasi_pois_pi <- function(histdat,
                 stop("newdat and newoffset are both defined")
         }
 
-
+        # If newdat is defined
         if(is.null(newdat) == FALSE){
                 if(is.data.frame(newdat)==FALSE){
                         stop("newdat is not a data.frame")
@@ -148,6 +148,7 @@ quasi_pois_pi <- function(histdat,
                 }
         }
 
+        # If newoffset is defined
         if(is.null(newdat) & is.null(newoffset)==FALSE){
 
                 # newoffset must be integer or
@@ -174,9 +175,9 @@ quasi_pois_pi <- function(histdat,
         #-----------------------------------------------------------------------
         ### Model and parameters (phi_hat, lambda_hat)
 
-        model <- glm(hdat[,1]~1,
+        model <- glm(histdat[,1]~1,
                      family=quasipoisson(link="log"),
-                     offset = log(hdat[,2]))
+                     offset = log(histdat[,2]))
 
         # Historical lambda
         lambda_hat <- exp(unname(coef(model)))
@@ -185,9 +186,9 @@ quasi_pois_pi <- function(histdat,
         phi_hat<- summary(model)$dispersion
 
         # If historical phi <= 1, adjust it
-        if(lambda_hat <= 1){
+        if(phi_hat <= 1){
 
-                lambda_hat <- 1.001
+                phi_hat <- 1.001
 
                 warning("historical data is underdispersed (lambda_hat <= 1), \n  dispersionparameter was set to 1.001")
         }
@@ -315,7 +316,9 @@ quasi_pois_pi <- function(histdat,
         ### Calculate the prediction limits
 
         out <- qp_pi(newoffset = newoffset,
+                     newdat = newdat,
                      histoffset = histdat[,2],
+                     histdat = histdat,
                      lambda = lambda_hat,
                      phi = phi_hat,
                      q=quant_calib,
@@ -324,43 +327,6 @@ quasi_pois_pi <- function(histdat,
         return(out)
 }
 
-
-
-### TO DO
-# - insert a newdata argument in qp_pi
-# - Document the bootstrap and the bisection function
-# - Insert several checks in the bisection and coverage_prob functions
-# - Check for bugs (phi needs adjustment if smaller than 1)
-
-
-# hdat <- rqpois(n=30, lambda=10, phi=3, offset=NULL)
-# hdat
-#
-# fdat <- rqpois(n=1, lambda=10, phi=3, offset=NULL)
-# fdat
-#
-# quasi_pois_pi(histdat=hdat,
-#               # newoffset = c(1:3),
-#               alternative = "both",
-#               nboot=1000,
-#               newdat=fdat)
-
-#
-# test_pi <- qp_pi(newoffset=fdat[,2],
-#                  lambda=10,
-#                  phi=3,
-#                  histoffset=hdat[,2],
-#                  q=qnorm(1-0.05/2),
-#                  alternative="lower")
-#
-# boot_dat <- boot_predint(test_pi,
-#                          nboot=2)
-#
-# bdat <- boot_dat$bs_histdat[[1]]
-#
-# glm(bdat[,1]~1,
-#     family=quasipoisson(link="log"),
-#     offset = log(bdat[,2]))
 
 
 
