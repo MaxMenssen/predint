@@ -1,3 +1,32 @@
+test_that("class must be correct",{
+        expect_s3_class(quasi_pois_pi(histdat=data.frame(qp_dat1),
+                                      newoffset=c(1,1,1),
+                                      alternative="upper",
+                                      nboot=100,
+                                      traceplot=FALSE),
+                        class=c("predint", "quasiPoissonPI"))
+
+        # names of the output object have to be correct
+        names_pi <- names(quasi_pois_pi(histdat=data.frame(qp_dat1),
+                                        newoffset=c(1,1,1,1,1),
+                                        alternative="upper",
+                                        traceplot = FALSE,
+                                        nboot = 100))
+
+        expect_equal(names_pi, c("prediction",
+                                 "newoffset",
+                                 "newdat",
+                                 "histoffset",
+                                 "histdat",
+                                 "y_star_hat",
+                                 "pred_se",
+                                 "alternative",
+                                 "q",
+                                 "lambda",
+                                 "phi"))
+})
+
+
 test_that("newdat and newsize must be specified correctly", {
 
         # newdat and m are not specified
@@ -6,7 +35,7 @@ test_that("newdat and newsize must be specified correctly", {
         # newdat and m are both specified
         expect_error(quasi_pois_pi(histdat=data.frame(qp_dat1),
                                    newdat=data.frame(qp_dat2),
-                                   m=5))
+                                   newoffset=c(1,1,1,1,1)))
 
         # newdat is not a data frame
         expect_error(quasi_pois_pi(histdat=data.frame(qp_dat1),
@@ -17,7 +46,7 @@ test_that("histdat must be specified correctly", {
 
 
         expect_error(quasi_pois_pi(histdat=c(1,2,3),
-                                   m=5))
+                                   newoffset=c(1,1,1,1,1)))
 })
 
 
@@ -25,71 +54,10 @@ test_that("alternative", {
 
         # alternative is wrong
         expect_error(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                   m=5,
+                                   newoffset=c(1,1,1,1,1),
                                    alternative="opper"))
-
-        # Tests if the data frame is correct if alternative is specified correctly
-        ncol_upper <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                         m=5,
-                                         alternative="upper",
-                                         traceplot = FALSE,
-                                         nboot = 100))
-
-        ncol_lower <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                         m=5,
-                                         alternative="lower",
-                                         traceplot = FALSE,
-                                         nboot = 100))
-
-        ncol_both <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                        m=5,
-                                        alternative="both",
-                                        traceplot = FALSE,
-                                        nboot = 100))
-
-
-        expect_equal(ncol_upper, 5)
-        expect_equal(ncol_lower, 5)
-        expect_equal(ncol_both, 6)
-
-
-        # Tests if the data frame is correct if alternative is specified correctly
-        ncol_upper_nd <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                            newdat=data.frame(qp_dat2),
-                                            alternative="upper",
-                                            traceplot = FALSE,
-                                            nboot = 100))
-
-
-        ncol_lower_nd <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                            newdat=data.frame(qp_dat2),
-                                            alternative="lower",
-                                            traceplot = FALSE,
-                                            nboot = 100))
-
-        ncol_both_nd <- ncol(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                           newdat=data.frame(qp_dat2),
-                                           alternative="both",
-                                           traceplot = FALSE,
-                                           nboot = 100))
-
-        expect_equal(ncol_upper_nd, 6)
-        expect_equal(ncol_lower_nd, 6)
-        expect_equal(ncol_both_nd, 7)
 })
 
-
-test_that("new data must be integer", {
-
-        # m is not integer
-        expect_error(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                   m=3.3))
-
-        # newdat[,1] is not integer
-        expect_error(quasi_pois_pi(histdat=data.frame(qp_dat1),
-                                   newdat=data.frame(x=c(3.3, 4,5))))
-
-})
 
 
 
