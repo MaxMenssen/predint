@@ -13,6 +13,8 @@
 #' @param alternative either "both", "upper" or "lower".
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed.
+#' @param histdat additional argument to specivy the historical data set
+#' @param newdat additional argument to specivy the actual data set
 #'
 #' @details This function returns a simple uncalibrated prediction interval
 #' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
@@ -30,6 +32,8 @@
 #'
 #' @export
 #'
+#' @importFrom stats qnorm
+#'
 #' @examples
 #' # Prediction interval
 #' qp_pi(newoffset=c(3), lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05/2))
@@ -43,7 +47,9 @@ qp_pi <- function(newoffset,
                   lambda,
                   phi,
                   q=qnorm(1-0.05/2),
-                  alternative="both"){
+                  alternative="both",
+                  newdat=NULL,
+                  histdat=NULL){
 
         # histoffset must be numeric or integer
         if(!(is.numeric(histoffset) | is.integer(histoffset))){
@@ -54,11 +60,6 @@ qp_pi <- function(newoffset,
         if(!(is.numeric(newoffset) | is.integer(newoffset))){
                 stop("newoffset must be numeric or integer")
         }
-
-        # Simultanious PI are not recommended
-        # if(length(newoffset) > 1){
-        #         warning("length(newoffset) > 1: The calculation of simultanious PI that should cover more than one future observation is not recomendet with this method. Please use quasi_pois_pi(). ")
-        # }
 
         # lambda must be numeric or integer
         if(!(is.numeric(lambda) | is.integer(lambda))){
@@ -143,7 +144,9 @@ qp_pi <- function(newoffset,
 
         out_list <- list("prediction"=out,
                          "newoffset"=newoffset,
+                         "newdat"=newdat,
                          "histoffset"=histoffset,
+                         "histdat"=histdat,
                          "y_star_hat"=y_star_hat,
                          "pred_se"=pred_se,
                          "alternative"=alternative,
