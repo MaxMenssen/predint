@@ -40,13 +40,13 @@ negative-binomial distribution if the data structure is defined by the number
 of clusters only (which is the case here), rather than by a complex randomization structure.
 }
 \examples{
-set.seed(123)
-qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
-qp_dat1
+# set.seed(123)
+# qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
+# qp_dat1
 
-set.seed(123)
-qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
-qp_dat2
+# set.seed(123)
+# qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
+# qp_dat2
 
 
 }
