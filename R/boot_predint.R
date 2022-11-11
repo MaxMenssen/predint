@@ -7,7 +7,7 @@
 #' \code{boot_predint} is a helper function to bootstrap new data from the simple
 #' uncalibrated prediction intervals implemented in predint
 #'
-#' @param pred_int simple prediction interval
+#' @param pred_int simple prediction interval of class \code{c("quasiPoissonPI")}
 #' @param nboot number of bootstraps
 #'
 #' @return \code{boot_predint} returns an object of class \code{c("predint", "bootstrap")}
@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=qnorm(1-0.05/2), alternative="both")
+#' test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=1.96, alternative="both")
 #'
 #' test_boot <- boot_predint(pred_int = test_pi, nboot=5)
 #' test_boot
