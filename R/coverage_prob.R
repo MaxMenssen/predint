@@ -9,6 +9,38 @@ coverage_prob <- function(y_star_hat,
                           y_star,
                           alternative){
 
+        # y_star_hat has to be a list
+        if(!is.list(y_star_hat)){
+                stop("!is.list(y_star_hat)")
+        }
+
+        # pred_se has to be a list
+        if(!is.list(pred_se)){
+                stop("!is.list(pred_se)")
+        }
+
+        # y_star has to be a list
+        if(!is.list(y_star)){
+                stop("!is.list(y_star)")
+        }
+
+        # all three lists have to have the same length
+        if(length(unique(c(length(y_star_hat), length(pred_se), length(y_star)))) != 1){
+                stop("length(unique(c(length(y_star_hat), length(pred_se), length(y_star)))) != 1")
+        }
+
+        # q needs to be numeric
+        if(!is.numeric(q)){
+                stop("!is.numeric(q)")
+        }
+
+        # alternative must be defined
+        if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
+                stop("alternative must be either both, lower or upper")
+        }
+
+
+        #-----------------------------------------------------------------------
         # q times pred_se
         q_se_list <- mapply(FUN = function(x,y){x*y},
                             x = pred_se,
