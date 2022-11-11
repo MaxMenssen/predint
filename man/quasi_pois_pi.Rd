@@ -34,7 +34,7 @@ study.}
 \code{alternative} specifies if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
-\item{alpha}{defines the level of confidence (1-alpha)}
+\item{alpha}{defines the level of confidence (\eqn{1-\alpha})}
 
 \item{nboot}{number of bootstraps}
 
@@ -44,7 +44,7 @@ an upper or a lower prediction limit should be computed}
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: Plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 }
@@ -89,7 +89,7 @@ qp_dat2
 quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
 
 # Upper prediction bound for m=3 future observations
-quasi_pois_pi(histdat=data.frame(qp_dat1), m=3, alternative="upper", nboot=100)
+quasi_pois_pi(histdat=data.frame(qp_dat1), newoffset=c(1,1,1), alternative="upper", nboot=100)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
