@@ -26,30 +26,19 @@
 #' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #'
-#' @details This function returns a bootstrap calibrated prediction interval
-#' \deqn{[l,u] = \hat{y} \pm q \sqrt{\hat{var}(\hat{y} - y)}}
-#' with \eqn{\hat{y}} as the predicted future observation,
-#' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
-#' as the prediction error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a quantile of a multivariate normal distribution. \cr
+#' @details This function returns a bootstrap-calibrated prediction interval
 #'
-#' @return If \code{newdat} is specified: A \code{data.frame} that contains the future data,
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction error (pred_se), the prediction interval (lower and upper)
-#'  and a statement if the prediction interval covers the future observation (cover).
+#' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
 #'
-#'  If \code{m} is specified: A \code{data.frame} that contains the number of future observations (m)
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction error (pred_se) and the prediction interval (lower and upper).
+#' with \eqn{n^*_m} as the number of experimental units in the future clusters,
+#' \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
+#' historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
+#' \eqn{\hat{\phi}} as the estimate for the dispersion parameter
+#' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#'  If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
-#'  of a prediction interval.
-#'
-#'  If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
-#'  of a prediction interval.
-#'
-#'  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
-#'
+#' @return \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
+#' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
 #'
 #' @export
