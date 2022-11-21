@@ -113,7 +113,10 @@ quasi_bin_pi <- function(histdat,
 
         n <- nrow(histdat)
 
-        model <- glm(cbind(histdat[,1], histdat[,2]) ~ 1, family=quasibinomial(link="logit"), histdat)
+        model <- glm(cbind(histdat[,1], histdat[,2]) ~ 1,
+                     family=quasibinomial(link="logit"),
+                     histdat)
+
 
         #-----------------------------------------------------------------------
 
