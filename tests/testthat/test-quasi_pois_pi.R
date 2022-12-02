@@ -23,7 +23,8 @@ test_that("class must be correct",{
                                  "alternative",
                                  "q",
                                  "lambda",
-                                 "phi"))
+                                 "phi",
+                                 "algorithm"))
 })
 
 
