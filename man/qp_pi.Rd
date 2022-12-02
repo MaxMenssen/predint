@@ -12,7 +12,8 @@ qp_pi(
   q = qnorm(1 - 0.05/2),
   alternative = "both",
   newdat = NULL,
-  histdat = NULL
+  histdat = NULL,
+  algorithm = NULL
 )
 }
 \arguments{
@@ -33,6 +34,10 @@ an upper or a lower prediction limit should be computed.}
 \item{newdat}{additional argument to specivy the actual data set}
 
 \item{histdat}{additional argument to specivy the historical data set}
+
+\item{algorithm}{used to define the algorithm for calibration if called via
+\code{quasi_pois_pi}. This argument is not of interest for the calculation
+of simple uncalibrated intervals.}
 }
 \value{
 \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
@@ -57,10 +62,10 @@ application.  \cr
 }
 \examples{
 # Prediction interval
-qp_pi(newoffset=c(3), lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05/2))
+qp_pi(newoffset=3, lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05/2))
 
 # Upper prediction border
-qp_pi(newoffset=c(1), lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
+qp_pi(newoffset=1, lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
 
 
 }
