@@ -21,18 +21,29 @@
 #' @param n_bisec maximal number of bisection steps
 #' @param tol tolerance for the coverage probability in the bisection
 #' @param alpha defines the level of confidence (\eqn{1-\alpha})
+#' @param algorithm defines the algorithm to be used (see details).
+#'
+#'
 #' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
 #'
 #' @details This function is an implementation of the bisection algorithm of Menssen
-#' and Schaarschmidt 2021. It returns a calibrated coefficient \eqn{q^{calib}} for the
+#' and Schaarschmidt 2021, section 3.2.4. It returns a calibrated coefficient \eqn{q^{calib}} for the
 #' calculation of simultanious prediction intervals (or limits)
 #' \deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} se(Y_m - \hat{y}^*_m)}
 #' that cover all of \eqn{m=1, ... , M} future observations. \cr
 #' In this notation, \eqn{\hat{y}^*_m} are the expected future observation, \eqn{q^{calib}} are the
 #' calibrated coefficient and \eqn{se(Y_m - \hat{y}^*_m)}
 #' are the standard errors of the prediction. \cr
+#' If \code{algorithm} is set to "MS21" the original algorithm that yields one
+#' calibrated coefficient for the calculation of prediction intervals.
+#' "MS21mod" does the calibration for both interval borders separately
+#' \deqn{[l,u] = [\hat{y}^*_m - q^{calib}_l se(Y_m - \hat{y}^*_m),\text{  } \hat{y}^*_m + q^{calib}_u se(Y_m - \hat{y}^*_m)]}
+#' and hence,might be favored if the underlying distribution is skewed. \cr
+#' If lower or upper prediction limits are required, both algorithms yield the
+#' same results.
 #'
-#' @return This function returns \eqn{q^{calib}} in the equation above.
+#' @return For \code{algorithm="MS21"}, this function returns \eqn{q^{calib}} in the equation above. \cr
+#' For \code{algorithm="MS21mod"}, this function returns \eqn{q^{calib}_l} and \eqn{q^{calib}_u}.
 #'
 #' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
@@ -132,20 +143,9 @@ bisection <- function(y_star_hat,
                 warning("The tolerance is higher than 0.01: The bisection resulds might be imprecise.")
         }
 
-        if(!isTRUE(traceplot)){
-                if(!(traceplot==FALSE)){
-                        stop("traceplote needs to be TRUE or FALSE")
-                }
-        }
-
         #----------------------------------------------------------------------
-
         c_i <- vector()
         runval_i <- vector()
-
-        #----------------------------------------------------------------------
-
-        # Calculate coverages for start points
 
         cover_quant_min <- coverage_prob(y_star_hat = y_star_hat,
                                          pred_se = pred_se,
@@ -284,6 +284,7 @@ bisection <- function(y_star_hat,
                 abline(a=-tol, b=0, col="grey")
         }
         return(c)
+
 
 }
 
