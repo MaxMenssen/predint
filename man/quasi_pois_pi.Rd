@@ -15,7 +15,8 @@ quasi_pois_pi(
   delta_max = 10,
   tolerance = 0.001,
   traceplot = TRUE,
-  n_bisec = 30
+  n_bisec = 30,
+  algorithm = "MS21mod"
 )
 }
 \arguments{
@@ -47,9 +48,11 @@ an upper or a lower prediction limit should be computed}
 \item{traceplot}{if \code{TRUE}: Plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
+
+\item{algorithm}{either "MS21" or "MS21mod" (see details)}
 }
 \value{
-\code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
+\code{quasi_pois_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
 with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
@@ -57,7 +60,13 @@ quasi_pois_pi calculates bootstrap calibrated prediction intervals for Poisson
 data with constant overdispersion (quasi-Poisson).
 }
 \details{
-This function returns a bootstrap-calibrated prediction interval
+This function returns bootstrap-calibrated prediction intervals as well as
+lower or upper prediction limits.
+
+If \code{algorithm} is set to "MS21", both limits of the prediction interval
+are calibrated simultaniously using the algorithm described in Menssen and
+Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+as
 
 \deqn{[l,u] = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
@@ -67,6 +76,18 @@ with \eqn{n^*_m} as the number of experimental units in the future clusters,
 historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
 \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 and \eqn{n_h} as the number of experimental units per historical cluster. \cr
+
+If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+are calibrated independently from each other. The resulting prediction interval
+is given by
+
+\deqn{[l,u] = [n^*_m \hat{\lambda} - q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}, \text{   }
+n^*_m \hat{\lambda} + q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}]}
+
+Please note, that this modification does not affect the calibration procedure, if only
+prediction limits are of interest.
 }
 \examples{
 #' # Historical data
@@ -84,4 +105,9 @@ quasi_pois_pi(histdat=data.frame(qp_dat1), newoffset=c(1,1,1), alternative="uppe
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
 
+}
+\references{
+Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica,
+ \doi{10.1111/stan.12260}
 }
