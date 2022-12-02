@@ -25,8 +25,15 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
+#' @param algorithm either "MS21" or "MS21mod" (see details)
 #'
-#' @details This function returns a bootstrap-calibrated prediction interval
+#' @details This function returns bootstrap-calibrated prediction intervals as well as
+#' lower or upper prediction limits.
+#'
+#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' are calibrated simultaniously using the algorithm described in Menssen and
+#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' as
 #'
 #' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 #' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
@@ -37,9 +44,25 @@
 #' \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#' @return \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
+#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' are calibrated independently from each other. The resulting prediction interval
+#' is given by
+#'
+#' \deqn{[l,u] = [n^*_m \hat{\lambda} - q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}, \text{   }
+#' n^*_m \hat{\lambda} + q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}]}
+#'
+#' Please note, that this modification does not affect the calibration procedure, if only
+#' prediction limits are of interest.
+#'
+#' @return \code{quasi_pois_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
+#'
+#' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
 #'
 #' @export
 #'
@@ -71,7 +94,8 @@ quasi_pois_pi <- function(histdat,
                           delta_max=10,
                           tolerance = 1e-3,
                           traceplot=TRUE,
-                          n_bisec=30){
+                          n_bisec=30,
+                          algorithm="MS21mod"){
 
 
 
@@ -156,6 +180,13 @@ quasi_pois_pi <- function(histdat,
                 stop("alternative must be either both, lower or upper")
         }
 
+        # algorithm must be set properly
+        if(algorithm != "MS21"){
+                if(algorithm != "MS21mod"){
+                        stop("algoritm must be either MS21 of MS21mod")
+                }
+        }
+
         #-----------------------------------------------------------------------
 
         ### Historical numbers of observations
@@ -179,7 +210,7 @@ quasi_pois_pi <- function(histdat,
 
                 phi_hat <- 1.001
 
-                warning("historical data is underdispersed (lambda_hat <= 1), \n  dispersionparameter was set to 1.001")
+                warning("historical data is underdispersed (phi_hat <= 1), \n  dispersionparameter was set to 1.001")
         }
 
         #-----------------------------------------------------------------------
@@ -286,8 +317,9 @@ quasi_pois_pi <- function(histdat,
 
         #-----------------------------------------------------------------------
 
-        # Calculation of the calibrated quantile
+        ### Calculation of the calibrated quantile
 
+        # Calibration for of prediction limits
         quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                  pred_se = pred_se_m_list,
                                  y_star = bs_y_star,
@@ -299,6 +331,54 @@ quasi_pois_pi <- function(histdat,
                                  alpha = alpha,
                                  traceplot=traceplot)
 
+        # Calibration for  prediction intervals
+        if(alternative=="both"){
+
+                # Direct implementation of M and S 2021
+                if(algorithm=="MS21"){
+                        quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
+                                                 pred_se = pred_se_m_list,
+                                                 y_star = bs_y_star,
+                                                 alternative = alternative,
+                                                 quant_min = delta_min,
+                                                 quant_max = delta_max,
+                                                 n_bisec = n_bisec,
+                                                 tol = tolerance,
+                                                 alpha = alpha,
+                                                 traceplot=traceplot)
+                }
+
+                # Modified version of M and S 21
+                if(algorithm=="MS21mod"){
+                        quant_calib_lower <- bisection(y_star_hat = y_star_hat_m_list,
+                                                 pred_se = pred_se_m_list,
+                                                 y_star = bs_y_star,
+                                                 alternative = "lower",
+                                                 quant_min = delta_min,
+                                                 quant_max = delta_max,
+                                                 n_bisec = n_bisec,
+                                                 tol = tolerance,
+                                                 alpha = alpha/2,
+                                                 traceplot=traceplot)
+
+                        quant_calib_upper <- bisection(y_star_hat = y_star_hat_m_list,
+                                                       pred_se = pred_se_m_list,
+                                                       y_star = bs_y_star,
+                                                       alternative = "upper",
+                                                       quant_min = delta_min,
+                                                       quant_max = delta_max,
+                                                       n_bisec = n_bisec,
+                                                       tol = tolerance,
+                                                       alpha = alpha/2,
+                                                       traceplot=traceplot)
+
+                        quant_calib <- c(quant_calib_lower, quant_calib_upper)
+                }
+
+        }
+
+        # print(quant_calib)
+        # stop(quant_calib)
 
         #-----------------------------------------------------------------------
 
@@ -311,7 +391,8 @@ quasi_pois_pi <- function(histdat,
                      lambda = lambda_hat,
                      phi = phi_hat,
                      q=quant_calib,
-                     alternative=alternative)
+                     alternative=alternative,
+                     algorithm=algorithm)
 
         return(out)
 }
