@@ -15,6 +15,9 @@
 #' an upper or a lower prediction limit should be computed.
 #' @param histdat additional argument to specivy the historical data set
 #' @param newdat additional argument to specivy the actual data set
+#' @param algorithm used to define the algorithm for calibration if called via
+#' \code{quasi_pois_pi}. This argument is not of interest for the calculation
+#' of simple uncalibrated intervals.
 #'
 #' @details This function returns a simple uncalibrated prediction interval
 #' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
@@ -36,10 +39,10 @@
 #'
 #' @examples
 #' # Prediction interval
-#' qp_pi(newoffset=c(3), lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05/2))
+#' qp_pi(newoffset=3, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05/2))
 #'
 #' # Upper prediction border
-#' qp_pi(newoffset=c(1), lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
+#' qp_pi(newoffset=1, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
 #'
 #'
 qp_pi <- function(newoffset,
@@ -49,7 +52,8 @@ qp_pi <- function(newoffset,
                   q=qnorm(1-0.05/2),
                   alternative="both",
                   newdat=NULL,
-                  histdat=NULL){
+                  histdat=NULL,
+                  algorithm=NULL){
 
         # histoffset must be numeric or integer
         if(!(is.numeric(histoffset) | is.integer(histoffset))){
@@ -71,30 +75,27 @@ qp_pi <- function(newoffset,
                 stop("phi must be numeric or integer")
         }
 
-        # Phi must be bigger than 1
-        if(phi<=1){
-
-                stop("phi<=1")
-        }
-
-        # # histn must be one number
-        # if(length(histn) != 1){
-        #         stop("length(histn) != 1")
-        # }
-        #
-        # # histn must be numeric or integer
-        # if(!(is.numeric(histn) | is.integer(histn))){
-        #         stop("histn must be numeric or integer")
-        # }
-
         # q must be numeric or integer
         if(!(is.numeric(q) | is.integer(q))){
                 stop("q must be numeric or integer")
         }
 
+        if(length(q) > 2){
+                stop("length(q) > 2")
+        }
+
         # alternative must be defined
         if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
                 stop("alternative must be either both, lower or upper")
+        }
+
+        # check algorithm
+        if(!is.null(algorithm)){
+                if(algorithm != "MS21"){
+                        if(algorithm != "MS21mod"){
+                                stop("algoritm must be either NULL, MS21 of MS21mod")
+                        }
+                }
         }
 
         #-----------------------------------------------------------------------
@@ -119,11 +120,22 @@ qp_pi <- function(newoffset,
 
         if(alternative=="both"){
 
-                lower <- y_star_hat - q * pred_se
-                upper <- y_star_hat + q * pred_se
+                if(length(q) ==1){
+                        lower <- y_star_hat - q * pred_se
+                        upper <- y_star_hat + q * pred_se
 
-                out <- data.frame(lower,
-                                  upper)
+                        out <- data.frame(lower,
+                                          upper)
+                }
+
+                if(length(q) ==2){
+                        lower <- y_star_hat - q[1] * pred_se
+                        upper <- y_star_hat + q[2] * pred_se
+
+                        out <- data.frame(lower,
+                                          upper)
+                }
+
         }
 
         if(alternative=="lower"){
@@ -152,7 +164,8 @@ qp_pi <- function(newoffset,
                          "alternative"=alternative,
                          "q"=q,
                          "lambda"=lambda,
-                         "phi"=phi)
+                         "phi"=phi,
+                         "algorithm"=algorithm)
 
         out_s3 <- structure(out_list,
                             class=c("predint", "quasiPoissonPI"))
