@@ -15,7 +15,8 @@ beta_bin_pi(
   delta_max = 10,
   tolerance = 0.001,
   traceplot = TRUE,
-  n_bisec = 30
+  n_bisec = 30,
+  algorithm = "MS21mod"
 )
 }
 \arguments{
@@ -44,46 +45,46 @@ should be computed}
 \item{traceplot}{plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
+
+\item{algorithm}{either "MS21" or "MS21mod" (see details)}
 }
 \value{
-If \code{newdat} is specified: A \code{data.frame} that contains the future data,
- the historical proportion (hist_prob),
- the calibrated coefficient (quant_calib),
- the prediction standard error (pred_se),
- the prediction interval (lower and upper)
- and a statement if the prediction interval covers the future observation (cover).
-
- If \code{newsize} is specified: A \code{data.frame} that contains the future cluster sizes (total)
- the historical proportion (hist_prob),
- the calibrated coefficient (quant_calib),
- the prediction standard error (pred_se)
- and the prediction interval (lower and upper).
-
- If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
- of a prediction interval.
-
- If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
- of a prediction interval.
-
- If traceplot=TRUE, a graphical overview about the bisection process is given.
+\code{quasi_bin_pi} returns an object of class \code{c("predint", "betaBinomialPI")}
+with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
 beta_bin_pi calculates bootstrap calibrated prediction intervals for
 beta-binomial data
 }
 \details{
-This function returns bootstrap calibrated prediction intervals
-\deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{\hat{var}(\hat{y}_m - y_m)}}
-with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M}
-future clusters, \eqn{y_m} as the observed future number of successes,
-\eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}} as the prediction standard error and \eqn{q}
-as the bootstrap calibrated coefficient that approximates a quantile from a
-multivariate normal distribution. \cr
-Please note that the predicted future number of successes is based on the future
-cluster size \eqn{n_m} and the success probability estimated from the historical
-data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the
-prediction intervals \eqn{[l,u]_m} are different for each of the \eqn{m} future clusters,
-if their size is not the same.
+This function returns bootstrap-calibrated prediction intervals as well as
+lower or upper prediction limits.
+
+If \code{algorithm} is set to "MS21", both limits of the prediction interval
+are calibrated simultaniously using the algorithm described in Menssen and
+Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+as
+
+\deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
+[\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}}
+
+with \eqn{n^*_m} as the number of experimental units in the future clusters,
+\eqn{\hat{\pi}} as the estimate for the binomial proportion obtained from the
+historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
+ \eqn{\hat{\rho}} as the estimate for the intra class correlation (Lui et al. 2000)
+and \eqn{n_h} as the number of experimental units per historical cluster. \cr
+
+If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+are calibrated independently from each other. The resulting prediction interval
+is given by
+
+\deqn{[l,u] = [n^*_m \hat{\pi} - q^{calib}_l \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
+[\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}, \\
+n^*_m \hat{\pi} + q^{calib}_u \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
+[\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}]}
+
+Please note, that this modification does not affect the calibration procedure, if only
+prediction limits are of interest.
 }
 \examples{
 # Historical data
@@ -103,4 +104,9 @@ beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=1
 # of the example. For a valid analysis set nboot=10000.
 
 
+}
+\references{
+Lui, K.-J., Mayer, J.A. and Eckhardt, L: Confidence intervals for the risk ratio
+under cluster sampling based on the beta-binomial model. Statistics in Medicine.2000;19:2933-2942.
+\doi{10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
 }
