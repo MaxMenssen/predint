@@ -5,25 +5,25 @@
 #' calculates simple uncalibrated prediction intervals for Poisson
 #' data with constant overdispersion (quasi-Poisson).
 #'
-#' @param histoffset number of experimental units in the historical clusters.
-#' @param newoffset number of experimental units in the future clusters.
-#' @param lambda overall Poisson mean.
+#' @param histoffset number of experimental units in the historical clusters
+#' @param newoffset number of experimental units in the future clusters
+#' @param lambda overall Poisson mean
 #' @param phi dispersion parameter
 #' @param q quantile used for interval calculation
-#' @param alternative either "both", "upper" or "lower".
+#' @param alternative either "both", "upper" or "lower"
 #' \code{alternative} specifies, if a prediction interval or
-#' an upper or a lower prediction limit should be computed.
+#' an upper or a lower prediction limit should be computed
 #' @param histdat additional argument to specivy the historical data set
 #' @param newdat additional argument to specivy the actual data set
 #' @param algorithm used to define the algorithm for calibration if called via
 #' \code{quasi_pois_pi}. This argument is not of interest for the calculation
-#' of simple uncalibrated intervals.
+#' of simple uncalibrated intervals
 #'
 #' @details This function returns a simple uncalibrated prediction interval
-#' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 #' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
 #'
-#' with \eqn{n^*_m} as the number of experimental units in the future clusters,
+#' with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M} future clusters,
 #' \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
 #' historical data, \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr

@@ -17,19 +17,19 @@ qp_pi(
 )
 }
 \arguments{
-\item{newoffset}{number of experimental units in the future clusters.}
+\item{newoffset}{number of experimental units in the future clusters}
 
-\item{histoffset}{number of experimental units in the historical clusters.}
+\item{histoffset}{number of experimental units in the historical clusters}
 
-\item{lambda}{overall Poisson mean.}
+\item{lambda}{overall Poisson mean}
 
 \item{phi}{dispersion parameter}
 
 \item{q}{quantile used for interval calculation}
 
-\item{alternative}{either "both", "upper" or "lower".
+\item{alternative}{either "both", "upper" or "lower"
 \code{alternative} specifies, if a prediction interval or
-an upper or a lower prediction limit should be computed.}
+an upper or a lower prediction limit should be computed}
 
 \item{newdat}{additional argument to specivy the actual data set}
 
@@ -37,7 +37,7 @@ an upper or a lower prediction limit should be computed.}
 
 \item{algorithm}{used to define the algorithm for calibration if called via
 \code{quasi_pois_pi}. This argument is not of interest for the calculation
-of simple uncalibrated intervals.}
+of simple uncalibrated intervals}
 }
 \value{
 \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
@@ -49,10 +49,10 @@ data with constant overdispersion (quasi-Poisson).
 }
 \details{
 This function returns a simple uncalibrated prediction interval
-\deqn{[l,u] = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+\deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
 
-with \eqn{n^*_m} as the number of experimental units in the future clusters,
+with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M} future clusters,
 \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
 historical data, \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 and \eqn{n_h} as the number of experimental units per historical cluster. \cr
@@ -62,10 +62,10 @@ application.  \cr
 }
 \examples{
 # Prediction interval
-qp_pi(newoffset=3, lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05/2))
+qp_pi(newoffset=3, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05/2))
 
 # Upper prediction border
-qp_pi(newoffset=1, lambda=3, ph=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
+qp_pi(newoffset=1, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
 
 
 }
