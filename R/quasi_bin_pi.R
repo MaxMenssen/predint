@@ -193,7 +193,7 @@ quasi_bin_pi <- function(histdat,
         hist_prob <- exp(unname(coef(model)))/(1+exp(unname(coef(model))))
 
         #-----------------------------------------------------------------------
-        ### Calculate the uncalibrated PI
+        ### Calculate the uncalibrated PI (only as a base for bootstrap)
 
         # If newdat is given
         if(!is.null(newdat)){
@@ -387,10 +387,6 @@ quasi_bin_pi <- function(histdat,
                 }
 
         }
-
-        print(quant_calib)
-
-        #-----------------------------------------------------------------------
 
         #-----------------------------------------------------------------------
 
