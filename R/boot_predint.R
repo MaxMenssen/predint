@@ -29,7 +29,9 @@ boot_predint <- function(pred_int, nboot){
                 stop("input object is not of class predint")
         }
 
-        # If the PI is quasi Poisson
+        #-----------------------------------------------------------------------
+        ### If the PI is quasi Poisson
+
         if(inherits(pred_int, "quasiPoissonPI")){
 
                 # get the future offsets
@@ -70,7 +72,51 @@ boot_predint <- function(pred_int, nboot){
                                     class=c("predint", "bootstrap"))
 
                 return(out_s3)
+        }
 
+        #-----------------------------------------------------------------------
+        ### If the PI is quasi binomial
+
+        if(inherits(pred_int, "quasiBinomialPI")){
+
+                # get the future cluster size
+                newsize <- pred_int$newsize
+
+                # get the historical cluster size
+                histsize <- pred_int$histsize
+
+                # get the proportion
+                pi_hat <- pred_int$pi
+
+                # Get the dispersion parameter
+                phi_hat <- pred_int$phi
+
+                # Sampling of future data
+                bs_futdat <- replicate(n=nboot,
+                                       rqbinom(n=length(newsize),
+                                               size=newsize,
+                                               prob=pi_hat,
+                                               phi=phi_hat),
+                                       simplify = FALSE)
+
+
+                # Sampling of historical data
+                bs_histdat <- replicate(n=nboot,
+                                        rqbinom(n=length(histsize),
+                                                size=histsize,
+                                                prob=pi_hat,
+                                                phi=phi_hat),
+                                        simplify = FALSE)
+
+                # Define output object
+                out_list <- list(bs_futdat=bs_futdat,
+                                 bs_histdat=bs_histdat)
+
+                # Set class for output object
+                out_s3 <- structure(out_list,
+                                    class=c("predint", "bootstrap"))
+
+                return(out_s3)
         }
 }
 
@@ -90,5 +136,9 @@ boot_predint <- function(pred_int, nboot){
 
 
 
-
-
+# test_pi <- qb_pi(newsize=c(50, 20), pi=0.3, phi=3, histsize=c(50, 50, 30), q=qnorm(1-0.05/2))
+# test_boot <- boot_predint(pred_int = test_pi,
+#                           nboot=5)
+# test_boot
+# test_boot$bs_futdat
+# test_boot$bs_histdat
