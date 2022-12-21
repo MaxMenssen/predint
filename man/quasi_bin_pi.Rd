@@ -15,7 +15,8 @@ quasi_bin_pi(
   delta_max = 10,
   tolerance = 0.001,
   traceplot = TRUE,
-  n_bisec = 30
+  n_bisec = 30,
+  algorithm = "MS21mod"
 )
 }
 \arguments{
@@ -42,44 +43,46 @@ should be computed}
 \item{traceplot}{plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
+
+\item{algorithm}{either "MS21" or "MS21mod" (see details)}
 }
 \value{
-If \code{newdat} is specified: A \code{data.frame} that contains the future data,
- the the historical proportion (hist_prob),
- the calibrated coefficient (quant_calib),
- the prediction standard error (pred_se),
- the prediction interval (lower and upper)
- and a statement if the prediction interval covers the future observation (cover).
-
- If \code{newsize} is specified: A \code{data.frame} that contains the future cluster sizes (total)
- the the historical proportion (hist_prob),
- the calibrated coefficient (quant_calib),
- the prediction standard error (pred_se)
- and the prediction interval (lower and upper).
-
- If \code{alternative} is set to "lower": Lower prediction bounds are computed instead
- of a prediction interval.
-
- If \code{alternative} is set to "upper": Upper prediction bounds are computed instead
- of a prediction interval.
-
- If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
+\code{quasi_bin_pi} returns an object of class \code{c("predint", "quasiBinomialPI")}
+with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
 quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
 data with constant overdispersion (quasi-binomial assumption).
 }
 \details{
-This function returns bootstrap calibrated prediction intervals
-\deqn{[l,u]_m = \hat{y}_m \pm q \sqrt{\hat{var}(\hat{y}_m - y_m)}}
-with \eqn{\hat{y}_m} as the predicted future number of successes for \eqn{m=1,...,M} future clusters,
-\eqn{y_m} as the observed future number of successes, \eqn{\sqrt{\hat{var}(\hat{y}_m - y_m)}}
-as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-approximates a quantile from a multivariate normal distribution. \cr
-Please note that the predicted future number of successes is based on the future
-cluster size \eqn{n_m} and the success probability estimated from the historical
-data \eqn{\pi^{hist}} such that \eqn{\hat{y}_m=\pi^{hist} n_m}. Hence, the prediction intervals are
-different for each of the \eqn{m} future clusters, if their size is not the same.
+This function returns bootstrap-calibrated prediction intervals as well as
+lower or upper prediction limits.
+
+If \code{algorithm} is set to "MS21", both limits of the prediction interval
+are calibrated simultaniously using the algorithm described in Menssen and
+Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+as
+
+\deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
+\frac{n^*_m}{\sum_h n_h})}}
+
+with \eqn{n^*_m} as the number of experimental units in the future clusters,
+\eqn{\hat{\pi}} as the estimate for the binomial proportion obtained from the
+historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
+ \eqn{\hat{\phi}} as the estimate for the dispersion parameter
+and \eqn{n_h} as the number of experimental units per historical cluster. \cr
+
+If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+are calibrated independently from each other. The resulting prediction interval
+is given by
+
+\deqn{[l,u] = [n^*_m \hat{\pi} - q^{calib}_l \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
+\frac{n^*_m}{\sum_h n_h})},
+n^*_m \hat{\pi} + q^{calib}_u \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
+\frac{n^*_m}{\sum_h n_h})}]}
+
+Please note, that this modification does not affect the calibration procedure, if only
+prediction limits are of interest.
 }
 \examples{
 # Prediction interval using qb_dat2 as future data
