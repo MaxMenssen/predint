@@ -31,19 +31,19 @@ qp_pi(
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
-\item{newdat}{additional argument to specivy the actual data set}
+\item{newdat}{additional argument to specify the actual data set}
 
-\item{histdat}{additional argument to specivy the historical data set}
+\item{histdat}{additional argument to specify the historical data set}
 
 \item{algorithm}{used to define the algorithm for calibration if called via
-\code{quasi_pois_pi}. This argument is not of interest for the calculation
+\code{quasi_pois_pi()}. This argument is not of interest for the calculation
 of simple uncalibrated intervals}
 }
 \value{
 \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
 }
 \description{
-\code{qp_pi()} is a helper fuction that is called in \code{quasi_pois_pi()}. It
+\code{qp_pi()} is a helper function that is called in \code{quasi_pois_pi()}. It
 calculates simple uncalibrated prediction intervals for Poisson
 data with constant overdispersion (quasi-Poisson).
 }

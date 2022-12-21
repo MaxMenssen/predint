@@ -1,7 +1,7 @@
 
 #' Simple uncalibrated prediction intervals for quasi-Poisson data
 #'
-#' \code{qp_pi()} is a helper fuction that is called in \code{quasi_pois_pi()}. It
+#' \code{qp_pi()} is a helper function that is called in \code{quasi_pois_pi()}. It
 #' calculates simple uncalibrated prediction intervals for Poisson
 #' data with constant overdispersion (quasi-Poisson).
 #'
@@ -13,10 +13,10 @@
 #' @param alternative either "both", "upper" or "lower"
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
-#' @param histdat additional argument to specivy the historical data set
-#' @param newdat additional argument to specivy the actual data set
+#' @param histdat additional argument to specify the historical data set
+#' @param newdat additional argument to specify the actual data set
 #' @param algorithm used to define the algorithm for calibration if called via
-#' \code{quasi_pois_pi}. This argument is not of interest for the calculation
+#' \code{quasi_pois_pi()}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals
 #'
 #' @details This function returns a simple uncalibrated prediction interval
