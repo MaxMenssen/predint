@@ -35,7 +35,7 @@
 #' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
-#' \deqn{[l,u] = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 #' n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
 #'
 #' with \eqn{n^*_m} as the number of experimental units in the future clusters,
@@ -319,17 +319,36 @@ quasi_pois_pi <- function(histdat,
 
         ### Calculation of the calibrated quantile
 
-        # Calibration for of prediction limits
-        quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
-                                 pred_se = pred_se_m_list,
-                                 y_star = bs_y_star,
-                                 alternative = alternative,
-                                 quant_min = delta_min,
-                                 quant_max = delta_max,
-                                 n_bisec = n_bisec,
-                                 tol = tolerance,
-                                 alpha = alpha,
-                                 traceplot=traceplot)
+        # Calibration for of lower prediction limits
+        if(alternative=="lower"){
+
+                quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
+                                         pred_se = pred_se_m_list,
+                                         y_star = bs_y_star,
+                                         alternative = alternative,
+                                         quant_min = delta_min,
+                                         quant_max = delta_max,
+                                         n_bisec = n_bisec,
+                                         tol = tolerance,
+                                         alpha = alpha,
+                                         traceplot=traceplot)
+        }
+
+        # Calibration for of upper prediction limits
+        if(alternative=="upper"){
+
+                quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
+                                         pred_se = pred_se_m_list,
+                                         y_star = bs_y_star,
+                                         alternative = alternative,
+                                         quant_min = delta_min,
+                                         quant_max = delta_max,
+                                         n_bisec = n_bisec,
+                                         tol = tolerance,
+                                         alpha = alpha,
+                                         traceplot=traceplot)
+        }
+
 
         # Calibration for  prediction intervals
         if(alternative=="both"){
