@@ -68,7 +68,7 @@ are calibrated simultaniously using the algorithm described in Menssen and
 Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
 as
 
-\deqn{[l,u] = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+\deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
 
 with \eqn{n^*_m} as the number of experimental units in the future clusters,
