@@ -1,5 +1,9 @@
 #' Simple uncalibrated prediction intervals for quasi-binomial data
 #'
+#' \code{qb_pi()} is a helper function that is called in \code{quasi_bin_pi()}. It
+#' calculates simple uncalibrated prediction intervals for binomial
+#' data with constant overdispersion (quasi-binomial).
+#'
 #' @param newsize number of experimental units in the historical clusters.
 #' @param histsize number of experimental units in the future clusters.
 #' @param pi binomial proportion
@@ -8,14 +12,14 @@
 #' @param alternative either "both", "upper" or "lower"
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
-#' @param histdat additional argument to specivy the historical data set
-#' @param newdat additional argument to specivy the actual data set
+#' @param histdat additional argument to specify the historical data set
+#' @param newdat additional argument to specify the actual data set
 #' @param algorithm used to define the algorithm for calibration if called via
-#' \code{quasi_pois_pi}. This argument is not of interest for the calculation
+#' \code{quasi_bin_pi}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals
 #'
 #' @details This function returns a simple uncalibrated prediction interval
-#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
+#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q \sqrt{ \hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) (1+
 #' \frac{n^*_m}{\sum_h n_h})}}
 #'
 #' with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M} future clusters,
