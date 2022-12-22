@@ -30,5 +30,6 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 + To do:
         beta_bin_pi() to s3 (done)
         lmer_pi.... to s3
+          lmer_pi_futmat() is s3 now
         write generic plot and summary functions
         further checks
