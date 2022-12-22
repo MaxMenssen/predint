@@ -18,16 +18,35 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
+#' @param algorithm either "MS21" or "MS21mod" (see details)
 #'
-#' @details This function returns a bootstrap calibrated prediction interval
-#' \deqn{[l,u] = \hat{y} \pm q \sqrt{\hat{var}(\hat{y} - y)}}
-#' with \eqn{\hat{y}} as the predicted future observation,
-#' \eqn{y} as the observed future observations, \eqn{\sqrt{\hat{var}(\hat{y} - y)}}
-#' as the prediction standard error and \eqn{q} as the bootstrap calibrated coefficient that
-#' approximates a quantile of the multivariate t-distribution. \cr
-#' Please note that this function relies on linear random effects models that are
-#' fitted with lmer() from the lme4 package. Random effects have to be specified as
-#' \code{(1|random_effect)}.
+#'
+#' @details This function returns bootstrap-calibrated prediction intervals as well as
+#' lower or upper prediction limits.
+#'
+#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' are calibrated simultaniously using the algorithm described in Menssen and
+#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' as
+#'
+#' \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
+#' }^2_c}}
+#'
+#' with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
+#' \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
+#' as the residual variance and \eqn{q^{calib}} obtained from the random
+#' effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
+#' coefficient used for interval calculation. \cr
+#'
+#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' are calibrated independently from each other. The resulting prediction interval
+#' is given by
+#'
+#' \deqn{[l,u] = [\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
+#' \hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}].}
+#'
+#' Please note, that this modification does not affect the calibration procedure, if only
+#' prediction limits are of interest. \cr
 #'
 #' If \code{newdat} is defined, the bootstrapped future observations used for the calibration
 #' process mimic the structure of the data set provided via \code{newdat}. The
@@ -43,26 +62,8 @@
 #' bootstrap samples that mimic the future data as described above.
 #'
 #'
-#' @return If \code{newdat} is a  \code{data.frame}: A \code{data.frame} that contains the future data,
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction standard error (pred_se), the prediction interval (lower and upper)
-#'  and a statement if the prediction interval covers the future observation (cover).
-#'
-#'  If \code{newdat=1}: A \code{data.frame} that contains a statement that m=1,
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
-#'
-#'  If \code{futmat_list} is defined: A \code{data.frame} that contains the number of future observations (m),
-#'  the historical mean (hist_mean), the calibrated coefficient (quant_calib),
-#'  the prediction standard error (pred_se) and the prediction interval (lower and upper).
-#'
-#'  If \code{alternative} is set to "lower": Lower prediction limits are computed instead
-#'  of a prediction interval.
-#'
-#'  If \code{alternative} is set to "upper": Upper prediction limits are computed instead
-#'  of a prediction interval.
-#'
-#'  If \code{traceplot=TRUE}, a graphical overview about the bisection process is given.
+#' @return \code{lmer_pi_futmat()} returns an object of class \code{c("predint", "normalPI")}
+#' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
 #' @export
 #'
@@ -72,7 +73,7 @@
 #' @importFrom methods is
 #'
 #'
-#' @references Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M
+#' @references Menssen, M., Schaarschmidt, F. (2021): Prediction intervals for all of M
 #' future observations based on linear random effects models. Statistica Neerlandica.
 #' \doi{10.1111/stan.12260}
 #'
@@ -120,7 +121,7 @@
 #' fml
 #'
 #' # Please note, that the design matrix for the interaction term a:b is also
-#' # provided even there is no replication for b, since it is believed that
+#' # provided even there is no replication for b, since it is assumed that
 #' # both, the historical and the future data descent from the same data generating
 #' # process.
 #'
@@ -142,7 +143,8 @@ lmer_pi_futmat <- function(model,
                            delta_max=10,
                            tolerance = 1e-3,
                            traceplot=TRUE,
-                           n_bisec=30){
+                           n_bisec=30,
+                           algorithm="MS21"){
 
         # Model must be of class lmerMod
         if(!is(model, "lmerMod")){
@@ -218,6 +220,13 @@ lmer_pi_futmat <- function(model,
 
         #-----------------------------------------------------------------------
 
+        # algorithm must be set properly
+        if(algorithm != "MS21"){
+                if(algorithm != "MS21mod"){
+                        stop("algoritm must be either MS21 of MS21mod")
+                }
+        }
+
         # alternative must be defined
         if(isTRUE(alternative!="both" && alternative!="lower" && alternative!="upper")){
                 stop("alternative must be either both, lower or upper")
@@ -228,9 +237,9 @@ lmer_pi_futmat <- function(model,
         # Extraction of the intercept
         mu_hat <- unname(fixef(model))
 
-        # SE for the future observation
-        se_y_star_hat <- sqrt(sum(c(as.vector(vcov(model)),
-                                    data.frame(VarCorr(model))$vcov)))
+        # SE for the prediction
+        pred_se_hat <- sqrt(sum(c(as.vector(vcov(model)),
+                                  data.frame(VarCorr(model))$vcov)))
 
         #----------------------------------------------------------------------
         ### Bootstrapping of future observations
@@ -264,8 +273,12 @@ lmer_pi_futmat <- function(model,
 
                         }
 
+
                         # List with future observations (y_star)
                         ystar_list <- lapply(bsdat_list, ystar_fun)
+
+                        # define number of fut. observations
+                        m_fut <- length(unique(unlist(ystar_list[[1]])))
 
                 }
 
@@ -327,6 +340,9 @@ lmer_pi_futmat <- function(model,
                                   "y_star_max"=y_star_max)
 
                         }
+
+                        # define number of fut. observations
+                        m_fut <- length(bsdat_list[[1]])
 
                         # List with future observations (y_star)
                         ystar_list <- lapply(bsdat_list, ystar_fun)
@@ -411,6 +427,9 @@ lmer_pi_futmat <- function(model,
 
                         }
 
+                        # define number of fut. observations
+                        m_fut <- length(bsdat_list[[1]])
+
                         # List with future observations (y_star)
                         ystar_list <- lapply(bsdat_list, ystar_fun)
                 }
@@ -442,388 +461,117 @@ lmer_pi_futmat <- function(model,
         # Bootstrapped mu
         bs_mu<- as.list(as.vector(bs_params$bs_mu))
 
-        #----------------------------------------------------------------------
-        ### Function for coverage
+        #-----------------------------------------------------------------------
 
-        coverfun <- function(quant){
+        ### Calculation of the calibrated quantile
 
-                pi_list <- vector("list", length=nrow(bs_params))
+        if(alternative=="lower"){
 
-                if(alternative=="both"){
-                        for(b in 1:nrow(bs_params)){
+                quant_calib <- bisection(y_star_hat = bs_mu,
+                                         pred_se = bs_se,
+                                         y_star = ystar_list,
+                                         alternative = alternative,
+                                         quant_min = delta_min,
+                                         quant_max = delta_max,
+                                         n_bisec = n_bisec,
+                                         tol = tolerance,
+                                         alpha = alpha,
+                                         traceplot=traceplot)
+        }
 
-                                lower <- bs_params$bs_mu[b]-quant*bs_params$bs_se_y_star[b]
-                                upper <- bs_params$bs_mu[b]+quant*bs_params$bs_se_y_star[b]
+        # Calibration for of upper prediction limits
+        if(alternative=="upper"){
 
-                                pi_list[[b]] <- c("lower"=lower, "upper"=upper, "quant"=quant)
-
-                        }
-
-                        # Check if both lists have the same length
-                        if(length(pi_list) != length(ystar_list)){
-                                stop("length(pi_list) != length(ystar_list)")
-                        }
-
-                        # Length of the lists
-                        K <- length(pi_list)
-
-                        # Vector for the Coverage
-                        cover_vec <- logical(length=K)
-
-                        for(k in 1:K){
-                                cover_vec[k] <- pi_list[[k]]["lower"] < ystar_list[[k]][1] && pi_list[[k]]["upper"] > ystar_list[[k]][2]
-                        }
-
-                        # Coverage probabilities as the mean of the 1/0 vector
-                        coverage <- mean(as.integer(cover_vec))
-
-                }
-
-                else if(alternative=="lower"){
-                        for(b in 1:nrow(bs_params)){
-
-                                lower <- bs_params$bs_mu[b]-quant*bs_params$bs_se_y_star[b]
-
-                                pi_list[[b]] <- c("lower"=lower, "quant"=quant)
-
-                        }
-
-                        # Check if both lists have the same length
-                        if(length(pi_list) != length(ystar_list)){
-                                stop("length(pi_list) != length(ystar_list)")
-                        }
-
-                        # Length of the lists
-                        K <- length(pi_list)
-
-                        # Vector for the Coverage
-                        cover_vec <- logical(length=K)
-
-                        for(k in 1:K){
-                                cover_vec[k] <- pi_list[[k]]["lower"] < ystar_list[[k]][1]
-                        }
-
-                        # Coverage probabilities as the mean of the 1/0 vector
-                        coverage <- mean(as.integer(cover_vec))
-
-                }
-
-                else if(alternative=="upper"){
-                        for(b in 1:nrow(bs_params)){
-
-                                upper <- bs_params$bs_mu[b]+quant*bs_params$bs_se_y_star[b]
-
-                                pi_list[[b]] <- c("upper"=upper, "quant"=quant)
-
-                        }
-
-                        # Check if both lists have the same length
-                        if(length(pi_list) != length(ystar_list)){
-                                stop("length(pi_list) != length(ystar_list)")
-                        }
-
-                        # Length of the lists
-                        K <- length(pi_list)
-
-                        # Vector for the Coverage
-                        cover_vec <- logical(length=K)
-
-                        for(k in 1:K){
-                                cover_vec[k] <- pi_list[[k]]["upper"] > ystar_list[[k]][2]
-                        }
-
-                        # Coverage probabilities as the mean of the 1/0 vector
-                        coverage <- mean(as.integer(cover_vec))
-
-                }
-
-
-                return(coverage)
-
+                quant_calib <- bisection(y_star_hat = bs_mu,
+                                         pred_se = bs_se,
+                                         y_star = ystar_list,
+                                         alternative = alternative,
+                                         quant_min = delta_min,
+                                         quant_max = delta_max,
+                                         n_bisec = n_bisec,
+                                         tol = tolerance,
+                                         alpha = alpha,
+                                         traceplot=traceplot)
         }
 
 
-        #----------------------------------------------------------------------
-        ### Bisection
+        # Calibration for  prediction intervals
+        if(alternative=="both"){
 
-        bisection <- function(f, quant_min, quant_max, n, tol = tolerance) {
-
-
-                c_i <- vector()
-                runval_i <- vector()
-
-
-                # if the coverage is smaller for both quant take quant_min
-                if ((f(quant_min) > 1-(alpha+tol))) {
-
-                        warning(paste("observed coverage probability for quant_min =",
-                                      f(quant_min),
-                                      "is bigger than 1-alpha+tol =",
-                                      1-alpha+tol))
-
-                        if(traceplot==TRUE){
-
-                                plot(x=quant_min,
-                                     y=f(quant_min)-(1-alpha),
-                                     type="p",
-                                     pch=20,
-                                     xlab="calibration value",
-                                     ylab="obs. coverage - nom. coverage",
-                                     main=paste("f(quant_min) > 1-alpha+tol"),
-                                     ylim=c(f(quant_min)-(1-alpha)+tol, -tol))
-                                abline(a=0, b=0, lty="dashed")
-                                abline(a=tol, b=0, col="grey")
-                        }
-
-                        return(quant_min)
+                # Direct implementation of M and S 2021
+                if(algorithm=="MS21"){
+                        quant_calib <- bisection(y_star_hat = bs_mu,
+                                                 pred_se = bs_se,
+                                                 y_star = ystar_list,
+                                                 alternative = alternative,
+                                                 quant_min = delta_min,
+                                                 quant_max = delta_max,
+                                                 n_bisec = n_bisec,
+                                                 tol = tolerance,
+                                                 alpha = alpha,
+                                                 traceplot=traceplot)
                 }
 
+                # Modified version of M and S 21
+                if(algorithm=="MS21mod"){
+                        quant_calib_lower <- bisection(y_star_hat = bs_mu,
+                                                       pred_se = bs_se,
+                                                       y_star = ystar_list,
+                                                       alternative = "lower",
+                                                       quant_min = delta_min,
+                                                       quant_max = delta_max,
+                                                       n_bisec = n_bisec,
+                                                       tol = tolerance,
+                                                       alpha = alpha/2,
+                                                       traceplot=traceplot)
 
-                # if the coverage is bigger for both quant take quant_max
-                else if ((f(quant_max) < 1-(alpha-tol))) {
+                        quant_calib_upper <- bisection(y_star_hat = bs_mu,
+                                                       pred_se = bs_se,
+                                                       y_star = ystar_list,
+                                                       alternative = "upper",
+                                                       quant_min = delta_min,
+                                                       quant_max = delta_max,
+                                                       n_bisec = n_bisec,
+                                                       tol = tolerance,
+                                                       alpha = alpha/2,
+                                                       traceplot=traceplot)
 
-                        warning(paste("observed coverage probability for quant_max =",
-                                      f(quant_max),
-                                      "is smaller than 1-alpha-tol =",
-                                      1-alpha-tol))
-
-
-                        if(traceplot==TRUE){
-
-                                plot(x=quant_max,
-                                     y=f(quant_max)-(1-alpha),
-                                     type="p", pch=20,
-                                     xlab="calibration value",
-                                     ylab="obs. coverage - nom. coverage",
-                                     main=paste("f(quant_max) < 1-alpha-tol"),
-                                     ylim=c(f(quant_max)-(1-alpha)-tol, tol))
-                                abline(a=0, b=0, lty="dashed")
-                                abline(a=-tol, b=0, col="grey")
-                        }
-
-
-                        return(quant_max)
-                }
-
-
-                else for (i in 1:n) {
-                        c <- (quant_min + quant_max) / 2 # Calculate midpoint
-
-                        runval <- (1-alpha)-f(c)
-
-                        # Assigning c and runval into the vectors
-                        c_i[i] <- c
-                        runval_i[i] <- runval
-
-
-
-                        if (abs(runval) < tol) {
-
-                                if(traceplot==TRUE){
-
-                                        plot(x=c_i,
-                                             y=runval_i,
-                                             type="p",
-                                             pch=20,
-                                             xlab="calibration value",
-                                             ylab="obs. coverage - nom. coverage",
-                                             main=paste("Trace with", i, "iterations"))
-                                        lines(x=c_i, y=runval_i, type="s", col="red")
-                                        abline(a=0, b=0, lty="dashed")
-                                        abline(a=tol, b=0, col="grey")
-                                        abline(a=-tol, b=0, col="grey")
-                                }
-
-                                return(c)
-                        }
-
-                        # If another iteration is required,
-                        # check the signs of the function at the points c and a and reassign
-                        # a or b accordingly as the midpoint to be used in the next iteration.
-                        if(sign(runval)==1){
-                                quant_min <- c}
-
-                        else if(sign(runval)==-1){
-                                quant_max <- c}
-
-
-                }
-
-                # If the max number of iterations is reached and no root has been found,
-                # return message and end function.
-                warning('Too many iterations, but the quantile of the last step is returned')
-
-                if(traceplot==TRUE){
-
-                        plot(x=c_i,
-                             y=runval_i,
-                             type="p",
-                             pch=20,
-                             xlab="calibration value",
-                             ylab="obs. coverage - nom. coverage",
-                             main=paste("Trace with", i, "iterations"))
-                        lines(x=c_i, y=runval_i, type="s", col="red")
-                        abline(a=0, b=0, lty="dashed")
-                        abline(a=tol, b=0, col="grey")
-                        abline(a=-tol, b=0, col="grey")
-                }
-
-                return(c)
-
-        }
-
-        # Calculation of the calibrated coefficient
-        quant_calib <- bisection(f=coverfun, quant_min=delta_min, quant_max=delta_max, n=n_bisec)
-
-        #----------------------------------------------------------------------
-
-        # calibrated PI
-
-        lower <- mu_hat-quant_calib*se_y_star_hat
-        upper <- mu_hat+quant_calib*se_y_star_hat
-
-
-        # Define output if newdat is defined
-        if(!is.null(newdat) & is.null(futmat_list)){
-
-                # Define output if newdat is given
-                if(is.data.frame(newdat)){
-
-
-                        if(alternative=="both"){
-                                pi_final <- data.frame("hist_mean"=mu_hat,
-                                                       "quant_calib"=quant_calib,
-                                                       "pred_se"=se_y_star_hat,
-                                                       "lower"=lower,
-                                                       "upper"=upper)
-
-                                # extract the dependent variable from newdat
-                                dep_var <- newdat[,as.character(model@call$formula)[2]]
-
-                                # open vector for coverage
-                                cover <- logical(length=nrow(newdat))
-
-                                for(j in 1:nrow(newdat)){
-                                        cover[j] <- pi_final$lower < dep_var[j] && dep_var[j] < pi_final$upper
-
-                                }
-
-                                cover <- data.frame("cover"=cover)
-
-                                out <- cbind(merge(newdat, pi_final), cover)
-                        }
-
-                        else if(alternative=="lower"){
-                                pi_final <- data.frame("hist_mean"=mu_hat,
-                                                       "quant_calib"=quant_calib,
-                                                       "pred_se"=se_y_star_hat,
-                                                       "lower"=lower)
-
-                                # extract the dependent variable from newdat
-                                dep_var <- newdat[,as.character(model@call$formula)[2]]
-
-                                # open vector for coverage
-                                cover <- logical(length=nrow(newdat))
-
-                                for(j in 1:nrow(newdat)){
-                                        cover[j] <- pi_final$lower < dep_var[j]
-
-                                }
-
-                                cover <- data.frame("cover"=cover)
-
-                                out <- cbind(merge(newdat, pi_final), cover)
-                        }
-
-                        else if(alternative=="upper"){
-                                pi_final <- data.frame("hist_mean"=mu_hat,
-                                                       "quant_calib"=quant_calib,
-                                                       "pred_se"=se_y_star_hat,
-                                                       "upper"=upper)
-
-                                # extract the dependent variable from newdat
-                                dep_var <- newdat[,as.character(model@call$formula)[2]]
-
-                                # open vector for coverage
-                                cover <- logical(length=nrow(newdat))
-
-                                for(j in 1:nrow(newdat)){
-                                        cover[j] <- dep_var[j] < pi_final$upper
-
-                                }
-
-                                cover <- data.frame("cover"=cover)
-
-                                out <- cbind(merge(newdat, pi_final), cover)
-                        }
-
-                }
-
-                # if newdat==1
-                else if(is.data.frame(newdat)==FALSE){
-
-                        if(alternative=="both"){
-                                out <- data.frame("m"=1,
-                                                  "hist_mean"=mu_hat,
-                                                  "quant_calib"=quant_calib,
-                                                  "pred_se"=se_y_star_hat,
-                                                  "lower"=lower,
-                                                  "upper"=upper)
-                        }
-
-                        if(alternative=="lower"){
-                                out <- data.frame("m"=1,
-                                                  "hist_mean"=mu_hat,
-                                                  "quant_calib"=quant_calib,
-                                                  "pred_se"=se_y_star_hat,
-                                                  "lower"=lower)
-                        }
-
-                        if(alternative=="upper"){
-                                out <- data.frame("m"=1,
-                                                  "hist_mean"=mu_hat,
-                                                  "quant_calib"=quant_calib,
-                                                  "pred_se"=se_y_star_hat,
-                                                  "upper"=upper)
-                        }
-
+                        quant_calib <- c(quant_calib_lower, quant_calib_upper)
                 }
 
         }
 
 
-        # Define output if futmat_list is defined
-        if(!is.null(futmat_list) & is.null(newdat)){
+        #-----------------------------------------------------------------------
+        ### Define the output object
 
-                if(alternative=="both"){
-                        out <- data.frame("m"=nrow(futmat_list[[1]]),
-                                          "hist_mean"=mu_hat,
-                                          "quant_calib"=quant_calib,
-                                          "pred_se"=se_y_star_hat,
-                                          "lower"=lower,
-                                          "upper"=upper)
-                }
-
-                if(alternative=="lower"){
-                        out <- data.frame("m"=nrow(futmat_list[[1]]),
-                                          "hist_mean"=mu_hat,
-                                          "quant_calib"=quant_calib,
-                                          "pred_se"=se_y_star_hat,
-                                          "lower"=lower)
-                }
-
-                if(alternative=="upper"){
-                        out <- data.frame("m"=nrow(futmat_list[[1]]),
-                                          "hist_mean"=mu_hat,
-                                          "quant_calib"=quant_calib,
-                                          "pred_se"=se_y_star_hat,
-                                          "upper"=upper)
-                }
-
-        }
-
+        out <- normal_pi(mu=mu_hat,
+                         pred_se=pred_se_hat,
+                         m=m_fut,
+                         q=quant_calib,
+                         alternative=alternative,
+                         newdat=newdat,
+                         futmat_list=futmat_list,
+                         histdat=model@frame,
+                         algorithm=algorithm)
 
         return(out)
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
