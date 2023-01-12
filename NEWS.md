@@ -22,8 +22,8 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * the package is now based on s3 objects
 * the calibration algorithm works now independently for both limits 
         (default for discrete intervals)
-* rqpois() can be used with offsets and returns a data.frame (instead of a vector
-        as before)
+* rqpois() can be used with offsets and returns a data.frame (instead of a
+        vector as before)
 * quasi_pois_pi() works now with offsets and based on the modified calibration algorithm
 * new summary.predint and plot.predint functions
 
@@ -31,5 +31,7 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
         beta_bin_pi() to s3 (done)
         lmer_pi.... to s3
           lmer_pi_futmat() is s3 now
+          lmer_pi_futvec() is s3 now
+          lmer_pi_unstruc() is s3 now
         write generic plot and summary functions
-        further checks
+        rewrite checks and tests
