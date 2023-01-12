@@ -40,7 +40,8 @@ an upper or a lower prediction limit should be computed}
 of simple uncalibrated intervals}
 }
 \value{
-
+\code{bb_pi()} returns an object of class \code{c("predint", "betaBinomialPI")}
+with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
 \code{bb_pi()} is a helper function that is called in \code{beta_bin_pi()}. It
@@ -61,7 +62,7 @@ The use of this uncalibrated prediction interval is not recommended for practica
 application.  \cr
 }
 \examples{
-bb_pi(newsize=50, pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
+bb_pi(newsize=c(50), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
 
 bb_pi(newsize=50, pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05), alternative="upper")
 

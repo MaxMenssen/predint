@@ -30,11 +30,12 @@
 #' The use of this uncalibrated prediction interval is not recommended for practical
 #' application.  \cr
 #'
-#' @return
+#' @return \code{bb_pi()} returns an object of class \code{c("predint", "betaBinomialPI")}
+#' with prediction intervals or limits in the first entry (\code{$prediction}).
 #' @export
 #'
 #' @examples
-#' bb_pi(newsize=50, pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
+#' bb_pi(newsize=c(50), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
 #'
 #' bb_pi(newsize=50, pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05), alternative="upper")
 #'
