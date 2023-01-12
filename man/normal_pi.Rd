@@ -11,6 +11,7 @@ normal_pi(
   q = qnorm(1 - 0.05/2),
   alternative = "both",
   futmat_list = NULL,
+  futvec = NULL,
   newdat = NULL,
   histdat = NULL,
   algorithm = NULL
@@ -29,6 +30,12 @@ normal_pi(
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
+\item{futmat_list}{used to add the list of future design matrices to the output
+if called via \code{lmer_pi_futmat()}}
+
+\item{futvec}{used to add the vector of the historical row numbers that define
+the future experimental design to the output if called via \code{lmer_pi_futmat()}}
+
 \item{newdat}{additional argument to specify the actual data set}
 
 \item{histdat}{additional argument to specify the historical data set}
@@ -38,11 +45,12 @@ an upper or a lower prediction limit should be computed}
 of simple uncalibrated intervals}
 }
 \value{
-
+\code{normal_pi()} returns an object of class \code{c("predint", "normalPI")}
+with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
 \code{normal_pi()} is a helper function that is called in the \code{lmer_pi_...()} functions.
- Itcalculates simple uncalibrated prediction intervals for normal distributed
+ It calculates simple uncalibrated prediction intervals for normal distributed
  observations.
 }
 \details{

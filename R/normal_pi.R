@@ -1,7 +1,7 @@
 #' Simple uncalibrated prediction intervals for normal distributed data
 #'
 #' \code{normal_pi()} is a helper function that is called in the \code{lmer_pi_...()} functions.
-#'  Itcalculates simple uncalibrated prediction intervals for normal distributed
+#'  It calculates simple uncalibrated prediction intervals for normal distributed
 #'  observations.
 #'
 #' @param mu overall mean
@@ -11,6 +11,10 @@
 #' @param alternative either "both", "upper" or "lower"
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
+#' @param futmat_list used to add the list of future design matrices to the output
+#' if called via \code{lmer_pi_futmat()}
+#' @param futvec used to add the vector of the historical row numbers that define
+#' the future experimental design to the output if called via \code{lmer_pi_futmat()}
 #' @param histdat additional argument to specify the historical data set
 #' @param newdat additional argument to specify the actual data set
 #' @param algorithm used to define the algorithm for calibration if called via
@@ -28,7 +32,8 @@
 #' The use of this uncalibrated prediction interval is not recommended for practical
 #' application.  \cr
 #'
-#' @return
+#' @return \code{normal_pi()} returns an object of class \code{c("predint", "normalPI")}
+#' with prediction intervals or limits in the first entry (\code{$prediction}).
 #' @export
 #'
 #' @importFrom stats qnorm
@@ -48,6 +53,7 @@ normal_pi <- function(mu,
                       q=qnorm(1-0.05/2),
                       alternative="both",
                       futmat_list=NULL,
+                      futvec=NULL,
                       newdat=NULL,
                       histdat=NULL,
                       algorithm=NULL){
@@ -167,6 +173,7 @@ normal_pi <- function(mu,
         out_list <- list("prediction"=out,
                          "newdat"=newdat,
                          "futmat_list"=futmat_list,
+                         "futvec"=futvec,
                          "histdat"=histdat,
                          "y_star_hat"=rep(mu, m),
                          "pred_se"=rep(pred_se, m),
