@@ -126,13 +126,7 @@ beta_bin_pi <- function(histdat,
                 stop("alternative must be either both, lower or upper")
         }
 
-        # histdat$total <- histdat[,1] + histdat[,2]
-        #
-        # n <- nrow(histdat)
-        # N_hist <- sum(histdat$total)
-
         #-----------------------------------------------------------------------
-
 
         # If newsize is given
         if(!is.null(newsize)){
@@ -145,15 +139,10 @@ beta_bin_pi <- function(histdat,
                 if(length(newsize) > nrow(histdat)){
                         warning("The calculation of a PI for more future than historical observations is not recommended")
                 }
-
-                # total <- newsize
-                # newdat <- as.data.frame(total)
-                # m <- nrow(newdat)
         }
 
-
         # If an actual data set is given
-        else{
+        if(!is.null(newdat)){
                 if(is.data.frame(newdat)==FALSE){
                         stop("newdat is not a data.frame")
                 }
@@ -175,12 +164,7 @@ beta_bin_pi <- function(histdat,
                 if(nrow(newdat) > nrow(histdat)){
                         warning("The calculation of a PI for more future than historical observations is not recommended")
                 }
-
-                # m <- nrow(newdat)
-                # newdat$total <- newdat[,1 ]+ newdat[,2]
-
         }
-
 
 
         #-----------------------------------------------------------------------
@@ -189,11 +173,8 @@ beta_bin_pi <- function(histdat,
         # Historical pi and rho
         pi_rho_hat <- pi_rho_est(histdat[,1:2])
 
-        # print(pi_rho_hat)
-
         # Overall pi
         pi_hat <- pi_rho_hat[1]
-        newdat$hist_prob <- pi_hat
 
         # Overall rho
         rho_hat <- pi_rho_hat[2]
@@ -222,14 +203,14 @@ beta_bin_pi <- function(histdat,
 
         # If new offset is given
         if(!is.null(newsize)){
-                pi_init <- qb_pi(newsize = newsize,
+                pi_init <- bb_pi(newsize = newsize,
                                  histsize = histdat[,1] + histdat[,2],
                                  pi = pi_hat,
                                  rho = rho_hat,
                                  alternative = alternative)
         }
 
-        # print(pi_init)
+        print(pi_init)
 
         #-----------------------------------------------------------------------
         ### Bootstrap
@@ -316,8 +297,6 @@ beta_bin_pi <- function(histdat,
                                     pi_hat = bs_pi_hat,
                                     MoreArgs = list(n_star_m=newsize),
                                     SIMPLIFY=FALSE)
-
-        # print(y_star_hat_m_list)
 
         #-----------------------------------------------------------------------
         #-----------------------------------------------------------------------
@@ -418,8 +397,4 @@ beta_bin_pi <- function(histdat,
                      algorithm=algorithm)
 
         return(out)
-
-
-
 }
-
