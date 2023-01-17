@@ -28,10 +28,16 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * new summary.predint and plot.predint functions
 
 + To do:
-        beta_bin_pi() to s3 (done)
-        lmer_pi.... to s3
-          lmer_pi_futmat() is s3 now
-          lmer_pi_futvec() is s3 now
-          lmer_pi_unstruc() is s3 now
-        write generic plot and summary functions
+        plot.predint
+         - for lmer_pi_... done
+         - for beta_bin_pi done
+        summary.predint
+          - open
+        as.data.frame.predint
+          - open
+        print.predint
+          - open
         rewrite checks and tests
+
+
+
