@@ -210,7 +210,6 @@ beta_bin_pi <- function(histdat,
                                  alternative = alternative)
         }
 
-        print(pi_init)
 
         #-----------------------------------------------------------------------
         ### Bootstrap
