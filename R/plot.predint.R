@@ -335,8 +335,14 @@ plot.predint <- function(x,
         if(inherits(x, "quasiPoissonPI")){
 
                 dat <- x$histdat
-                dat$data <- "histdat"
-                dat$offset <- factor(dat[,2])
+                dat$data <- factor(rep("histdat", times=nrow(dat)))
+                offsetf <- factor(dat[,2])
+                dat[,2] <-  offsetf
+                colnames(dat)[2] <- "offset"
+
+                print(dat)
+
+                print(colnames(dat))
 
                 # If newdat is not available
                 if(is.null(x$newdat)){
@@ -355,17 +361,21 @@ plot.predint <- function(x,
                 # if newdat is available
                 if(!is.null(x$newdat)){
                         new_dat <- x$newdat
-                        new_dat$data <- "predint"
+                        new_dat$data <- factor(rep("predint", times=nrow(new_dat)))
+                        colnames(new_dat)[2] <- "offset"
                 }
 
                 dat <- rbind(dat, new_dat)
 
-
+                print(dat)
+                str(dat)
                 # PI data
                 pi_dat <- x$prediction
                 pi_dat$offset <- factor(x$newoffset)
                 pi_dat$y_star_hat <- x$y_star_hat
-                pi_dat$data <- "predint"
+                pi_dat$data <- factor(rep("predint", times=nrow(pi_dat)))
+
+                print(pi_dat)
 
                 # alternative = both
                 if(x$alternative == "both"){
@@ -413,13 +423,14 @@ plot.predint <- function(x,
                                           aes(x=offset,
                                               y=dat[,1]))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~factor(data))+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes(y=y_star_hat,
+                                                aes(x=offset,
+                                                    y=y_star_hat,
                                                     ymin=lower,
                                                     ymax=upper))+
                                 ggtitle(title)+
@@ -442,7 +453,8 @@ plot.predint <- function(x,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes(y=y_star_hat,
+                                                aes(x=offset,
+                                                    y=y_star_hat,
                                                     ymin=lower,
                                                     ymax=y_star_hat))+
                                 ggtitle(title)+
@@ -465,7 +477,8 @@ plot.predint <- function(x,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes(y=y_star_hat,
+                                                aes(x=offset,
+                                                    y=y_star_hat,
                                                     ymin=y_star_hat,
                                                     ymax=upper))+
                                 ggtitle(title)+
@@ -485,18 +498,23 @@ plot.predint <- function(x,
 
 
 
-
-# pred_int <- quasi_bin_pi(histdat=bb_dat1,
-#                         newsize=c(40, 50, 60),
+# colnames(bb_dat1) <- c("fuck", "up")
+# colnames(bb_dat2) <- c("fuck", "up")
+#
+# pred_int1 <- quasi_bin_pi(histdat=bb_dat1,
+#                         newsize=c(40),
 #                         nboot=1000,
 #                         traceplot = FALSE,
-#                         alternative="upper")
-
-# pred_int <- quasi_bin_pi(histdat=bb_dat1,
+#                         alternative="lower")
+#
+# pred_int2 <- quasi_bin_pi(histdat=bb_dat1,
 #                         newdat=bb_dat2,
 #                         nboot=1000,
 #                         traceplot=FALSE,
-#                         alternative="lower")
+#                         alternative="both")
+#
+# plot(pred_int1)
+# plot(pred_int2)
 #
 #
 # fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
@@ -517,16 +535,19 @@ plot.predint <- function(x,
 #
 
 
+# colnames(qp_dat1) <- c("fuck", "up")
+# colnames(qp_dat2) <- c("fuck", "up")
+#
 # pred_int1 <- quasi_pois_pi(histdat=qp_dat1,
 #                           newdat=qp_dat2,
 #                           nboot=1000,
-#                           alternative="upper",
+#                           alternative="lower",
 #                           traceplot = FALSE)
 #
 # pred_int2 <- quasi_pois_pi(histdat=qp_dat1,
-#                            newoffset=c(3),
+#                            newoffset=c(1,2,3),
 #                            nboot=1000,
-#                            alternative="upper",
+#                            alternative="lower",
 #                            traceplot = FALSE)
 #
 # plot(pred_int1)
