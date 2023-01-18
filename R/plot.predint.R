@@ -41,17 +41,13 @@ plot.predint <- function(x,
                         dat$obs <- "observations"
                 }
 
-                # If newdat is not available (does not work)
-                # if(is.null(x$newdat)){
-                #         newdat <- as.data.frame(matrix(c(rep(NA,
-                #                                              times=(ncol(x$histdat))),
-                #                                          "predint"),
-                #                                        nrow=1))
-                #
-                #         colnames(newdat) <- colnames(dat)
-                #         dat <- rbind(dat, newdat)
-                #         dat$obs <- "observations"
-                # }
+                # If newdat is not available
+                if(is.null(x$newdat)){
+
+                        dat[nrow(dat) + 1 , ] <- NA
+                        dat[nrow(dat) , ncol(dat)] <- "predint"
+                        dat$obs <- "observations"
+                }
 
                 # PI data
                 pi_dat <- x$prediction
@@ -59,8 +55,6 @@ plot.predint <- function(x,
                 pi_dat$data <- "predint"
                 pi_dat$obs <-  "observations"
 
-                # print(dat)
-                # print(str(dat))
 
                 # # alternative = both
                 if(x$alternative == "both"){
@@ -80,7 +74,7 @@ plot.predint <- function(x,
 
                         # Title
                         if(x$m > 1){
-                                title <- paste("Onesided simultanious prediction lower limit for", x$m, "future observations")
+                                title <- paste("One-sided simultanious prediction lower limit for", x$m, "future observations")
                         }
 
                         if(x$m == 1){
@@ -93,7 +87,7 @@ plot.predint <- function(x,
 
                         # Title
                         if(x$m > 1){
-                                title <- paste("Onesided simultanious prediction upper limit for", x$m, "future observations")
+                                title <- paste("One-sided simultanious prediction upper limit for", x$m, "future observations")
                         }
 
                         if(x$m == 1){
@@ -237,11 +231,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newsize) > 1){
-                                title <- paste("Onesided simultanious prediction upper limit for", length(x$newsize), "future observations")
+                                title <- paste("One-sided simultanious prediction upper limit for", length(x$newsize), "future observations")
                         }
 
                         if(length(x$newsize) == 1){
-                                title <- paste("Onesided pointwise prediction upper limit for one future observation")
+                                title <- paste("One-sided pointwise prediction upper limit for one future observation")
                         }
                 }
 
@@ -250,11 +244,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newsize) > 1){
-                                title <- paste("Onesided simultanious prediction lower limit for", length(x$newsize), "future observations")
+                                title <- paste("One-sided simultanious prediction lower limit for", length(x$newsize), "future observations")
                         }
 
                         if(length(x$newsize) == 1){
-                                title <- paste("Onesided pointwise prediction lower limit for one future observation")
+                                title <- paste("One-sided pointwise prediction lower limit for one future observation")
                         }
                 }
 
@@ -340,10 +334,6 @@ plot.predint <- function(x,
                 dat[,2] <-  offsetf
                 colnames(dat)[2] <- "offset"
 
-                print(dat)
-
-                print(colnames(dat))
-
                 # If newdat is not available
                 if(is.null(x$newdat)){
 
@@ -367,15 +357,12 @@ plot.predint <- function(x,
 
                 dat <- rbind(dat, new_dat)
 
-                print(dat)
-                str(dat)
                 # PI data
                 pi_dat <- x$prediction
                 pi_dat$offset <- factor(x$newoffset)
                 pi_dat$y_star_hat <- x$y_star_hat
                 pi_dat$data <- factor(rep("predint", times=nrow(pi_dat)))
 
-                print(pi_dat)
 
                 # alternative = both
                 if(x$alternative == "both"){
@@ -395,11 +382,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newoffset) > 1){
-                                title <- paste("Onesided simultanious prediction upper limit for", length(x$newoffset), "future observations")
+                                title <- paste("One-sided simultanious prediction upper limit for", length(x$newoffset), "future observations")
                         }
 
                         if(length(x$newoffset) == 1){
-                                title <- paste("Onesided pointwise prediction upper limit for one future observation")
+                                title <- paste("One-sided pointwise prediction upper limit for one future observation")
                         }
                 }
 
@@ -408,11 +395,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newoffset) > 1){
-                                title <- paste("Onesided simultanious prediction lower limit for", length(x$newoffset), "future observations")
+                                title <- paste("One-sided simultanious prediction lower limit for", length(x$newoffset), "future observations")
                         }
 
                         if(length(x$newoffset) == 1){
-                                title <- paste("Onesided pointwise prediction lower limit for one future observation")
+                                title <- paste("One-sided pointwise prediction lower limit for one future observation")
                         }
                 }
 
@@ -498,60 +485,8 @@ plot.predint <- function(x,
 
 
 
-# colnames(bb_dat1) <- c("fuck", "up")
-# colnames(bb_dat2) <- c("fuck", "up")
-#
-# pred_int1 <- quasi_bin_pi(histdat=bb_dat1,
-#                         newsize=c(40),
-#                         nboot=1000,
-#                         traceplot = FALSE,
-#                         alternative="lower")
-#
-# pred_int2 <- quasi_bin_pi(histdat=bb_dat1,
-#                         newdat=bb_dat2,
-#                         nboot=1000,
-#                         traceplot=FALSE,
-#                         alternative="both")
-#
-# plot(pred_int1)
-# plot(pred_int2)
-#
-#
-# fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#
-# pred_int <- lmer_pi_futmat(model=fit,
-#                            newdat=c2_dat2,
-#                            alternative="lower",
-#                            nboot=1000,
-#                            traceplot=FALSE)
-#
-# # Das geht noch nicht!!
-# pred_int <- lmer_pi_futmat(model=fit,
-#                            newdat=1,
-#                            alternative="lower",
-#                            nboot=1000,
-#                            traceplot=FALSE)
-
-#
 
 
-# colnames(qp_dat1) <- c("fuck", "up")
-# colnames(qp_dat2) <- c("fuck", "up")
-#
-# pred_int1 <- quasi_pois_pi(histdat=qp_dat1,
-#                           newdat=qp_dat2,
-#                           nboot=1000,
-#                           alternative="lower",
-#                           traceplot = FALSE)
-#
-# pred_int2 <- quasi_pois_pi(histdat=qp_dat1,
-#                            newoffset=c(1,2,3),
-#                            nboot=1000,
-#                            alternative="lower",
-#                            traceplot = FALSE)
-#
-# plot(pred_int1)
-# plot(pred_int2)
 
 
 
