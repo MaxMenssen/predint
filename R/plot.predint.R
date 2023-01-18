@@ -59,8 +59,8 @@ plot.predint <- function(x,
                 pi_dat$data <- "predint"
                 pi_dat$obs <-  "observations"
 
-                print(dat)
-                print(str(dat))
+                # print(dat)
+                # print(str(dat))
 
                 # # alternative = both
                 if(x$alternative == "both"){
@@ -178,7 +178,7 @@ plot.predint <- function(x,
         }
 
         #-----------------------------------------------------------------------
-        #------------------- Overview about beta bin. PI -----------------------
+        #------------------- Overview about binomial PIs -----------------------
         #-----------------------------------------------------------------------
 
         if(inherits(x, "betaBinomialPI") | inherits(x, "quasiBinomialPI")){
@@ -258,78 +258,225 @@ plot.predint <- function(x,
                         }
                 }
 
-                ### Grafic on response scale
+                # Intervals
+                if(x$alternative == "both"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=factor(size),
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin=lower,
+                                                    ymax=upper))+
+                                ggtitle(title)+
+                                xlab("Cluster size")+
+                                ylab("No. of success")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
 
+                # Lower bounds
+                if(x$alternative == "lower"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=factor(size),
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin= lower,
+                                                    ymax=size))+
+                                ggtitle(title)+
+                                xlab("Cluster size")+
+                                ylab("No. of success")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
 
-                        # Intervals
-                        if(x$alternative == "both"){
-                                pi_plot <- ggplot(data=dat,
-                                                  aes(x=factor(size),
-                                                      y=dat[,1]))+
-                                        theme_bw()+
-                                        facet_grid(~data)+
-                                        geom_jitter(size=size,
-                                                    width=width,
-                                                    height=0,
-                                                    alpha=alpha)+
-                                        geom_pointrange(data=pi_dat,
-                                                        aes(y=y_star_hat,
-                                                            ymin=lower,
-                                                            ymax=upper))+
-                                        ggtitle(title)+
-                                        xlab("Cluster size")+
-                                        ylab("No. of success")+
-                                        theme(plot.title = element_text(face="bold"),
-                                              axis.text.x = element_text(face="bold"),
-                                              axis.text.y = element_text(face="bold"))
-                        }
-
-                        # Lower bounds
-                        if(x$alternative == "lower"){
-                                pi_plot <- ggplot(data=dat,
-                                                  aes(x=factor(size),
-                                                      y=dat[,1]))+
-                                        theme_bw()+
-                                        facet_grid(~data)+
-                                        geom_jitter(size=size,
-                                                    width=width,
-                                                    height=0,
-                                                    alpha=alpha)+
-                                        geom_pointrange(data=pi_dat,
-                                                        aes(y=y_star_hat,
-                                                            ymin= lower,
-                                                            ymax=size))+
-                                        ggtitle(title)+
-                                        xlab("Cluster size")+
-                                        ylab("No. of success")+
-                                        theme(plot.title = element_text(face="bold"),
-                                              axis.text.x = element_text(face="bold"),
-                                              axis.text.y = element_text(face="bold"))
-                        }
-
-                        # Upper bounds
-                        if(x$alternative == "upper"){
-                                pi_plot <- ggplot(data=dat,
-                                                  aes(x=factor(size),
-                                                      y=dat[,1]))+
-                                        theme_bw()+
-                                        facet_grid(~data)+
-                                        geom_jitter(size=size,
-                                                    width=width,
-                                                    height=0,
-                                                    alpha=alpha)+
-                                        geom_pointrange(data=pi_dat,
-                                                        aes(y=y_star_hat,
-                                                            ymin=0,
-                                                            ymax=upper))+
-                                        ggtitle(title)+
-                                        xlab("Cluster size")+
-                                        ylab("No. of success")+
-                                        theme(plot.title = element_text(face="bold"),
-                                              axis.text.x = element_text(face="bold"),
-                                              axis.text.y = element_text(face="bold"))
-                        }
+                # Upper bounds
+                if(x$alternative == "upper"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=factor(size),
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin=0,
+                                                    ymax=upper))+
+                                ggtitle(title)+
+                                xlab("Cluster size")+
+                                ylab("No. of success")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
         }
+
+        #-----------------------------------------------------------------------
+        #-------------------- Quasi-Poisson data -------------------------------
+        #-----------------------------------------------------------------------
+
+        if(inherits(x, "quasiPoissonPI")){
+
+                dat <- x$histdat
+                dat$data <- "histdat"
+                dat$offset <- factor(dat[,2])
+
+                # If newdat is not available
+                if(is.null(x$newdat)){
+
+                        var_names <- colnames(dat)
+
+                        var1 <- rep(NA, times=length(x$newoffset))
+
+                        new_dat <- data.frame(var1,
+                                              offset=factor(x$newoffset),
+                                              data=rep("predint", length(x$newoffset)))
+
+                        colnames(new_dat) <- var_names
+                }
+
+                # if newdat is available
+                if(!is.null(x$newdat)){
+                        new_dat <- x$newdat
+                        new_dat$data <- "predint"
+                }
+
+                dat <- rbind(dat, new_dat)
+
+
+                # PI data
+                pi_dat <- x$prediction
+                pi_dat$offset <- factor(x$newoffset)
+                pi_dat$y_star_hat <- x$y_star_hat
+                pi_dat$data <- "predint"
+
+                # alternative = both
+                if(x$alternative == "both"){
+
+                        # Title
+                        if(length(x$newoffset)> 1){
+                                title <- paste("Simultanious prediction intervals for", length(x$newoffset), "future observations")
+                        }
+
+                        if(length(x$newoffset) == 1){
+                                title <- paste("Pointwise prediction interval for one future observation")
+                        }
+                }
+
+                # alternative == "upper"
+                if(x$alternative == "upper"){
+
+                        # Title
+                        if(length(x$newoffset) > 1){
+                                title <- paste("Onesided simultanious prediction upper limit for", length(x$newoffset), "future observations")
+                        }
+
+                        if(length(x$newoffset) == 1){
+                                title <- paste("Onesided pointwise prediction upper limit for one future observation")
+                        }
+                }
+
+                # alternative == "upper"
+                if(x$alternative == "lower"){
+
+                        # Title
+                        if(length(x$newoffset) > 1){
+                                title <- paste("Onesided simultanious prediction lower limit for", length(x$newoffset), "future observations")
+                        }
+
+                        if(length(x$newoffset) == 1){
+                                title <- paste("Onesided pointwise prediction lower limit for one future observation")
+                        }
+                }
+
+
+                # Intervals
+                if(x$alternative == "both"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=offset,
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin=lower,
+                                                    ymax=upper))+
+                                ggtitle(title)+
+                                xlab("Offset")+
+                                ylab("No. of observed objects")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
+
+                # Lower bounds
+                if(x$alternative == "lower"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=offset,
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin=lower,
+                                                    ymax=y_star_hat))+
+                                ggtitle(title)+
+                                xlab("Offset")+
+                                ylab("No. of observed objects")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
+
+                # Upper bounds
+                if(x$alternative == "upper"){
+                        pi_plot <- ggplot(data=dat,
+                                          aes(x=offset,
+                                              y=dat[,1]))+
+                                theme_bw()+
+                                facet_grid(~data)+
+                                geom_jitter(size=size,
+                                            width=width,
+                                            height=0,
+                                            alpha=alpha)+
+                                geom_pointrange(data=pi_dat,
+                                                aes(y=y_star_hat,
+                                                    ymin=y_star_hat,
+                                                    ymax=upper))+
+                                ggtitle(title)+
+                                xlab("Offset")+
+                                ylab("No. of observed objects")+
+                                theme(plot.title = element_text(face="bold"),
+                                      axis.text.x = element_text(face="bold"),
+                                      axis.text.y = element_text(face="bold"))
+                }
+        }
+
 
         return(pi_plot)
 }
@@ -366,13 +513,25 @@ plot.predint <- function(x,
 #                            alternative="lower",
 #                            nboot=1000,
 #                            traceplot=FALSE)
+
 #
+
+
+# pred_int1 <- quasi_pois_pi(histdat=qp_dat1,
+#                           newdat=qp_dat2,
+#                           nboot=1000,
+#                           alternative="upper",
+#                           traceplot = FALSE)
 #
-# plot(pred_int)
+# pred_int2 <- quasi_pois_pi(histdat=qp_dat1,
+#                            newoffset=c(3),
+#                            nboot=1000,
+#                            alternative="upper",
+#                            traceplot = FALSE)
 #
-# #
-# #
-# as.data.frame(matrix(c(rep(NA, times=(ncol(pred_int$histdat))),"predint"),
-#        nrow=1))
+# plot(pred_int1)
+# plot(pred_int2)
+
+
 
 
