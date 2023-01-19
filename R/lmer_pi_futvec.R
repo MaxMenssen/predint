@@ -410,6 +410,8 @@ lmer_pi_futvec <- function(model,
                          futvec=futvec,
                          algorithm=algorithm)
 
+        attr(out, "alpha") <- alpha
+
         return(out)
 
 }

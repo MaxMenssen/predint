@@ -402,6 +402,8 @@ quasi_bin_pi <- function(histdat,
                      alternative=alternative,
                      algorithm=algorithm)
 
+        attr(out, "alpha") <- alpha
+
         return(out)
 }
 

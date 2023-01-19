@@ -171,7 +171,7 @@ beta_bin_pi <- function(histdat,
         ### Some historical parameters
 
         # Historical pi and rho
-        pi_rho_hat <- pi_rho_est(histdat[,1:2])
+        pi_rho_hat <- unname(pi_rho_est(histdat[,1:2]))
 
         # Overall pi
         pi_hat <- pi_rho_hat[1]
@@ -394,6 +394,8 @@ beta_bin_pi <- function(histdat,
                      q=quant_calib,
                      alternative=alternative,
                      algorithm=algorithm)
+
+        attr(out, "alpha") <- alpha
 
         return(out)
 }

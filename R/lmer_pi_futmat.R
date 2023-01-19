@@ -555,6 +555,8 @@ lmer_pi_futmat <- function(model,
                          histdat=model@frame,
                          algorithm=algorithm)
 
+        attr(out, "alpha") <- alpha
+
         return(out)
 
 }
