@@ -11,7 +11,7 @@
 }
 \value{
 This function returns the prediction intervals or limits stored in an
-object of class \code("predint") as a \code{data.frame}
+object of class \code{"predint"} as a \code{data.frame}
 }
 \description{
 Get the prediction intervals or limits of an object of class \code{predint} and
@@ -20,7 +20,7 @@ save them as a \code{data.frame}.
 \examples{
 ### PI for quasi-Poisson data
 pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
-                          newsize=c(1,2,3),
+                          newoffset=c(1,2,3),
                           nboot=100,
                           traceplot = FALSE)
 
