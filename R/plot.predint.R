@@ -41,6 +41,9 @@ plot.predint <- function(x,
                 stop("input object needs to be of class predint")
         }
 
+        # Get the confidence level
+        conf_lev <-  (1-attributes(x)$alpha)*100
+
         #-----------------------------------------------------------------------
         #-------------------- Overview for lmer based PI -----------------------
         #-----------------------------------------------------------------------
@@ -79,11 +82,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(x$m > 1){
-                                title <- paste("Simultanious prediction interval for", x$m, "future observations")
+                                title <- paste("Simultanious", conf_lev, "% prediction interval for", x$m, "future observations")
                         }
 
                         if(x$m == 1){
-                                title <- paste("Pointwise prediction interval for one future observation")
+                                title <- paste("Pointwise", conf_lev, "% prediction interval for one future observation")
                         }
                 }
 
@@ -92,11 +95,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(x$m > 1){
-                                title <- paste("One-sided simultanious prediction lower limit for", x$m, "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% lower prediction limit for", x$m, "future observations")
                         }
 
                         if(x$m == 1){
-                                title <- paste("Onesieded pointwise prediction lower limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% lower prediction limit for one future observation")
                         }
                 }
 
@@ -105,11 +108,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(x$m > 1){
-                                title <- paste("One-sided simultanious prediction upper limit for", x$m, "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% upper prediction limit for", x$m, "future observations")
                         }
 
                         if(x$m == 1){
-                                title <- paste("Onesieded pointwise prediction upper limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% upper prediction limit for one future observation")
                         }
                 }
 
@@ -235,12 +238,12 @@ plot.predint <- function(x,
                 if(x$alternative == "both"){
 
                         # Title
-                        if(length(x$newsize)> 1){
-                                title <- paste("Simultanious prediction intervals for", length(x$newsize), "future observations")
+                        if(length(x$newsize) > 1){
+                                title <- paste("Simultanious", conf_lev, "% prediction intervals for", length(x$newsize), "future observations")
                         }
 
                         if(length(x$newsize) == 1){
-                                title <- paste("Pointwise prediction interval for one future observation")
+                                title <- paste("Pointwise", conf_lev, "% prediction interval for one future observation")
                         }
                 }
 
@@ -249,11 +252,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newsize) > 1){
-                                title <- paste("One-sided simultanious prediction upper limit for", length(x$newsize), "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% upper prediction limits for", length(x$newsize), "future observations")
                         }
 
                         if(length(x$newsize) == 1){
-                                title <- paste("One-sided pointwise prediction upper limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% upper prediction limit for one future observation")
                         }
                 }
 
@@ -262,11 +265,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newsize) > 1){
-                                title <- paste("One-sided simultanious prediction lower limit for", length(x$newsize), "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% lower prediction limits for", length(x$newsize), "future observations")
                         }
 
                         if(length(x$newsize) == 1){
-                                title <- paste("One-sided pointwise prediction lower limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% lower prediction limit for one future observation")
                         }
                 }
 
@@ -387,11 +390,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newoffset)> 1){
-                                title <- paste("Simultanious prediction intervals for", length(x$newoffset), "future observations")
+                                title <- paste("Simultanious", conf_lev, "% prediction intervals for", length(x$newoffset), "future observations")
                         }
 
                         if(length(x$newoffset) == 1){
-                                title <- paste("Pointwise prediction interval for one future observation")
+                                title <- paste("Pointwise", conf_lev, "% prediction interval for one future observation")
                         }
                 }
 
@@ -400,11 +403,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newoffset) > 1){
-                                title <- paste("One-sided simultanious prediction upper limit for", length(x$newoffset), "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% upper prediction limits for", length(x$newoffset), "future observations")
                         }
 
                         if(length(x$newoffset) == 1){
-                                title <- paste("One-sided pointwise prediction upper limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% upper prediction limit for one future observation")
                         }
                 }
 
@@ -413,11 +416,11 @@ plot.predint <- function(x,
 
                         # Title
                         if(length(x$newoffset) > 1){
-                                title <- paste("One-sided simultanious prediction lower limit for", length(x$newoffset), "future observations")
+                                title <- paste("One-sided simultanious", conf_lev, "% lower prediction limits for", length(x$newoffset), "future observations")
                         }
 
                         if(length(x$newoffset) == 1){
-                                title <- paste("One-sided pointwise prediction lower limit for one future observation")
+                                title <- paste("One-sided pointwise", conf_lev, "% lower prediction limit for one future observation")
                         }
                 }
 
