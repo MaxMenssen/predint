@@ -1,18 +1,36 @@
 
-#' Plots of prediction intervals
+#' Plots of \code{predint} objects
 #'
-#' @param x
-#' @param size
-#' @param width
-#' @param alpha
-#' @param scale
+#' This function provides methodology for plotting the prediction intervals or
+#' limits that are calculated using the functionality of the \pkg{predint} package.
 #'
-#' @return
+#' @param x object of class \code{predint}
+#' @param size size of the dots
+#' @param width margin of jittering
+#' @param alpha opacity of dot colors
+#'
+#' @return Since \code{plot.predint()} is based on \code{ggplot2::ggplot}, it returns
+#' an object of class \code{c("gg", "ggplot")}.
+#'
 #' @export
 #'
 #' @import ggplot2
 #'
 #' @examples
+#' ### PI for quasi-Poisson data
+#' pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
+#'                           newdat=data.frame(qp_dat2),
+#'                           nboot=100,
+#'                           traceplot = FALSE)
+#'
+#' ### Plot the PI
+#' plot(pred_int)
+#'
+#' ### Since plot.predint is based on ggplot, the grafic can be altered using
+#' # the methodology provided via ggplot2
+#' plot(pred_int)+
+#'      theme_classic()
+#'
 plot.predint <- function(x,
                          size=4,
                          width=0.05,
@@ -480,10 +498,6 @@ plot.predint <- function(x,
 
         return(pi_plot)
 }
-
-
-
-
 
 
 

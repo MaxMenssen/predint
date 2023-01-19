@@ -2,16 +2,40 @@
 % Please edit documentation in R/plot.predint.R
 \name{plot.predint}
 \alias{plot.predint}
-\title{Plots of prediction intervals}
+\title{Plots of \code{predint} objects}
 \usage{
 \method{plot}{predint}(x, size = 4, width = 0.05, alpha = 0.5)
 }
 \arguments{
-\item{scale}{}
+\item{x}{object of class \code{predint}}
+
+\item{size}{size of the dots}
+
+\item{width}{margin of jittering}
+
+\item{alpha}{opacity of dot colors}
 }
 \value{
-
+Since \code{plot.predint()} is based on \code{ggplot2::ggplot}, it returns
+an object of class \code{c("gg", "ggplot")}.
 }
 \description{
-Plots of prediction intervals
+This function provides methodology for plotting the prediction intervals or
+limits that are calculated using the functionality of the \pkg{predint} package.
+}
+\examples{
+### PI for quasi-Poisson data
+pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
+                          newdat=data.frame(qp_dat2),
+                          nboot=100,
+                          traceplot = FALSE)
+
+### Plot the PI
+plot(pred_int)
+
+### Since plot.predint is based on ggplot, the grafic can be altered using
+# the methodology provided via ggplot2
+plot(pred_int)+
+     theme_classic()
+
 }
