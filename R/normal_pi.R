@@ -22,7 +22,7 @@
 #' of simple uncalibrated intervals
 #'
 #' @details This function returns a simple uncalibrated prediction interval as
-#' given in Menssen and Schaarschmidt 2021
+#' given in Menssen and Schaarschmidt 2022
 #' \deqn{[l,u] = \hat{\mu} \pm q \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}}
 #'
 #' with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
@@ -38,9 +38,9 @@
 #'
 #' @importFrom stats qnorm
 #'
-#'@references Menssen, M., Schaarschmidt, F. 2021: Prediction intervals for all of M
-#' future observations based on linear random effects models. Statistica Neerlandica.
-#' \doi{10.1111/stan.12260}
+#'@references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
 #'
 #' @examples
 #'
@@ -114,9 +114,9 @@ normal_pi <- function(mu,
 
         # check algorithm
         if(!is.null(algorithm)){
-                if(algorithm != "MS21"){
-                        if(algorithm != "MS21mod"){
-                                stop("algoritm must be either NULL, MS21 of MS21mod")
+                if(algorithm != "MS22"){
+                        if(algorithm != "MS22mod"){
+                                stop("algoritm must be either NULL, MS22 of MS22mod")
                         }
                 }
         }
