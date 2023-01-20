@@ -75,20 +75,8 @@ fitted with \code{lmer()} from the lme4 package. Random effects have to be speci
 }
 \examples{
 
-# loading lme4
-library(lme4)
-
-# Fitting a random effects model based on c2_dat_1
-fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-summary(fit)
-
-# Prediction interval using c2_dat2 as future data
-\donttest{lmer_pi(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
-
-# Upper prediction limit for m=3 future observations
-\donttest{lmer_pi(model=fit, m=3, alternative="upper", nboot=100)}
-
-# Please note that nboot was set to 100 in order to decrease computing time
-# of the example. For a valid analysis set nboot=10000.
+# This function is deprecated.
+# Please use lmer_pi_unstruc() if you want exactly the same functionality.
+# Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care of the future experimental design
 
 }
