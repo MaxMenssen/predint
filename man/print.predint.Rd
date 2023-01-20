@@ -15,6 +15,3 @@ prints output to the console
 \description{
 Print function for objects of class \code{predint}
 }
-\examples{
-# see examples for the calculation of prediction intervals
-}
