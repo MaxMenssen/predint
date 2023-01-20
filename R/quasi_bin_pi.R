@@ -18,14 +18,14 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
-#' @param algorithm either "MS21" or "MS21mod" (see details)
+#' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
 #' @details This function returns bootstrap-calibrated prediction intervals as well as
 #' lower or upper prediction limits.
 #'
-#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22", both limits of the prediction interval
 #' are calibrated simultaniously using the algorithm described in Menssen and
-#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
 #' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
@@ -37,7 +37,7 @@
 #'  \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
@@ -51,6 +51,10 @@
 #'
 #' @return \code{quasi_bin_pi} returns an object of class \code{c("predint", "quasiBinomialPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
+#'
+#'@references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
 #'
 #' @export
 #'
@@ -78,7 +82,7 @@ quasi_bin_pi <- function(histdat,
                          tolerance = 1e-3,
                          traceplot=TRUE,
                          n_bisec=30,
-                         algorithm="MS21mod"){
+                         algorithm="MS22mod"){
 
         # Relationship between newdat and newsize
         if(is.null(newdat) & is.null(newsize)){
@@ -346,7 +350,7 @@ quasi_bin_pi <- function(histdat,
         if(alternative=="both"){
 
                 # Direct implementation of M and S 2021
-                if(algorithm=="MS21"){
+                if(algorithm=="MS22"){
                         quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                                  pred_se = pred_se_m_list,
                                                  y_star = bs_y_star,
@@ -360,7 +364,7 @@ quasi_bin_pi <- function(histdat,
                 }
 
                 # Modified version of M and S 21
-                if(algorithm=="MS21mod"){
+                if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = y_star_hat_m_list,
                                                        pred_se = pred_se_m_list,
                                                        y_star = bs_y_star,

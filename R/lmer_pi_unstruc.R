@@ -3,7 +3,7 @@
 #'
 #' lmer_pi_unstruc calculates a bootstrap calibrated prediction interval for one or more
 #' future observation(s) based on linear random effects models as described in section
-#' 3.2.4. of Menssen and Schaarschmidt (2021).
+#' 3.2.4. of Menssen and Schaarschmidt (2022).
 #' Please note, that the bootstrap calibration used here does not consider the sampling
 #' structure of the future data, since the calibration values are drawn randomly from
 #' bootstrap data sets that have the same structure as the historical data.
@@ -22,14 +22,14 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
-#' @param algorithm either "MS21" or "MS21mod" (see details)
+#' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
 #' @details This function returns bootstrap-calibrated prediction intervals as well as
 #' lower or upper prediction limits.
 #'
-#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22", both limits of the prediction interval
 #' are calibrated simultaniously using the algorithm described in Menssen and
-#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
 #' \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
@@ -41,7 +41,7 @@
 #' effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
 #' coefficient used for interval calculation. \cr
 #'
-#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
@@ -52,13 +52,13 @@
 #' prediction limits are of interest. \cr
 #'
 #' This function is an direct implementation of the PI given in Menssen and Schaarschmidt
-#' 2021 section 3.2.4.
+#' 2022 section 3.2.4.
 #'
 #'
 #' @return \code{lmer_pi_futvec()} returns an object of class \code{c("predint", "normalPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
-#' @references Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+#' @references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
 #'  \doi{10.1111/stan.12260}
 #'
@@ -98,7 +98,7 @@ lmer_pi_unstruc <- function(model,
                     tolerance = 1e-3,
                     traceplot=TRUE,
                     n_bisec=30,
-                    algorithm="MS21"){
+                    algorithm="MS22"){
 
         # Model must be of class lmerMod
         if(!is(model, "lmerMod")){
@@ -183,9 +183,9 @@ lmer_pi_unstruc <- function(model,
         #-----------------------------------------------------------------------
 
         # algorithm must be set properly
-        if(algorithm != "MS21"){
-                if(algorithm != "MS21mod"){
-                        stop("algoritm must be either MS21 of MS21mod")
+        if(algorithm != "MS22"){
+                if(algorithm != "MS22mod"){
+                        stop("algoritm must be either MS22 of MS22mod")
                 }
         }
 
@@ -315,7 +315,7 @@ lmer_pi_unstruc <- function(model,
         if(alternative=="both"){
 
                 # Direct implementation of M and S 2021
-                if(algorithm=="MS21"){
+                if(algorithm=="MS22"){
                         quant_calib <- bisection(y_star_hat = bs_mu,
                                                  pred_se = bs_se,
                                                  y_star = ystar_list,
@@ -329,7 +329,7 @@ lmer_pi_unstruc <- function(model,
                 }
 
                 # Modified version of M and S 21
-                if(algorithm=="MS21mod"){
+                if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = bs_mu,
                                                        pred_se = bs_se,
                                                        y_star = ystar_list,

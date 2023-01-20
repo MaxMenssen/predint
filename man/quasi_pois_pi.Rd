@@ -16,7 +16,7 @@ quasi_pois_pi(
   tolerance = 0.001,
   traceplot = TRUE,
   n_bisec = 30,
-  algorithm = "MS21mod"
+  algorithm = "MS22mod"
 )
 }
 \arguments{
@@ -49,7 +49,7 @@ an upper or a lower prediction limit should be computed}
 
 \item{n_bisec}{maximal number of bisection steps}
 
-\item{algorithm}{either "MS21" or "MS21mod" (see details)}
+\item{algorithm}{either "MS22" or "MS22mod" (see details)}
 }
 \value{
 \code{quasi_pois_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}
@@ -63,9 +63,9 @@ data with constant overdispersion (quasi-Poisson).
 This function returns bootstrap-calibrated prediction intervals as well as
 lower or upper prediction limits.
 
-If \code{algorithm} is set to "MS21", both limits of the prediction interval
+If \code{algorithm} is set to "MS22", both limits of the prediction interval
 are calibrated simultaniously using the algorithm described in Menssen and
-Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
 \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
@@ -77,7 +77,7 @@ historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
 \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 
-If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
@@ -107,7 +107,7 @@ quasi_pois_pi(histdat=data.frame(qp_dat1), newoffset=c(1,1,1), alternative="uppe
 
 }
 \references{
-Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
 observations based on linear random effects models. Statistica Neerlandica,
  \doi{10.1111/stan.12260}
 }

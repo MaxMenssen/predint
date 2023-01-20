@@ -20,14 +20,14 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
-#' @param algorithm either "MS21" or "MS21mod" (see details)
+#' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
 #' @details This function returns bootstrap-calibrated prediction intervals as well as
 #' lower or upper prediction limits.
 #'
-#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22", both limits of the prediction interval
 #' are calibrated simultaniously using the algorithm described in Menssen and
-#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
 #' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
@@ -39,7 +39,7 @@
 #'  \eqn{\hat{\rho}} as the estimate for the intra class correlation (Lui et al. 2000)
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
@@ -60,9 +60,13 @@
 #' @importFrom graphics abline lines
 #'
 #' @references
-#' Lui, K.-J., Mayer, J.A. and Eckhardt, L: Confidence intervals for the risk ratio
+#' Lui et al. 2000: Confidence intervals for the risk ratio
 #' under cluster sampling based on the beta-binomial model. Statistics in Medicine.2000;19:2933-2942.
 #' \doi{10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
+#'
+#' Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
 #'
 #'
 #' @examples
@@ -94,7 +98,7 @@ beta_bin_pi <- function(histdat,
                         tolerance = 1e-3,
                         traceplot=TRUE,
                         n_bisec=30,
-                        algorithm="MS21mod"){
+                        algorithm="MS22mod"){
 
 # -------------------------------------------------------------------------
 
@@ -337,7 +341,7 @@ beta_bin_pi <- function(histdat,
         if(alternative=="both"){
 
                 # Direct implementation of M and S 2021
-                if(algorithm=="MS21"){
+                if(algorithm=="MS22"){
                         quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                                  pred_se = pred_se_m_list,
                                                  y_star = bs_y_star,
@@ -351,7 +355,7 @@ beta_bin_pi <- function(histdat,
                 }
 
                 # Modified version of M and S 21
-                if(algorithm=="MS21mod"){
+                if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = y_star_hat_m_list,
                                                        pred_se = pred_se_m_list,
                                                        y_star = bs_y_star,

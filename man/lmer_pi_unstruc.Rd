@@ -16,7 +16,7 @@ lmer_pi_unstruc(
   tolerance = 0.001,
   traceplot = TRUE,
   n_bisec = 30,
-  algorithm = "MS21"
+  algorithm = "MS22"
 )
 }
 \arguments{
@@ -44,7 +44,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{n_bisec}{maximal number of bisection steps}
 
-\item{algorithm}{either "MS21" or "MS21mod" (see details)}
+\item{algorithm}{either "MS22" or "MS22mod" (see details)}
 }
 \value{
 \code{lmer_pi_futvec()} returns an object of class \code{c("predint", "normalPI")}
@@ -53,7 +53,7 @@ with prediction intervals or limits in the first entry (\code{$prediction}).
 \description{
 lmer_pi_unstruc calculates a bootstrap calibrated prediction interval for one or more
 future observation(s) based on linear random effects models as described in section
-3.2.4. of Menssen and Schaarschmidt (2021).
+3.2.4. of Menssen and Schaarschmidt (2022).
 Please note, that the bootstrap calibration used here does not consider the sampling
 structure of the future data, since the calibration values are drawn randomly from
 bootstrap data sets that have the same structure as the historical data.
@@ -62,9 +62,9 @@ bootstrap data sets that have the same structure as the historical data.
 This function returns bootstrap-calibrated prediction intervals as well as
 lower or upper prediction limits.
 
-If \code{algorithm} is set to "MS21", both limits of the prediction interval
+If \code{algorithm} is set to "MS22", both limits of the prediction interval
 are calibrated simultaniously using the algorithm described in Menssen and
-Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
 \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
@@ -76,7 +76,7 @@ as the residual variance and \eqn{q^{calib}} obtained from the random
 effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
 coefficient used for interval calculation. \cr
 
-If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
@@ -87,7 +87,7 @@ Please note, that this modification does not affect the calibration procedure, i
 prediction limits are of interest. \cr
 
 This function is an direct implementation of the PI given in Menssen and Schaarschmidt
-2021 section 3.2.4.
+2022 section 3.2.4.
 }
 \examples{
 # loading lme4
@@ -108,7 +108,7 @@ summary(fit)
 
 }
 \references{
-Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
 observations based on linear random effects models. Statistica Neerlandica,
  \doi{10.1111/stan.12260}
 }

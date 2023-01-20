@@ -16,7 +16,7 @@ lmer_pi_futmat(
   tolerance = 0.001,
   traceplot = TRUE,
   n_bisec = 30,
-  algorithm = "MS21"
+  algorithm = "MS22"
 )
 }
 \arguments{
@@ -44,7 +44,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{n_bisec}{maximal number of bisection steps}
 
-\item{algorithm}{either "MS21" or "MS21mod" (see details)}
+\item{algorithm}{either "MS22" or "MS22mod" (see details)}
 }
 \value{
 \code{lmer_pi_futmat()} returns an object of class \code{c("predint", "normalPI")}
@@ -59,9 +59,9 @@ the sampling structure of the future data is taken into account (see below).
 This function returns bootstrap-calibrated prediction intervals as well as
 lower or upper prediction limits.
 
-If \code{algorithm} is set to "MS21", both limits of the prediction interval
+If \code{algorithm} is set to "MS22", both limits of the prediction interval
 are calibrated simultaniously using the algorithm described in Menssen and
-Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
 \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
@@ -73,7 +73,7 @@ as the residual variance and \eqn{q^{calib}} obtained from the random
 effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
 coefficient used for interval calculation. \cr
 
-If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
@@ -92,7 +92,7 @@ model must have at least two replicates in \code{newdat}. \cr
 If a random factor in the future data set does not have any replicate, a list
 that contains design matrices (one for each random factor) can be provided via \code{futmat_list}.
 
-This function is an implementation of the PI given in Menssen and Schaarschmidt 2021
+This function is an implementation of the PI given in Menssen and Schaarschmidt 2022
 section 3.2.4 except that the bootstrap calibration values are drawn from
 bootstrap samples that mimic the future data as described above.
 }
@@ -154,7 +154,7 @@ fml
 
 }
 \references{
-Menssen, M., Schaarschmidt, F. (2021): Prediction intervals for all of M
-future observations based on linear random effects models. Statistica Neerlandica.
-\doi{10.1111/stan.12260}
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica,
+ \doi{10.1111/stan.12260}
 }

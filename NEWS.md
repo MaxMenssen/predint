@@ -28,15 +28,14 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * new summary.predint and plot.predint functions
 
 + To do:
-        plot.predint
+        plot.predint (done)
          - for lmer_pi_... done
          - for beta_bin_pi done
-        summary.predint
-          - open
-        as.data.frame.predint
-          - open
-        print.predint
-          - open
+        summary.predint (done)
+          - works for quasi_pois_pi done
+          - further work to do done
+        as.data.frame.predint (done)
+        print.predint (done)
         rewrite checks and tests
 
 

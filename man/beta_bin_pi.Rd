@@ -16,7 +16,7 @@ beta_bin_pi(
   tolerance = 0.001,
   traceplot = TRUE,
   n_bisec = 30,
-  algorithm = "MS21mod"
+  algorithm = "MS22mod"
 )
 }
 \arguments{
@@ -46,7 +46,7 @@ should be computed}
 
 \item{n_bisec}{maximal number of bisection steps}
 
-\item{algorithm}{either "MS21" or "MS21mod" (see details)}
+\item{algorithm}{either "MS22" or "MS22mod" (see details)}
 }
 \value{
 \code{quasi_bin_pi} returns an object of class \code{c("predint", "betaBinomialPI")}
@@ -60,9 +60,9 @@ beta-binomial data
 This function returns bootstrap-calibrated prediction intervals as well as
 lower or upper prediction limits.
 
-If \code{algorithm} is set to "MS21", both limits of the prediction interval
+If \code{algorithm} is set to "MS22", both limits of the prediction interval
 are calibrated simultaniously using the algorithm described in Menssen and
-Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
 \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
@@ -74,7 +74,7 @@ historical data, \eqn{q^{calib}} as the bootstrap-calibrated coefficient,
  \eqn{\hat{\rho}} as the estimate for the intra class correlation (Lui et al. 2000)
 and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 
-If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
@@ -106,7 +106,11 @@ beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=1
 
 }
 \references{
-Lui, K.-J., Mayer, J.A. and Eckhardt, L: Confidence intervals for the risk ratio
+Lui et al. 2000: Confidence intervals for the risk ratio
 under cluster sampling based on the beta-binomial model. Statistics in Medicine.2000;19:2933-2942.
 \doi{10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
+
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica,
+ \doi{10.1111/stan.12260}
 }

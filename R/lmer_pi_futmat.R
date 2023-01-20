@@ -18,15 +18,15 @@
 #' @param tolerance tolerance for the coverage probability in the bisection
 #' @param traceplot plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
-#' @param algorithm either "MS21" or "MS21mod" (see details)
+#' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
 #'
 #' @details This function returns bootstrap-calibrated prediction intervals as well as
 #' lower or upper prediction limits.
 #'
-#' If \code{algorithm} is set to "MS21", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22", both limits of the prediction interval
 #' are calibrated simultaniously using the algorithm described in Menssen and
-#' Schaarschmidt (2021), section 3.2.4. The calibrated prediction interval is given
+#' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
 #' \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
@@ -38,7 +38,7 @@
 #' effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
 #' coefficient used for interval calculation. \cr
 #'
-#' If \code{algorithm} is set to "MS21mod", both limits of the prediction interval
+#' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
@@ -57,7 +57,7 @@
 #' If a random factor in the future data set does not have any replicate, a list
 #' that contains design matrices (one for each random factor) can be provided via \code{futmat_list}.
 #'
-#' This function is an implementation of the PI given in Menssen and Schaarschmidt 2021
+#' This function is an implementation of the PI given in Menssen and Schaarschmidt 2022
 #' section 3.2.4 except that the bootstrap calibration values are drawn from
 #' bootstrap samples that mimic the future data as described above.
 #'
@@ -73,9 +73,9 @@
 #' @importFrom methods is
 #'
 #'
-#' @references Menssen, M., Schaarschmidt, F. (2021): Prediction intervals for all of M
-#' future observations based on linear random effects models. Statistica Neerlandica.
-#' \doi{10.1111/stan.12260}
+#' @references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
 #'
 #' @examples
 #'
@@ -144,7 +144,7 @@ lmer_pi_futmat <- function(model,
                            tolerance = 1e-3,
                            traceplot=TRUE,
                            n_bisec=30,
-                           algorithm="MS21"){
+                           algorithm="MS22"){
 
         # Model must be of class lmerMod
         if(!is(model, "lmerMod")){
@@ -221,9 +221,9 @@ lmer_pi_futmat <- function(model,
         #-----------------------------------------------------------------------
 
         # algorithm must be set properly
-        if(algorithm != "MS21"){
-                if(algorithm != "MS21mod"){
-                        stop("algoritm must be either MS21 of MS21mod")
+        if(algorithm != "MS22"){
+                if(algorithm != "MS22mod"){
+                        stop("algoritm must be either MS22 of MS22mod")
                 }
         }
 
@@ -499,7 +499,7 @@ lmer_pi_futmat <- function(model,
         if(alternative=="both"){
 
                 # Direct implementation of M and S 2021
-                if(algorithm=="MS21"){
+                if(algorithm=="MS22"){
                         quant_calib <- bisection(y_star_hat = bs_mu,
                                                  pred_se = bs_se,
                                                  y_star = ystar_list,
@@ -513,7 +513,7 @@ lmer_pi_futmat <- function(model,
                 }
 
                 # Modified version of M and S 21
-                if(algorithm=="MS21mod"){
+                if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = bs_mu,
                                                        pred_se = bs_se,
                                                        y_star = ystar_list,
