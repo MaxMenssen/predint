@@ -55,7 +55,7 @@ with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \details{
 This function returns a simple uncalibrated prediction interval as
-given in Menssen and Schaarschmidt 2021
+given in Menssen and Schaarschmidt 2022
 \deqn{[l,u] = \hat{\mu} \pm q \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}}
 
 with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
@@ -72,7 +72,7 @@ normal_pi(mu=10, pred_se=3, m=1)
 
 }
 \references{
-Menssen, M., Schaarschmidt, F. 2021: Prediction intervals for all of M
-future observations based on linear random effects models. Statistica Neerlandica.
-\doi{10.1111/stan.12260}
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica,
+ \doi{10.1111/stan.12260}
 }
