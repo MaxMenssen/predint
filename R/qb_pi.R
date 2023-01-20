@@ -89,9 +89,9 @@ qb_pi <- function(newsize,
 
         # check algorithm
         if(!is.null(algorithm)){
-                if(algorithm != "MS21"){
-                        if(algorithm != "MS21mod"){
-                                stop("algoritm must be either NULL, MS21 of MS21mod")
+                if(algorithm != "MS22"){
+                        if(algorithm != "MS22mod"){
+                                stop("algoritm must be either NULL, MS22 of MS22mod")
                         }
                 }
         }
