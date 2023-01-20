@@ -3,6 +3,7 @@
 S3method(as.data.frame,predint)
 S3method(plot,predint)
 S3method(print,predint)
+S3method(summary,predint)
 export(bb_pi)
 export(beta_bin_pi)
 export(bisection)
