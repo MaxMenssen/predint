@@ -1,3 +1,62 @@
+
+###  bb_pi() is implecitely covered, because it generates the output of beta_bin_pi()
+
+test_that("check class and output", {
+
+        pred_int <- beta_bin_pi(histdat=bb_dat1,
+                                newsize=50,
+                                alternative="upper",
+                                traceplot = FALSE,
+                                nboot = 100)
+
+        # Test classes
+        # Test classes
+        expect_s3_class(pred_int,
+                        class=c("predint", "betaBinomialPI"))
+
+
+        names_pi <- names(pred_int)
+
+        expect_equal(names_pi,
+                     c("prediction",
+                       "newsize",
+                       "newdat",
+                       "histsize",
+                       "histdat",
+                       "y_star_hat",
+                       "pred_se",
+                       "alternative",
+                       "q",
+                       "pi",
+                       "rho",
+                       "algorithm"))
+
+        # No. of slots of the output list
+        expect_equal(length(pred_int), 12)
+
+        # $prediction has to be a data.frame
+        expect_true(is.data.frame(pred_int$prediction))
+
+        # histdat has to be a data.frame
+        expect_true(is.data.frame(pred_int$histdat))
+
+        # Algorithm ha to be MS22mod by default
+        expect_equal(pred_int$algorithm, "MS22mod")
+
+        # Check newdat
+        pred_int1 <- beta_bin_pi(histdat=bb_dat1,
+                                newdat = bb_dat2,
+                                alternative="upper",
+                                traceplot = FALSE,
+                                nboot = 100)
+
+        # newdat needs to be a data.frame
+        expect_true(is.data.frame(pred_int1$newdat))
+
+
+})
+
+
 test_that("newdat and newsize must be specified correctly", {
 
         # newdat and newsize are not specified
@@ -33,58 +92,11 @@ test_that("histdat must be specified correctly", {
 
 test_that("alternative", {
 
-        # newdat and newsize are not specified
         expect_error(beta_bin_pi(histdat=bb_dat1,
                                  newsize=50,
                                  alternative="opper"))
 
-        # Tests if the data frame is correct if alternative is specified correctly
-        ncol_upper <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                       newsize=50,
-                                       alternative="upper",
-                                       traceplot = FALSE,
-                                       nboot = 100))
 
-        ncol_lower <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                       newsize=50,
-                                       alternative="lower",
-                                       traceplot = FALSE,
-                                       nboot = 100))
-
-        ncol_both <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                      newsize=50,
-                                      alternative="both",
-                                      traceplot = FALSE,
-                                      nboot = 100))
-
-
-        expect_equal(ncol_upper, 5)
-        expect_equal(ncol_lower, 5)
-        expect_equal(ncol_both, 6)
-
-
-        # Tests if the data frame is correct if alternative is specified correctly
-        ncol_upper_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                       newdat=bb_dat2,
-                                       alternative="upper",
-                                       traceplot = FALSE,
-                                       nboot = 100))
-
-        ncol_lower_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                       newdat=bb_dat2,
-                                       alternative="lower",
-                                       traceplot = FALSE,
-                                       nboot = 100))
-
-        ncol_both_nd <- ncol(beta_bin_pi(histdat=bb_dat1,
-                                      newdat=bb_dat2,
-                                      alternative="both",
-                                      traceplot = FALSE,
-                                      nboot = 100))
-
-        expect_equal(ncol_upper_nd, 8)
-        expect_equal(ncol_lower_nd, 8)
-        expect_equal(ncol_both_nd, 9)
 
 })
 

@@ -1,3 +1,4 @@
+
 test_that("class must be correct",{
         expect_s3_class(quasi_pois_pi(histdat=data.frame(qp_dat1),
                                       newoffset=c(1,1,1),
