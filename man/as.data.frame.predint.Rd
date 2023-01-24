@@ -4,10 +4,12 @@
 \alias{as.data.frame.predint}
 \title{Store prediction intervals or limits as a \code{data.frame}}
 \usage{
-\method{as.data.frame}{predint}(x)
+\method{as.data.frame}{predint}(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{predint}}
+
+\item{...}{additional arguments to be passed to \code{base::as.data.frame()}}
 }
 \value{
 This function returns the prediction intervals or limits stored in an

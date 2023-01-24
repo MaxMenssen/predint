@@ -7,7 +7,8 @@
 #' This function gives a summary about the prediction intervals (and limits)
 #' computed with \pkg{predint}.
 #'
-#' @param x object of class \code{predint}
+#' @param object object of class \code{predint}
+#' @param ... further arguments passed over to \code{base::cbind()} and \code{base::data.frame()}
 #'
 #' @return A \code{data.frame} containing the actual data (if provided via \code{newdat}),
 #' the prediction interval (or limit), the expected value for the future observation,
@@ -33,109 +34,111 @@
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
 #'
-summary.predint <- function(x){
+summary.predint <- function(object, ...){
 
         # input needs to be a predint object
-        if(!inherits(x, "predint")){
-                stop("x must be of class predint")
+        if(!inherits(object, "predint")){
+                stop("object must be of class predint")
         }
 
         # get the confidence level
-        if(!is.null(attributes(x)$alpha)){
-                conf_lev <-  paste((1-attributes(x)$alpha)*100, "%")
+        if(!is.null(attributes(object)$alpha)){
+                conf_lev <-  paste((1-attributes(object)$alpha)*100, "%")
         }
 
-        if(is.null(attributes(x)$alpha)){
+        if(is.null(attributes(object)$alpha)){
                 conf_lev <-  NULL
         }
 
         #-----------------------------------------------------------------------
         ### lmer_pi_...
 
-        if(inherits(x, "normalPI")){
+        if(inherits(object, "normalPI")){
 
-                if(x$alternative == "both"){
+                if(object$alternative == "both"){
 
                         # Title
-                        if(x$m > 1){
-                                cat("Simultanious", conf_lev, "prediction interval for", x$m, "future observations \n \n")
+                        if(object$m > 1){
+                                cat("Simultanious", conf_lev, "prediction interval for", object$m, "future observations \n \n")
                         }
 
-                        if(x$m == 1){
+                        if(object$m == 1){
                                 cat("Pointwise", conf_lev, "prediction interval for one future observation \n \n")
                         }
                 }
 
                 # alternative is not both
-                if(x$alternative == "lower"){
+                if(object$alternative == "lower"){
 
                         # Title
-                        if(x$m > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limit for", x$m, "future observations \n \n")
+                        if(object$m > 1){
+                                cat("One-sided simultanious", conf_lev, "lower prediction limit for", object$m, "future observations \n \n")
                         }
 
-                        if(x$m == 1){
+                        if(object$m == 1){
                                 cat("One-sided pointwise", conf_lev, "lower prediction limit for one future observation \n \n")
                         }
                 }
 
                 # alternative is not both
-                if(x$alternative == "upper"){
+                if(object$alternative == "upper"){
 
                         # Title
-                        if(x$m > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limit for", x$m, "future observations \n \n")
+                        if(object$m > 1){
+                                cat("One-sided simultanious", conf_lev, "upper prediction limit for", object$m, "future observations \n \n")
                         }
 
-                        if(x$m == 1){
+                        if(object$m == 1){
                                 cat("One-sided pointwise", conf_lev, "upper prediction limit for one future observation \n \n")
                         }
                 }
 
                 # Define ql and qu for output
-                if(length(x$q) == 2){
-                        ql <- rep(x$q[1], times=x$m)
-                        qu <- rep(x$q[2], times=x$m)
+                if(length(object$q) == 2){
+                        ql <- rep(object$q[1], times=object$m)
+                        qu <- rep(object$q[2], times=object$m)
                         qdf <- data.frame(ql, qu)
                 }
 
                 # define q for output
-                if(length(x$q) == 1){
-                        q <- rep(x$q, times=x$m)
+                if(length(object$q) == 1){
+                        q <- rep(object$q, times=object$m)
                         qdf <- data.frame(q)
                 }
 
                 # output variables as data.frame
-                y_star_hat <- data.frame(y_star_hat=x$y_star_hat)
-                pred_se <- data.frame(pred_se=x$pred_se)
+                y_star_hat <- data.frame(y_star_hat=object$y_star_hat)
+                pred_se <- data.frame(pred_se=object$pred_se)
 
                 # newdat is not available
-                if(is.null(x$newdat)){
-                        out <- cbind(x$prediction,
+                if(is.null(object$newdat)){
+                        out <- cbind(object$prediction,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
                 }
 
                 # if newdat is given
-                if(!is.null(x$newdat)){
+                if(!is.null(object$newdat)){
 
-                        out <- cbind(x$newdat,
-                                     x$prediction,
+                        out <- cbind(object$newdat,
+                                     object$prediction,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
 
-                        if(x$alternative == "both"){
-                                out$cover <- out$lower < out[,1] & out[,1] < out$upper
+                        if(object$alternative == "both"){
+                                out$cover <- object$prediction$lower < object$newdat[,1] & object$newdat[,1] < object$prediction$upper
                         }
 
-                        if(x$alternative == "lower"){
-                                out$cover <- out$lower < out[,1]
+                        if(object$alternative == "lower"){
+                                out$cover <- object$prediction$lower < object$newdat[,1]
                         }
 
-                        if(x$alternative == "upper"){
-                                out$cover <- out[,1] < out$upper
+                        if(object$alternative == "upper"){
+                                out$cover <- object$newdat[,1] < object$prediction$upper
                         }
                 }
 
@@ -145,93 +148,95 @@ summary.predint <- function(x){
         #-----------------------------------------------------------------------
         ### Overdispersed-binomial PI
 
-        if(inherits(x, "quasiBinomialPI") | inherits(x, "betaBinomialPI")){
+        if(inherits(object, "quasiBinomialPI") | inherits(object, "betaBinomialPI")){
 
                 # alternative = both
-                if(x$alternative == "both"){
+                if(object$alternative == "both"){
 
                         # Title
-                        if(length(x$newsize)> 1){
-                                cat("Simultanious", conf_lev, "prediction intervals for", length(x$newsize), "future observations \n \n")
+                        if(length(object$newsize)> 1){
+                                cat("Simultanious", conf_lev, "prediction intervals for", length(object$newsize), "future observations \n \n")
                         }
 
-                        if(length(x$newsize) == 1){
+                        if(length(object$newsize) == 1){
                                 cat("Pointwise", conf_lev, "prediction interval for one future observation \n \n")
                         }
                 }
 
                 # alternative == "upper"
-                if(x$alternative == "upper"){
+                if(object$alternative == "upper"){
 
                         # Title
-                        if(length(x$newsize) > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(x$newsize), "future observations \n \n")
+                        if(length(object$newsize) > 1){
+                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(object$newsize), "future observations \n \n")
                         }
 
-                        if(length(x$newsize) == 1){
+                        if(length(object$newsize) == 1){
                                 cat("One-sided pointwise", conf_lev, "upper prediction limit for one future observation \n \n")
                         }
                 }
 
                 # alternative == "upper"
-                if(x$alternative == "lower"){
+                if(object$alternative == "lower"){
 
                         # Title
-                        if(length(x$newsize) > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(x$newsize), "future observations \n \n")
+                        if(length(object$newsize) > 1){
+                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(object$newsize), "future observations \n \n")
                         }
 
-                        if(length(x$newsize) == 1){
+                        if(length(object$newsize) == 1){
                                 cat("One-sided pointwise", conf_lev, "lower prediction limit for one future observation \n \n")
                         }
                 }
 
                 # Define ql and qu for output
-                if(length(x$q) == 2){
-                        ql <- rep(x$q[1], times=length(x$newsize))
-                        qu <- rep(x$q[2], times=length(x$newsize))
+                if(length(object$q) == 2){
+                        ql <- rep(object$q[1], times=length(object$newsize))
+                        qu <- rep(object$q[2], times=length(object$newsize))
                         qdf <- data.frame(ql, qu)
                 }
 
                 # define q for output
-                if(length(x$q) == 1){
-                        q <- rep(x$q, times=length(x$newsize))
+                if(length(object$q) == 1){
+                        q <- rep(object$q, times=length(object$newsize))
                         qdf <- data.frame(q)
                 }
 
                 # output variables as data.frame
-                newsize <- data.frame(newsize=x$newsize)
-                y_star_hat <- data.frame(y_star_hat=x$y_star_hat)
-                pred_se <- data.frame(pred_se=x$pred_se)
+                newsize <- data.frame(newsize=object$newsize)
+                y_star_hat <- data.frame(y_star_hat=object$y_star_hat)
+                pred_se <- data.frame(pred_se=object$pred_se)
 
                 # newdat is not available
-                if(is.null(x$newdat)){
-                        out <- cbind(x$prediction,
+                if(is.null(object$newdat)){
+                        out <- cbind(object$prediction,
                                      newsize,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
                 }
 
                 # if newdat is given
-                if(!is.null(x$newdat)){
+                if(!is.null(object$newdat)){
 
-                        out <- cbind(x$newdat,
+                        out <- cbind(object$newdat,
                                      newsize,
-                                     x$prediction,
+                                     object$prediction,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
 
-                        if(x$alternative == "both"){
+                        if(object$alternative == "both"){
                                 out$cover <- out$lower < out[,1] & out[,1] < out$upper
                         }
 
-                        if(x$alternative == "lower"){
+                        if(object$alternative == "lower"){
                                 out$cover <- out$lower < out[,1]
                         }
 
-                        if(x$alternative == "upper"){
+                        if(object$alternative == "upper"){
                                 out$cover <- out[,1] < out$upper
                         }
                 }
@@ -244,92 +249,94 @@ summary.predint <- function(x){
         #-----------------------------------------------------------------------
         ### Quasi-Poisson PI
 
-        if(inherits(x, "quasiPoissonPI")){
+        if(inherits(object, "quasiPoissonPI")){
 
                 # alternative = both
-                if(x$alternative == "both"){
+                if(object$alternative == "both"){
 
                         # Title
-                        if(length(x$newoffset)> 1){
-                                cat("Simultanious", conf_lev, "prediction intervals for", length(x$newoffset), "future observations \n \n")
+                        if(length(object$newoffset)> 1){
+                                cat("Simultanious", conf_lev, "prediction intervals for", length(object$newoffset), "future observations \n \n")
                         }
 
-                        if(length(x$newoffset) == 1){
+                        if(length(object$newoffset) == 1){
                                 cat("Pointwise", conf_lev, "prediction interval for one future observation \n \n")
                         }
                 }
 
                 # alternative == "upper"
-                if(x$alternative == "upper"){
+                if(object$alternative == "upper"){
 
                         # Title
-                        if(length(x$newoffset) > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(x$newoffset), "future observations \n \n")
+                        if(length(object$newoffset) > 1){
+                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(object$newoffset), "future observations \n \n")
                         }
 
-                        if(length(x$newoffset) == 1){
+                        if(length(object$newoffset) == 1){
                                 cat("One-sided pointwise", conf_lev, "upper prediction limit for one future observation \n \n")
                         }
                 }
 
                 # alternative == "upper"
-                if(x$alternative == "lower"){
+                if(object$alternative == "lower"){
 
                         # Title
-                        if(length(x$newoffset) > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(x$newoffset), "future observations \n \n")
+                        if(length(object$newoffset) > 1){
+                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(object$newoffset), "future observations \n \n")
                         }
 
-                        if(length(x$newoffset) == 1){
+                        if(length(object$newoffset) == 1){
                                 cat("One-sided pointwise", conf_lev, "lower prediction limit for one future observation \n \n")
                         }
                 }
 
                 # Define ql and qu for output
-                if(length(x$q) == 2){
-                        ql <- rep(x$q[1], times=length(x$newoffset))
-                        qu <- rep(x$q[2], times=length(x$newoffset))
+                if(length(object$q) == 2){
+                        ql <- rep(object$q[1], times=length(object$newoffset))
+                        qu <- rep(object$q[2], times=length(object$newoffset))
                         qdf <- data.frame(ql, qu)
                 }
 
                 # define q for output
-                if(length(x$q) == 1){
-                        q <- rep(x$q, times=length(x$newoffset))
+                if(length(object$q) == 1){
+                        q <- rep(object$q, times=length(object$newoffset))
                         qdf <- data.frame(q)
                 }
 
                 # output variables as data.frame
-                newoffset <- data.frame(newoffset=x$newoffset)
-                y_star_hat <- data.frame(y_star_hat=x$y_star_hat)
-                pred_se <- data.frame(pred_se=x$pred_se)
+                newoffset <- data.frame(newoffset=object$newoffset)
+                y_star_hat <- data.frame(y_star_hat=object$y_star_hat)
+                pred_se <- data.frame(pred_se=object$pred_se)
 
                 # newdat is not available
-                if(is.null(x$newdat)){
-                        out <- cbind(x$prediction,
+                if(is.null(object$newdat)){
+                        out <- cbind(object$prediction,
                                      newoffset,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
                 }
 
                 # if newdat is given
-                if(!is.null(x$newdat)){
+                if(!is.null(object$newdat)){
 
-                        out <- cbind(x$newdat,
-                                     x$prediction,
+                        out <- cbind(object$newdat,
+                                     object$prediction,
                                      y_star_hat,
                                      qdf,
-                                     pred_se)
+                                     pred_se,
+                                     ...)
 
-                        if(x$alternative == "both"){
+                        if(object$alternative == "both"){
                                 out$cover <- out$lower < out[,1] & out[,1] < out$upper
                         }
 
-                        if(x$alternative == "lower"){
+                        if(object$alternative == "lower"){
                                 out$cover <- out$lower < out[,1]
                         }
 
-                        if(x$alternative == "upper"){
+                        if(object$alternative == "upper"){
                                 out$cover <- out[,1] < out$upper
                         }
                 }
@@ -341,7 +348,7 @@ summary.predint <- function(x){
         print(out)
 
         # Statement if newdat is covered
-        if(!is.null(x$newdat)){
+        if(!is.null(object$newdat)){
 
                 if(all(out$cover)){
                         cat("\n")
@@ -355,9 +362,9 @@ summary.predint <- function(x){
         }
 
         # Statement about the algorithm (for calibrated pi)
-        if(!is.null(x$algorithm)){
+        if(!is.null(object$algorithm)){
 
-                if(x$algorithm == "MS22mod" & x$alternative == "both"){
+                if(object$algorithm == "MS22mod" & object$alternative == "both"){
                         cat("\n")
                         cat("Bootstrap calibration was done for each prediction limit seperately \n using a modiefied version of Menssen and Schaarschmidt 2022")
                 }
@@ -369,7 +376,7 @@ summary.predint <- function(x){
         }
 
         # Statement m<1 is not good for simple pi
-        if(is.null(x$algorithm) & nrow(out) > 1){
+        if(is.null(object$algorithm) & nrow(out) > 1){
                 cat("\n")
                 cat("Simple prediction intervals (or limits) are not recommended for m > 1 future observations. \n Please use bootstrap calibration.")
         }
@@ -380,4 +387,12 @@ summary.predint <- function(x){
 }
 
 
+
+
+# fit <- lme4::lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
+#
+# pred_int <- lmer_pi_futmat(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
+# str(pred_int)
+# suma <- summary(pred_int, row.names=21:1)
+# suma
 

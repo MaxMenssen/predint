@@ -4,10 +4,12 @@
 \alias{summary.predint}
 \title{Summarizing objects of class \code{predint}}
 \usage{
-\method{summary}{predint}(x)
+\method{summary}{predint}(object, ...)
 }
 \arguments{
-\item{x}{object of class \code{predint}}
+\item{object}{object of class \code{predint}}
+
+\item{...}{further arguments passed over to \code{base::cbind()} and \code{base::data.frame()}}
 }
 \value{
 A \code{data.frame} containing the actual data (if provided via \code{newdat}),

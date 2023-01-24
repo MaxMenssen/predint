@@ -2,11 +2,12 @@
 #' Print function for objects of class \code{predint}
 #'
 #' @param x an object of class \code{predint}
+#' @param ... additional arguments passed over to \code{base::cbind()} and \code{base::data.frame()}
 #'
 #' @return prints output to the console
 #' @export
 #'
-print.predint <- function(x){
+print.predint <- function(x, ...){
 
         # input needs to be a predint object
         if(!inherits(x, "predint")){
@@ -66,7 +67,8 @@ print.predint <- function(x){
                         }
                 }
 
-                print(x$prediction)
+                out <- data.frame(x$prediction, ...)
+                print(out)
         }
 
         #-----------------------------------------------------------------------
@@ -113,7 +115,7 @@ print.predint <- function(x){
                         }
                 }
 
-                out <- cbind(x$prediction, data.frame(newsize=x$newsize))
+                out <- cbind(x$prediction, data.frame(newsize=x$newsize, ...), ...)
                 print(out)
 
         }
@@ -163,10 +165,8 @@ print.predint <- function(x){
                 }
 
 
-                out <- cbind(x$prediction, data.frame(newoffset=x$newoffset))
+                out <- cbind(x$prediction, data.frame(newoffset=x$newoffset, ...), ...)
                 print(out)
         }
 }
-
-
 

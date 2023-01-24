@@ -4,10 +4,12 @@
 \alias{plot.predint}
 \title{Plots of \code{predint} objects}
 \usage{
-\method{plot}{predint}(x, size = 4, width = 0.05, alpha = 0.5)
+\method{plot}{predint}(x, ..., size = 4, width = 0.05, alpha = 0.5)
 }
 \arguments{
 \item{x}{object of class \code{predint}}
+
+\item{...}{arguments handed over to \code{ggplot2::aes()}}
 
 \item{size}{size of the dots}
 

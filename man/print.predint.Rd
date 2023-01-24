@@ -4,10 +4,12 @@
 \alias{print.predint}
 \title{Print function for objects of class \code{predint}}
 \usage{
-\method{print}{predint}(x)
+\method{print}{predint}(x, ...)
 }
 \arguments{
 \item{x}{an object of class \code{predint}}
+
+\item{...}{additional arguments passed over to \code{base::cbind()} and \code{base::data.frame()}}
 }
 \value{
 prints output to the console

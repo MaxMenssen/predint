@@ -8,6 +8,7 @@
 #' save them as a \code{data.frame}.
 #'
 #' @param x object of class \code{predint}
+#' @param ... additional arguments to be passed to \code{base::as.data.frame()}
 #'
 #' @return This function returns the prediction intervals or limits stored in an
 #' object of class \code{"predint"} as a \code{data.frame}
@@ -23,14 +24,17 @@
 #'
 #' # Return the prediction intervals as a data.frame
 #' as.data.frame(pred_int)
-as.data.frame.predint <- function(x){
+as.data.frame.predint <- function(x, ...){
 
         # input needs to be a predint object
         if(!inherits(x, "predint")){
                 stop("x must be of class predint")
         }
 
-        return(pred_int$prediction)
+        out <- as.data.frame(x$prediction, ...)
+        return(out)
 }
+
+
 
 
