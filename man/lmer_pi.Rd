@@ -77,6 +77,7 @@ fitted with \code{lmer()} from the lme4 package. Random effects have to be speci
 
 # This function is deprecated.
 # Please use lmer_pi_unstruc() if you want exactly the same functionality.
-# Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care of the future experimental design
+# Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care
+# of the future experimental design
 
 }

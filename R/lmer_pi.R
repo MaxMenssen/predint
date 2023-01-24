@@ -55,7 +55,8 @@
 #'
 #' # This function is deprecated.
 #' # Please use lmer_pi_unstruc() if you want exactly the same functionality.
-#' # Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care of the future experimental design
+#' # Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care
+#' # of the future experimental design
 #'
 lmer_pi <- function(model,
                     newdat=NULL,
