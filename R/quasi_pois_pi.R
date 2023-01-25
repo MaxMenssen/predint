@@ -76,10 +76,10 @@
 #' qp_dat2
 #'
 #' # Prediction interval using bb_dat2 as future data
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
+#' quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
 #'
 #' # Upper prediction bound for m=3 future observations
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), newoffset=c(1,1,1), alternative="upper", nboot=100)
+#' quasi_pois_pi(histdat=qp_dat1, newoffset=c(1,2,1), alternative="upper", nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
