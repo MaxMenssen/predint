@@ -69,7 +69,7 @@ lmer_pi <- function(model,
                     traceplot=TRUE,
                     n_bisec=30){
 
-        warning("This function is deprecated. \n Please use lmer_pi_unstruc() if you want exactly the same functionality. \n Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care of the future experimental design")
+        stop("This function is deprecated. \n Please use lmer_pi_unstruc() if you want exactly the same functionality. \n Please use lmer_pi_futmat() or lmer_pi_futvec() if you want to take care of the future experimental design")
 
         # Model must be of class lmerMod
         if(!is(model, "lmerMod")){

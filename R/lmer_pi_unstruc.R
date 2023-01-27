@@ -20,7 +20,7 @@
 #' @param delta_min lower start value for bisection
 #' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
-#' @param traceplot if \code{TRUE}: plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
@@ -37,8 +37,8 @@
 #'
 #' with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 #' \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
-#' as the residual variance and \eqn{q^{calib}} obtained from the random
-#' effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
+#' as the residual variance obtained from the random
+#' effects model fitted with \code{lme4::lmer()} and \eqn{q^{calib}} as the as the bootstrap-calibrated
 #' coefficient used for interval calculation. \cr
 #'
 #' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
@@ -79,10 +79,12 @@
 #' summary(fit)
 #'
 #' # Prediction interval using c2_dat2 as future data
-#' \donttest{lmer_pi_unstruc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)}
+#' \donttest{pred_int <- lmer_pi_unstruc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
+#' summary(pred_int)}
 #'
 #' # Upper prediction limit for m=3 future observations
-#' \donttest{lmer_pi_unstruc(model=fit, m=3, alternative="upper", nboot=100)}
+#' \donttest{pred_u <- lmer_pi_unstruc(model=fit, m=3, alternative="upper", nboot=100)
+#' summary(pred_u)}
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
