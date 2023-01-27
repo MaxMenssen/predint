@@ -1,10 +1,10 @@
 
-#' Prediction intervals for future observations based on linear random effects models
+#' Prediction intervals for future observations based on linear random effects models (DEPRECATED)
 #'
 #' This function is deprecated. Please use \code{lmer_pi_unstruc()},
 #' \code{lmer_pi_futvec()} or \code{lmer_pi_futmat()}.
 #'
-#' @param model a random effects model of class lmerMod
+#' @param model a random effects model of class \code{"lmerMod"}
 #' @param newdat a \code{data.frame} with the same column names as the historical data
 #' on which the model depends
 #' @param m number of future observations
@@ -14,7 +14,7 @@
 #' @param nboot number of bootstraps
 #' @param lambda_min lower start value for bisection
 #' @param lambda_max upper start value for bisection
-#' @param traceplot plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #'
 #' @details This function returns a bootstrap calibrated prediction interval

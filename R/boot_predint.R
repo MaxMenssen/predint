@@ -5,10 +5,14 @@
 #' Bootstrap new data from uncalibrated prediction intervals
 #'
 #' \code{boot_predint} is a helper function to bootstrap new data from the simple
-#' uncalibrated prediction intervals implemented in predint
+#' uncalibrated prediction intervals implemented in predint.
 #'
-#' @param pred_int simple prediction interval of class \code{c("quasiPoissonPI")}
+#' @param pred_int simple prediction interval of class
+#' \code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}
 #' @param nboot number of bootstraps
+#'
+#' @details This function only works for binomial and Poisson type data. For the sampling
+#' of new data from random effects models see \code{lmer_bs()}.
 #'
 #' @return \code{boot_predint} returns an object of class \code{c("predint", "bootstrap")}
 #' which is a list with two entries: One for bootstrapped historical observations
@@ -17,10 +21,16 @@
 #' @export
 #'
 #' @examples
-#' test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=1.96, alternative="both")
+#' # Simple quasi-Poisson PI
+#' test_pi <- qp_pi(histoffset=c(3,3,3,4,5), newoffset=3, lambda=10, phi=3, q=1.96)
 #'
-#' test_boot <- boot_predint(pred_int = test_pi, nboot=5)
-#' test_boot
+#' # Draw 5 bootstrap samles
+#' test_boot <- boot_predint(pred_int = test_pi, nboot=50)
+#' str(test_boot)
+#' summary(test_boot)
+#'
+#' # Please note that the low number of bootstrap samples was choosen in order to
+#' # decrease computing time. For valid analysis draw at least 5000 bootstrap samples.
 #'
 boot_predint <- function(pred_int, nboot){
 
@@ -166,31 +176,4 @@ boot_predint <- function(pred_int, nboot){
 }
 
 
-# test_pi <- qp_pi(histoffset=c(1:9),
-#                  newoffset=c(2,3),
-#                  lambda=10,
-#                  phi=3,
-#                  q=qnorm(1-0.05/2),
-#                  alternative="both")
-# test_pi
-#
-# test_boot <- boot_predint(pred_int = test_pi,
-#                           nboot=5)
-# test_boot$bs_futdat
-# test_boot$bs_histdat
 
-
-
-# test_pi <- qb_pi(newsize=c(50, 20), pi=0.3, phi=3, histsize=c(50, 50, 30), q=qnorm(1-0.05/2))
-# test_boot <- boot_predint(pred_int = test_pi,
-#                           nboot=5)
-# test_boot
-# test_boot$bs_futdat
-# test_boot$bs_histdat
-
-# test_pi <- bb_pi(newsize=c(50, 20), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
-# test_boot <- boot_predint(pred_int = test_pi,
-#                           nboot=5)
-# test_boot
-# test_boot$bs_futdat
-# test_boot$bs_histdat

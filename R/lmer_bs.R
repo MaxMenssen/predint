@@ -1,4 +1,4 @@
-#' Sampling of bootstrap data from a given random effects model fit with \code{lme4::lmer()}
+#' Sampling of bootstrap data from a given random effects model
 #'
 #' \code{lmer_bs()} draws bootstrap samples based on the estimates for the mean
 #' and the variance components drawn from a random effects model fit with \code{lme4::lmer()}.

@@ -1,6 +1,6 @@
 #' Simple uncalibrated prediction intervals for beta-binomial data
 #'
-#' \code{bb_pi()} is a helper function that is called in \code{beta_bin_pi()}. It
+#' \code{bb_pi()} is a helper function that is internally called by \code{beta_bin_pi()}. It
 #' calculates simple uncalibrated prediction intervals for binomial
 #' data with overdispersion changing between the clusters (beta-binomial).
 #'
@@ -27,17 +27,16 @@
 #' historical data, \eqn{\hat{\rho}} as the estimate for the intra class correlation
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#' The use of this uncalibrated prediction interval is not recommended for practical
-#' application.  \cr
+#' The direct application of this uncalibrated prediction interval to real life data
+#' is not recommended. Please use \code{beta_bin_pi()} for real life applications.  \cr
 #'
 #' @return \code{bb_pi()} returns an object of class \code{c("predint", "betaBinomialPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #' @export
 #'
 #' @examples
-#' bb_pi(newsize=c(50), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
-#'
-#' bb_pi(newsize=50, pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05), alternative="upper")
+#' bb_pred <- bb_pi(newsize=c(50), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
+#' summary(bb_pred)
 #'
 bb_pi <- function(newsize,
                   histsize,

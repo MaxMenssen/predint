@@ -103,14 +103,14 @@
 
 #' Quasi-Poisson data (example 1)
 #'
-#' This data set contains sampled quasi-poisson data for 10 clusters.
+#' This data set contains sampled quasi-Poisson data for 10 clusters.
 #' The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 #'
 #' @format A data.frame with two columns
 #'
 #' @examples
 #' # Prediction interval using bb_dat2 as future data
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
+#' quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
@@ -122,14 +122,14 @@
 
 #' Quasi-Poisson data (example 2)
 #'
-#' This data set contains sampled quasi-poisson data for 3 clusters.
+#' This data set contains sampled quasi-Poisson data for 3 clusters.
 #' The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 #'
 #' @format A data.frame with two columns
 #'
 #' @examples
 #' # Prediction interval using bb_dat2 as future data
-#' quasi_pois_pi(histdat=data.frame(qp_dat1), newdat=data.frame(qp_dat2), nboot=100)
+#' quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.

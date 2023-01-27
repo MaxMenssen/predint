@@ -1,9 +1,9 @@
 
 #' Prediction intervals for future observations based on linear random effects models
 #'
-#' lmer_pi_futvec calculates a bootstrap calibrated prediction interval for one or more
+#' \code{lmer_pi_futvec()} calculates a bootstrap calibrated prediction interval for one or more
 #' future observation(s) based on linear random effects models. With this approach,
-#' the sampling structure of the future data is taken into account (see below).
+#' the experimental design of the future data is taken into account (see below).
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
@@ -18,7 +18,7 @@
 #' @param delta_min lower start value for bisection
 #' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
-#' @param traceplot plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
@@ -30,8 +30,8 @@
 #' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
-#' \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
-#' }^2_c}}
+#' \deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1}
+#' \hat{\sigma}^2_c}}
 #'
 #' with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 #' \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
@@ -43,8 +43,8 @@
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
-#' \deqn{[l,u] = [\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
-#' \hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}].}
+#' \deqn{[l,u] = \Big[\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
+#' \hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c} \Big].}
 #'
 #' Please note, that this modification does not affect the calibration procedure, if only
 #' prediction limits are of interest. \cr

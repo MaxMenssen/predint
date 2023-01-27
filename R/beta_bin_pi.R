@@ -2,7 +2,7 @@
 
 #' Prediction intervals for beta-binomial data
 #'
-#' beta_bin_pi calculates bootstrap calibrated prediction intervals for
+#' \code{beta_bin_pi()} calculates bootstrap calibrated prediction intervals for
 #' beta-binomial data
 #'
 #' @param histdat a \code{data.frame} with two columns (number of successes and
@@ -18,7 +18,7 @@
 #' @param delta_min lower start value for bisection
 #' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
-#' @param traceplot plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
@@ -30,7 +30,11 @@
 #' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
-#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
+#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \hat{se}(Y_m - y^*_m)}
+#'
+#'where
+#'
+#' \deqn{\hat{se}(Y_m - y^*_m) = \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
 #' [\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}}
 #'
 #' with \eqn{n^*_m} as the number of experimental units in the future clusters,
@@ -43,15 +47,12 @@
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
-#' \deqn{[l,u] = [n^*_m \hat{\pi} - q^{calib}_l \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
-#' [\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}, \\
-#' n^*_m \hat{\pi} + q^{calib}_u \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) [1 + (n^*_m -1) \hat{\rho}] +
-#' [\frac{n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h} + \frac{\sum_h n_h -1}{\sum_h n_h} n^{*2}_m \hat{\pi} (1- \hat{\pi}) \hat{\rho}]}]}
+#' \deqn{[l,u]_m = \big[n^*_m \hat{\pi} - q^{calib}_l \hat{se}(Y_m - y^*_m), \quad n^*_m \hat{\pi} + q^{calib}_u \hat{se}(Y_m - y^*_m) \big]}
 #'
 #' Please note, that this modification does not affect the calibration procedure, if only
 #' prediction limits are of interest.
 #'
-#' @return \code{quasi_bin_pi} returns an object of class \code{c("predint", "betaBinomialPI")}
+#' @return \code{beta_bin_pi} returns an object of class \code{c("predint", "betaBinomialPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
 #'
@@ -60,12 +61,12 @@
 #' @importFrom graphics abline lines
 #'
 #' @references
-#' Lui et al. 2000: Confidence intervals for the risk ratio
-#' under cluster sampling based on the beta-binomial model. Statistics in Medicine.2000;19:2933-2942.
+#' Lui et al. (2000): Confidence intervals for the risk ratio
+#' under cluster sampling based on the beta-binomial model. Statistics in Medicine. \cr
 #' \doi{10.1002/1097-0258(20001115)19:21<2933::AID-SIM591>3.0.CO;2-Q}
 #'
 #' Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
-#' observations based on linear random effects models. Statistica Neerlandica,
+#' observations based on linear random effects models. Statistica Neerlandica.
 #'  \doi{10.1111/stan.12260}
 #'
 #'
