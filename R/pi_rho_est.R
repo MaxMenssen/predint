@@ -1,7 +1,7 @@
 
 #' Estimation of the binomial proportion and the intra class correlation.
 #'
-#' pi_rho_est estimates the overall binomial proportion \eqn{\hat{\pi}} and the intra
+#' \code{pi_rho_est()} estimates the overall binomial proportion \eqn{\hat{\pi}} and the intra
 #' class correlation \eqn{\hat{\rho}} of data that is assumed to follow the beta-binomial
 #' distribution. The estimation of \eqn{\hat{\pi}} and \eqn{\hat{\rho}} is done following
 #' the approach of Lui et al. 2000.

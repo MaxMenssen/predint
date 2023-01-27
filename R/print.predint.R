@@ -168,5 +168,12 @@ print.predint <- function(x, ...){
                 out <- cbind(x$prediction, data.frame(newoffset=x$newoffset, ...), ...)
                 print(out)
         }
+
+        #-----------------------------------------------------------------------
+        # bootstrap
+
+        if(inherits(x, "bootstrap")){
+                cat(length(x$bs_futdat), "bootstrap samples for both, future and historical observations")
+        }
 }
 

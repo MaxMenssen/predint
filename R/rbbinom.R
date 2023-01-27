@@ -2,7 +2,7 @@
 
 #' Sampling of beta-binomial data
 #'
-#' rbbinom samples beta-binomial data according to Menssen and Schaarschmidt (2019).
+#' \code{rbbinom()} samples beta-binomial data according to Menssen and Schaarschmidt (2019).
 #'
 #' @param n defines the number of clusters (\eqn{i})
 #' @param size integer vector defining the number of trials per cluster (\eqn{n_i})
@@ -10,11 +10,11 @@
 #' @param rho intra class correlation (\eqn{\rho})
 #'
 #' @details For beta binomial data with \eqn{i=1, ... I} clusters, the variance is
-#' \deqn{var(y_i)= n_i \pi (1-\pi) (1+ (n_i - 1) \rho)}
+#' \deqn{var(y_i)= n_i \pi (1-\pi) [1+ (n_i - 1) \rho]}
 #' with \eqn{\rho} as the intra class correlation coefficient
 #' \deqn{\rho = 1 / (1+a+b).}
 #' For the sampling \eqn{(a+b)} is defined as
-#' \deqn{(a+b)=(1-\rho)/(\rho)}
+#' \deqn{(a+b)=(1-\rho)/\rho}
 #' where \eqn{a=\pi (a+b)} and \eqn{b=(a+b)-a}. Then, the binomial proportions
 #' for each cluster are sampled from the beta distribution
 #' \deqn{\pi_i \sim Beta(a, b)}
@@ -22,7 +22,7 @@
 #' \deqn{y_i \sim Bin(n_i, \pi_i).}
 #' In this parametrization \eqn{E(\pi_i)=\pi=a/(a+b)} and \eqn{E(y_i)=n_i \pi}.
 #' Please note, that \eqn{1+ (n_i-1) \rho} is a constant if all cluster sizes are
-#' the same and hence, in this special case, also the quasi binomial assumption is
+#' the same and hence, in this special case, also the quasi-binomial assumption is
 #' fulfilled.
 #'
 #' @return a \code{data.frame} with two columns (succ, fail)

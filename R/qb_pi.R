@@ -1,8 +1,8 @@
 #' Simple uncalibrated prediction intervals for quasi-binomial data
 #'
-#' \code{qb_pi()} is a helper function that is called in \code{quasi_bin_pi()}. It
+#' \code{qb_pi()} is a helper function that is internally called by  \code{quasi_bin_pi()}. It
 #' calculates simple uncalibrated prediction intervals for binomial
-#' data with constant overdispersion (quasi-binomial).
+#' data with constant overdispersion (quasi-binomial assumption).
 #'
 #' @param newsize number of experimental units in the historical clusters.
 #' @param histsize number of experimental units in the future clusters.
@@ -19,16 +19,16 @@
 #' of simple uncalibrated intervals
 #'
 #' @details This function returns a simple uncalibrated prediction interval
-#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q \sqrt{ \hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) (1+
-#' \frac{n^*_m}{\sum_h n_h})}}
+#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
+#' \frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}}}
 #'
 #' with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M} future clusters,
 #' \eqn{\hat{\pi}} as the estimate for the binomial proportion obtained from the
 #' historical data, \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 #' and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 #'
-#' The use of this uncalibrated prediction interval is not recommended for practical
-#' application.  \cr
+#' The direct application of this uncalibrated prediction interval to real life data
+#' is not recommended. Please use the \code{beta_bin_pi()} functions for real life applications. \cr
 #'
 #' @return \code{qb_pi} returns an object of class \code{c("predint", "quasiBinomailPI")}.
 #' @export
@@ -36,9 +36,9 @@
 #' @importFrom stats qnorm
 #'
 #' @examples
-#' qb_pi(newsize=50, pi=0.3, phi=3, histsize=c(50, 50, 30), q=qnorm(1-0.05/2))
+#' qb_pred <- qb_pi(newsize=50, pi=0.3, phi=3, histsize=c(50, 50, 30), q=qnorm(1-0.05/2))
+#' summary(qb_pred)
 #'
-#' qb_pi(newsize=50, pi=0.3, phi=3, histsize=c(50, 50, 30), q=qnorm(1-0.05), alternative="upper")
 qb_pi <- function(newsize,
                   histsize,
                   pi,

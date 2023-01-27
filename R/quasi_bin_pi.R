@@ -2,7 +2,7 @@
 
 #' Prediction intervals for quasi-binomial data
 #'
-#' quasi_bin_pi calculates bootstrap calibrated prediction intervals for binomial
+#' \code{quasi_bin_pi()} calculates bootstrap calibrated prediction intervals for binomial
 #' data with constant overdispersion (quasi-binomial assumption).
 #'
 #' @param histdat a \code{data.frame} with two columns (success and failures) containing the historical data
@@ -16,7 +16,7 @@
 #' @param delta_min lower start value for bisection
 #' @param delta_max upper start value for bisection
 #' @param tolerance tolerance for the coverage probability in the bisection
-#' @param traceplot plot for visualization of the bisection process
+#' @param traceplot if \code{TRUE}: plot for visualization of the bisection process
 #' @param n_bisec maximal number of bisection steps
 #' @param algorithm either "MS22" or "MS22mod" (see details)
 #'
@@ -28,8 +28,8 @@
 #' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
-#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
-#' \frac{n^*_m}{\sum_h n_h})}}
+#' \deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
+#' \frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}}}
 #'
 #' with \eqn{n^*_m} as the number of experimental units in the future clusters,
 #' \eqn{\hat{\pi}} as the estimate for the binomial proportion obtained from the
@@ -41,10 +41,10 @@
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
-#' \deqn{[l,u] = [n^*_m \hat{\pi} - q^{calib}_l \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
-#' \frac{n^*_m}{\sum_h n_h})},
-#' n^*_m \hat{\pi} + q^{calib}_u \sqrt{n^*_m \hat{\pi} (1- \hat{\pi}) (1+
-#' \frac{n^*_m}{\sum_h n_h})}]}
+#' \deqn{[l,u] = \Big[n^*_m \hat{\pi} - q^{calib}_l \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
+#' \frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}}, \quad
+#' n^*_m \hat{\pi} + q^{calib}_u \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
+#' \frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}} \Big]}
 #'
 #' Please note, that this modification does not affect the calibration procedure, if only
 #' prediction limits are of interest.
@@ -52,7 +52,11 @@
 #' @return \code{quasi_bin_pi} returns an object of class \code{c("predint", "quasiBinomialPI")}
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
-#'@references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#'@references
+#' Menssen and Schaarschmidt (2019): Prediction intervals for overdispersed binomial
+#' data with application to historical controls. Statistics in Medicine.
+#' \doi{10.1002/sim.8124} \cr
+#' Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
 #'  \doi{10.1111/stan.12260}
 #'

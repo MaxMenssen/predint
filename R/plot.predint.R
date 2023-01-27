@@ -19,8 +19,8 @@
 #'
 #' @examples
 #' ### PI for quasi-Poisson data
-#' pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
-#'                           newdat=data.frame(qp_dat2),
+#' pred_int <- quasi_pois_pi(histdat=qp_dat1,
+#'                           newdat=qp_dat2,
 #'                           nboot=100,
 #'                           traceplot = FALSE)
 #'
@@ -45,6 +45,13 @@ plot.predint <- function(x,
 
         # Get the confidence level
         conf_lev <-  (1-attributes(x)$alpha)*100
+
+        #-----------------------------------------------------------------------
+        ### No plot for bootstrap objects
+        if(inherits(x, "bootstrap")){
+                stop("no available plot for objects of class bootstrap")
+        }
+
 
         #-----------------------------------------------------------------------
         #-------------------- Overview for lmer based PI -----------------------
