@@ -33,6 +33,10 @@ gave the following notes:
 - Found the following files/directories: 'lastMiKTeXException'
 - Skipping checking math rendering: package 'V8' unavailable
 
+This seems to be some problems with the server itself and not with my code....
+
+
+
 
 ## Checks with devtools::check_win_devel()
 
