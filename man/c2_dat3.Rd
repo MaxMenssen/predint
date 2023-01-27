@@ -37,7 +37,8 @@ summary(fit)
 futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
 
 # Calculating the PI
-lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
+pred_int <- lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)
+summary(pred_int)}
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.

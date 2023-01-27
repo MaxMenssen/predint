@@ -21,7 +21,8 @@ each of size 50. The data set was sampled with \code{rbbinom(n=10, size=50, prob
 \examples{
 # Upper prediction limit for m=3 future number of successes
 # that are based on cluster sizes 40, 50, 60 respectively
-beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+pred_int <- beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+summary(pred_int)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.

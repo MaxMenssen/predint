@@ -7,8 +7,7 @@
 boot_predint(pred_int, nboot)
 }
 \arguments{
-\item{pred_int}{simple prediction interval of class
-\code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}}
+\item{pred_int}{object of class \code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}}
 
 \item{nboot}{number of bootstraps}
 }
@@ -18,7 +17,7 @@ which is a list with two entries: One for bootstrapped historical observations
 and one for bootstrapped future observations.
 }
 \description{
-\code{boot_predint} is a helper function to bootstrap new data from the simple
+\code{boot_predint()} is a helper function to bootstrap new data from the simple
 uncalibrated prediction intervals implemented in predint.
 }
 \details{

@@ -42,7 +42,7 @@ should be computed}
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: Plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 
@@ -95,11 +95,13 @@ bb_dat1
 bb_dat2
 
 # Prediction interval using bb_dat2 as future data
-beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
+pred_int <- beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
+summary(pred_int)
 
 # Upper prediction bound for m=3 future numbers of success
 # that are based on cluster sizes 40, 50, 60 respectively
-beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+pred_u <- beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+summary(pred_u)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.

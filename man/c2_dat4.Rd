@@ -58,8 +58,8 @@ fml
 # process.
 
 # Calculate the PI
-lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=100)
-
+pred_int <- lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=100)
+summary(pred_int)
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
 

@@ -42,7 +42,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: Plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 
@@ -71,8 +71,8 @@ as
 
 with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
-as the residual variance and \eqn{q^{calib}} obtained from the random
-effects model fitted with \code{lme4::lmer()} and as the as the bootstrap-calibrated
+as the residual variance obtained from the random
+effects model fitted with \code{lme4::lmer()} and \eqn{q^{calib}} as the as the bootstrap-calibrated
 coefficient used for interval calculation. \cr
 
 If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
@@ -112,17 +112,20 @@ summary(fit)
 futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
 
 # Calculating the PI
-\donttest{lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)}
+\donttest{pred_int <- lmer_pi_futvec(model=fit, futvec=futvec, nboot=100)
+summary(pred_int)}
 
 #----------------------------------------------------------------------------
 
 ### Calculating the PI with c2_dat3 printed in the output
-\donttest{lmer_pi_futvec(model=fit, futvec=futvec, newdat=c2_dat3, alternative="both", nboot=100)}
+\donttest{pred_int_new <- lmer_pi_futvec(model=fit, futvec=futvec, newdat=c2_dat3, nboot=100)
+summary(pred_int_new)}
 
 #----------------------------------------------------------------------------
 
 ### Upper prediction limit for m=1 future observation
-\donttest{lmer_pi_futvec(model=fit, futvec=1, alternative="upper", nboot=100)}
+\donttest{pred_u <- lmer_pi_futvec(model=fit, futvec=1, alternative="upper", nboot=100)
+summary(pred_u)}
 
 #----------------------------------------------------------------------------
 

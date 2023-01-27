@@ -40,7 +40,7 @@ should be computed}
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: Plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 
@@ -63,7 +63,9 @@ are calibrated simultaniously using the algorithm described in Menssen and
 Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
-\deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
+\deqn{[l,u]_m = n^*_m \hat{\pi} \pm q^{calib} \hat{se}(Y_m - y^*_m)}
+ where
+\deqn{\hat{se}(Y_m - y^*_m) = \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
 \frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}}}
 
 with \eqn{n^*_m} as the number of experimental units in the future clusters,
@@ -76,21 +78,21 @@ If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
-\deqn{[l,u] = \Big[n^*_m \hat{\pi} - q^{calib}_l \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
-\frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}}, \quad
-n^*_m \hat{\pi} + q^{calib}_u \sqrt{\hat{\phi} n^*_m \hat{\pi} (1- \hat{\pi}) +
-\frac{\hat{\phi} n^{*2}_m \hat{\pi} (1- \hat{\pi})}{\sum_h n_h}} \Big]}
+\deqn{[l,u] = \Big[n^*_m \hat{\pi} - q^{calib}_l \hat{se}(Y_m - y^*_m), \quad
+n^*_m \hat{\pi} + q^{calib}_u \hat{se}(Y_m - y^*_m) \Big]}
 
 Please note, that this modification does not affect the calibration procedure, if only
 prediction limits are of interest.
 }
 \examples{
 # Prediction interval using qb_dat2 as future data
-quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+pred_int <- quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+summary(pred_int)
 
 # Upper prediction bound for m=3 future observations
 # that are based on cluster sizes 40, 50, 60 respectively
-quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+pred_u <- quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+summary(pred_u)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.

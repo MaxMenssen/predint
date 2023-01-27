@@ -50,7 +50,7 @@ data with constant overdispersion (quasi-Poisson assumption).
 \details{
 This function returns a simple uncalibrated prediction interval
 \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
-n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
+ \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}}}
 
 with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M} future clusters,
 \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
