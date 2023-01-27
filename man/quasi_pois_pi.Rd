@@ -56,7 +56,7 @@ an upper or a lower prediction limit should be computed}
 with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
-quasi_pois_pi calculates bootstrap calibrated prediction intervals for Poisson
+\code{quasi_pois_pi()} calculates bootstrap calibrated prediction intervals for Poisson
 data with constant overdispersion (quasi-Poisson).
 }
 \details{
@@ -69,7 +69,7 @@ Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
 \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q^{calib} \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
-n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}}
+ \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}}}
 
 with \eqn{n^*_m} as the number of experimental units in the future clusters,
 \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
@@ -81,10 +81,10 @@ If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
-\deqn{[l,u] = [n^*_m \hat{\lambda} - q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
-n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}, \text{   }
-n^*_m \hat{\lambda} + q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
-n^{*2}_m \hat{\phi} \hat{\lambda} \frac{1}{\sum_h n_h}}]}
+\deqn{[l,u] = \Big[n^*_m \hat{\lambda} \pm q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+ \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}}, \quad
+ n^*_m \hat{\lambda} \pm q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+ \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}} \Big]}
 
 Please note, that this modification does not affect the calibration procedure, if only
 prediction limits are of interest.
@@ -97,10 +97,12 @@ qp_dat1
 qp_dat2
 
 # Prediction interval using bb_dat2 as future data
-quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
+pred_int <- quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
+summary(pred_int)
 
 # Upper prediction bound for m=3 future observations
-quasi_pois_pi(histdat=qp_dat1, newoffset=c(1,2,1), alternative="upper", nboot=100)
+pred_u <- quasi_pois_pi(histdat=qp_dat1, newoffset=c(1,2,1), alternative="upper", nboot=100)
+summary(pred_u)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.

@@ -52,16 +52,18 @@ of prediction intervals (and limits).
 }
 \details{
 This function is an implementation of the bisection algorithm of Menssen
-and Schaarschmidt 2021. It returns a calibrated coefficient \eqn{q^{calib}} for the
+and Schaarschmidt 2022. It returns a calibrated coefficient \eqn{q^{calib}} for the
 calculation of simultanious prediction intervals (or limits)
-\deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} se(Y_m - \hat{y}^*_m)}
+\deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m)}
 that cover all of \eqn{m=1, ... , M} future observations. \cr
-In this notation, \eqn{\hat{y}^*_m} are the expected future observation, \eqn{q^{calib}} are the
-calibrated coefficient and \eqn{se(Y_m - \hat{y}^*_m)}
+
+In this notation, \eqn{\hat{y}^*_m} are the expected future observations for each of
+the \eqn{m} future clusters, \eqn{q^{calib}} is the
+calibrated coefficient and \eqn{\hat{se}(Y_m - y^*_m)}
 are the standard errors of the prediction. \cr
 }
 \references{
-Menssen and Schaarschmidt (2021): Prediction intervals for all of M future
-observations based on linear random effects models. Statistica Neerlandica,
+Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+observations based on linear random effects models. Statistica Neerlandica. \cr
  \doi{10.1111/stan.12260}
 }

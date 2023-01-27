@@ -42,7 +42,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 
@@ -53,9 +53,9 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
-lmer_pi_futvec calculates a bootstrap calibrated prediction interval for one or more
+\code{lmer_pi_futvec()} calculates a bootstrap calibrated prediction interval for one or more
 future observation(s) based on linear random effects models. With this approach,
-the sampling structure of the future data is taken into account (see below).
+the experimental design of the future data is taken into account (see below).
 }
 \details{
 This function returns bootstrap-calibrated prediction intervals as well as
@@ -66,8 +66,8 @@ are calibrated simultaniously using the algorithm described in Menssen and
 Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
-\deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
-}^2_c}}
+\deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1}
+\hat{\sigma}^2_c}}
 
 with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
@@ -79,8 +79,8 @@ If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
-\deqn{[l,u] = [\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
-\hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}].}
+\deqn{[l,u] = \Big[\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
+\hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c} \Big].}
 
 Please note, that this modification does not affect the calibration procedure, if only
 prediction limits are of interest. \cr

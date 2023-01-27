@@ -7,7 +7,8 @@
 boot_predint(pred_int, nboot)
 }
 \arguments{
-\item{pred_int}{simple prediction interval of class \code{c("quasiPoissonPI")}}
+\item{pred_int}{simple prediction interval of class
+\code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}}
 
 \item{nboot}{number of bootstraps}
 }
@@ -18,12 +19,22 @@ and one for bootstrapped future observations.
 }
 \description{
 \code{boot_predint} is a helper function to bootstrap new data from the simple
-uncalibrated prediction intervals implemented in predint
+uncalibrated prediction intervals implemented in predint.
+}
+\details{
+This function only works for binomial and Poisson type data. For the sampling
+of new data from random effects models see \code{lmer_bs()}.
 }
 \examples{
-test_pi <- qp_pi(histoffset=c(1:9), newoffset=c(3), lambda=10, phi=3, q=1.96, alternative="both")
+# Simple quasi-Poisson PI
+test_pi <- qp_pi(histoffset=c(3,3,3,4,5), newoffset=3, lambda=10, phi=3, q=1.96)
 
-test_boot <- boot_predint(pred_int = test_pi, nboot=5)
-test_boot
+# Draw 5 bootstrap samles
+test_boot <- boot_predint(pred_int = test_pi, nboot=50)
+str(test_boot)
+summary(test_boot)
+
+# Please note that the low number of bootstrap samples was choosen in order to
+# decrease computing time. For valid analysis draw at least 5000 bootstrap samples.
 
 }

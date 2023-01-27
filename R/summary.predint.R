@@ -343,56 +343,67 @@ summary.predint <- function(object, ...){
         }
 
         #-----------------------------------------------------------------------
+        # bootstrap data
+        if(inherits(object, "bootstrap")){
+                cat(length(object$bs_futdat), "bootstrap samples for both, future and historical observations \n \n")
 
-        # Print the output
-        print(out)
+                no_print <- min(3, length(object$bs_futdat))
 
-        # Statement if newdat is covered
-        if(!is.null(object$newdat)){
+                cat("The first", no_print, "bootstrap samples of historical observations \n")
+                print(object$bs_histdat[1:no_print])
 
-                if(all(out$cover)){
-                        cat("\n")
-                        cat("All future observations are covered \n")
-                }
+                cat("The first", no_print, "bootstrap samples of future observations \n")
+                print(object$bs_futdat[1:no_print])
 
-                if(!all(out$cover)){
-                        cat("\n")
-                        cat("ATTENTION: Not all future observations are covered  \n")
-                }
-        }
-
-        # Statement about the algorithm (for calibrated pi)
-        if(!is.null(object$algorithm)){
-
-                if(object$algorithm == "MS22mod" & object$alternative == "both"){
-                        cat("\n")
-                        cat("Bootstrap calibration was done for each prediction limit seperately \n using a modiefied version of Menssen and Schaarschmidt 2022")
-                }
-
-                else{
-                        cat("\n")
-                        cat("Bootstrap calibration was done following Menssen and Schaarschmidt 2022")
-                }
-        }
-
-        # Statement m<1 is not good for simple pi
-        if(is.null(object$algorithm) & nrow(out) > 1){
-                cat("\n")
-                cat("Simple prediction intervals (or limits) are not recommended for m > 1 future observations. \n Please use bootstrap calibration.")
+                invisible(object)
         }
 
 
-        # Output
-        invisible(out)
+        #-----------------------------------------------------------------------
+
+        # Output for PIs (and not for bootstrap!)
+        if(!inherits(object, "bootstrap")){
+
+                # Print the output
+                print(out)
+
+                # Statement if newdat is covered
+                if(!is.null(object$newdat)){
+
+                        if(all(out$cover)){
+                                cat("\n")
+                                cat("All future observations are covered \n")
+                        }
+
+                        if(!all(out$cover)){
+                                cat("\n")
+                                cat("ATTENTION: Not all future observations are covered  \n")
+                        }
+                }
+
+                # Statement about the algorithm (for calibrated pi)
+                if(!is.null(object$algorithm)){
+
+                        if(object$algorithm == "MS22mod" & object$alternative == "both"){
+                                cat("\n")
+                                cat("Bootstrap calibration was done for each prediction limit seperately \n using a modiefied version of Menssen and Schaarschmidt 2022")
+                        }
+
+                        else{
+                                cat("\n")
+                                cat("Bootstrap calibration was done following Menssen and Schaarschmidt 2022")
+                        }
+                }
+
+                # Statement m<1 is not good for simple pi
+                if(is.null(object$algorithm) & nrow(out) > 1){
+                        cat("\n")
+                        cat("Simple prediction intervals (or limits) are not recommended for m > 1 future observations. \n Please use bootstrap calibration.")
+                }
+
+
+                invisible(out)
+        }
 }
 
-
-
-
-# fit <- lme4::lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#
-# pred_int <- lmer_pi_futmat(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
-# str(pred_int)
-# suma <- summary(pred_int, row.names=21:1)
-# suma
 

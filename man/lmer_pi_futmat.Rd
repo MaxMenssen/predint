@@ -20,7 +20,7 @@ lmer_pi_futmat(
 )
 }
 \arguments{
-\item{model}{a random effects model of class lmerMod}
+\item{model}{a random effects model of class  \code{"lmerMod"}}
 
 \item{newdat}{either 1 or a \code{data.frame} with the same column names as the historical data
 on which \code{model} depends}
@@ -40,7 +40,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{tolerance}{tolerance for the coverage probability in the bisection}
 
-\item{traceplot}{plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 
@@ -53,7 +53,7 @@ with prediction intervals or limits in the first entry (\code{$prediction}).
 \description{
 \code{lmer_pi_futmat()} calculates a bootstrap calibrated prediction interval for one or more
 future observation(s) based on linear random effects models. With this approach,
-the sampling structure of the future data is taken into account (see below).
+the experimental design of the future data is taken into account (see below).
 }
 \details{
 This function returns bootstrap-calibrated prediction intervals as well as
@@ -64,8 +64,8 @@ are calibrated simultaniously using the algorithm described in Menssen and
 Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 as
 
-\deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{
-}^2_c}}
+\deqn{[l,u] = \hat{\mu} \pm q^{calib} \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1}
+\hat{\sigma}^2_c}}
 
 with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
@@ -77,8 +77,8 @@ If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
-\deqn{[l,u] = [\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
-\hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}].}
+\deqn{[l,u] = \Big[\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
+\hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c} \Big].}
 
 Please note, that this modification does not affect the calibration procedure, if only
 prediction limits are of interest. \cr
@@ -93,7 +93,7 @@ If a random factor in the future data set does not have any replicate, a list
 that contains design matrices (one for each random factor) can be provided via \code{futmat_list}.
 
 This function is an implementation of the PI given in Menssen and Schaarschmidt 2022
-section 3.2.4 except that the bootstrap calibration values are drawn from
+section 3.2.4, except, that the bootstrap calibration values are drawn from
 bootstrap samples that mimic the future data as described above.
 }
 \examples{

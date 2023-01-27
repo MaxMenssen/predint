@@ -2,7 +2,7 @@
 % Please edit documentation in R/lmer_pi.R
 \name{lmer_pi}
 \alias{lmer_pi}
-\title{Prediction intervals for future observations based on linear random effects models}
+\title{Prediction intervals for future observations based on linear random effects models (DEPRECATED)}
 \usage{
 lmer_pi(
   model,
@@ -18,7 +18,7 @@ lmer_pi(
 )
 }
 \arguments{
-\item{model}{a random effects model of class lmerMod}
+\item{model}{a random effects model of class \code{"lmerMod"}}
 
 \item{newdat}{a \code{data.frame} with the same column names as the historical data
 on which the model depends}
@@ -36,7 +36,7 @@ if a prediction interval or an upper or a lower prediction limit should be compu
 
 \item{lambda_max}{upper start value for bisection}
 
-\item{traceplot}{plot for visualization of the bisection process}
+\item{traceplot}{if \code{TRUE}: plot for visualization of the bisection process}
 
 \item{n_bisec}{maximal number of bisection steps}
 }

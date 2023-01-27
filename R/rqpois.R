@@ -1,7 +1,7 @@
 
 #' Sampling of overdispersed poisson data with constant overdispersion
 #'
-#' rqpois samples overdispersed poisson data with constant overdispersion from
+#' \code{rqpois()} samples overdispersed poisson data with constant overdispersion from
 #' the negative-binomial distribution such that the quasi-poisson assumption is fulfilled.
 #' The following description of the sampling process is based on the parametrization
 #' used by Gsteiger et al. 2013.
@@ -9,7 +9,7 @@
 #' @param n defines the number of clusters (\eqn{i})
 #' @param lambda defines the overall poisson mean (\eqn{\lambda})
 #' @param phi dispersion parameter (\eqn{\Phi})
-#' @param offset defines the number of units (\eqn{n_i})
+#' @param offset defines the number of experimental units per cluster (\eqn{n_i})
 #'
 #' @details It is assumed that the dispersion parameter (\eqn{\Phi})
 #' is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
@@ -38,12 +38,12 @@
 #'
 #' @examples
 #' # set.seed(123)
-#' # qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
-#' # qp_dat1
+#' qp_dat1 <- rqpois(n=10, lambda=50, phi=3)
+#' qp_dat1
 #'
 #' # set.seed(123)
-#' # qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
-#' # qp_dat2
+#' qp_dat2 <- rqpois(n=3, lambda=50, phi=3)
+#' qp_dat2
 #'
 #'
 rqpois <- function(n, lambda, phi, offset=NULL){

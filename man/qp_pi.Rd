@@ -43,9 +43,9 @@ of simple uncalibrated intervals}
 \code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
 }
 \description{
-\code{qp_pi()} is a helper function that is called in \code{quasi_pois_pi()}. It
+\code{qp_pi()} is a helper function that is internally called by  \code{quasi_pois_pi()}. It
 calculates simple uncalibrated prediction intervals for Poisson
-data with constant overdispersion (quasi-Poisson).
+data with constant overdispersion (quasi-Poisson assumption).
 }
 \details{
 This function returns a simple uncalibrated prediction interval
@@ -57,15 +57,12 @@ with \eqn{n^*_m} as the number of experimental units in the \eqn{m=1, 2, ... , M
 historical data, \eqn{\hat{\phi}} as the estimate for the dispersion parameter
 and \eqn{n_h} as the number of experimental units per historical cluster. \cr
 
-The use of this uncalibrated prediction interval is not recommended for practical
-application.  \cr
+The direct application of this uncalibrated prediction interval to real life data
+is not recommended. Please use the \code{quasi_pois_pi_pi()} functions for real life applications.
 }
 \examples{
 # Prediction interval
-qp_pi(newoffset=3, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05/2))
-
-# Upper prediction border
-qp_pi(newoffset=1, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05), alternative="upper")
-
+qp_pred <- qp_pi(newoffset=3, lambda=3, phi=3, histoffset=1:9, q=qnorm(1-0.05/2))
+summary(qp_pred)
 
 }

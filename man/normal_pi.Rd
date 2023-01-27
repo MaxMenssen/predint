@@ -49,7 +49,7 @@ of simple uncalibrated intervals}
 with prediction intervals or limits in the first entry (\code{$prediction}).
 }
 \description{
-\code{normal_pi()} is a helper function that is called in the \code{lmer_pi_...()} functions.
+\code{normal_pi()} is a helper function that is internally called by the \code{lmer_pi_...()} functions.
  It calculates simple uncalibrated prediction intervals for normal distributed
  observations.
 }
@@ -62,13 +62,14 @@ with \eqn{\hat{\mu}} as the expected future observation (historical mean) and
 \eqn{\hat{\sigma}^2_c} as the \eqn{c=1, 2, ..., C} variance components and \eqn{\hat{\sigma}^2_{C+1}}
 as the residual variance and \eqn{q} as the quantile used for interval calculation. \cr
 
-The use of this uncalibrated prediction interval is not recommended for practical
-application.  \cr
+The direct application of this uncalibrated prediction interval to real life data
+is not recommended. Please use the \code{lmer_pi_...()} functions for real life applications.  \cr
 }
 \examples{
 
 # simple PI
-normal_pi(mu=10, pred_se=3, m=1)
+norm_pred <- normal_pi(mu=10, pred_se=3, m=1)
+summary(norm_pred)
 
 }
 \references{

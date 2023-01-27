@@ -2,7 +2,7 @@
 % Please edit documentation in R/lmer_bs.R
 \name{lmer_bs}
 \alias{lmer_bs}
-\title{Sampling of bootstrap data from a given random effects model fit with \code{lme4::lmer()}}
+\title{Sampling of bootstrap data from a given random effects model}
 \usage{
 lmer_bs(model, newdat = NULL, futmat_list = NULL, nboot)
 }
