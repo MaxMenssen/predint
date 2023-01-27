@@ -37,7 +37,7 @@ test_that("test summary() for normalPI", {
                        "cover" ))
 
         # change row names
-        sum_futmat_npi_1 <- summary(pred_int,
+        sum_futmat_npi_1 <- summary(pred_int_npi,
                                 row.names=21:1)
 
         expect_true(all(rownames(sum_futmat_npi_1) == 21:1))
@@ -431,29 +431,29 @@ test_that("test summary() for Poisson PI)", {
         sum_futmat_qp_pi_3 <- summary(pred_int_qp_pi_3)
 
         # data.frame
-        expect_true(is.data.frame(sum_futmat_bb_pi_30))
+        expect_true(is.data.frame(sum_futmat_qp_pi_3))
 
         # ncol ok?
-        expect_equal(ncol(sum_futmat_bb_pi_30), 7)
+        expect_equal(ncol(sum_futmat_qp_pi_3), 7)
 
         # nrow ok?
-        expect_equal(nrow(sum_futmat_bb_pi_30), 1)
+        expect_equal(nrow(sum_futmat_qp_pi_3), 1)
 
         # variable names ok?
-        expect_equal(names(sum_futmat_bb_pi_30),
+        expect_equal(names(sum_futmat_qp_pi_3),
                      c("lower",
                        "upper",
-                       "newsize",
+                       "newoffset",
                        "y_star_hat",
                        "ql",
                        "qu",
                        "pred_se"))
 
         # Check if the print works fine
-        expect_output(summary(pred_int_bb_pi_30),
+        expect_output(summary(pred_int_qp_pi_3),
                       "Pointwise 95 % prediction interval for one future observation")
 
-        expect_output(summary(pred_int_bb_pi_30),
+        expect_output(summary(pred_int_qp_pi_3),
                       "modiefied version of Menssen and Schaarschmidt 2022")
 
 })
