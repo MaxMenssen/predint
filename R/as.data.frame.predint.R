@@ -17,13 +17,13 @@
 #'
 #' @examples
 #' ### PI for quasi-Poisson data
-#' pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
+#' \donttest{pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
 #'                           newoffset=c(1,2,3),
 #'                           nboot=100,
 #'                           traceplot = FALSE)
 #'
 #' # Return the prediction intervals as a data.frame
-#' as.data.frame(pred_int)
+#' as.data.frame(pred_int)}
 as.data.frame.predint <- function(x, ...){
 
         # input needs to be a predint object
