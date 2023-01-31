@@ -1,13 +1,13 @@
 
-#' Sampling of overdispersed poisson data with constant overdispersion
+#' Sampling of overdispersed Poisson data with constant overdispersion
 #'
-#' \code{rqpois()} samples overdispersed poisson data with constant overdispersion from
-#' the negative-binomial distribution such that the quasi-poisson assumption is fulfilled.
+#' \code{rqpois()} samples overdispersed Poisson data with constant overdispersion from
+#' the negative-binomial distribution such that the quasi-Poisson assumption is fulfilled.
 #' The following description of the sampling process is based on the parametrization
 #' used by Gsteiger et al. 2013.
 #'
 #' @param n defines the number of clusters (\eqn{i})
-#' @param lambda defines the overall poisson mean (\eqn{\lambda})
+#' @param lambda defines the overall Poisson mean (\eqn{\lambda})
 #' @param phi dispersion parameter (\eqn{\Phi})
 #' @param offset defines the number of experimental units per cluster (\eqn{n_i})
 #'
@@ -16,12 +16,12 @@
 #' \deqn{var(y_i)= \mu_i (1+\mu_i \kappa_i) = \Phi \mu_i}
 #' For the sampling \eqn{\kappa_i} is defined as
 #' \deqn{\kappa_i=(\Phi-1)/(\mu_i)}
-#' where \eqn{\mu_i=n_i \lambda}, \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i \mu_i)}. Then, the poisson means
+#' where \eqn{\mu_i=n_i \lambda}, \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i \mu_i)}. Then, the Poisson means
 #' for each cluster are sampled from the gamma distribution
 #' \deqn{\lambda_i \sim Gamma(a_i, b_i)}
 #' and the observations per cluster are sampled to be
 #' \deqn{y_i \sim Pois(\lambda_i).}
-#' Please note, that the quasi-poisson assumption is not in contradiction with the
+#' Please note, that the quasi-Poisson assumption is not in contradiction with the
 #' negative-binomial distribution if the data structure is defined by the number
 #' of clusters only (which is the case here), rather than by a complex randomization structure.
 #'
@@ -33,7 +33,7 @@
 #'
 #' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
 #' Using historical control information for the design and analysis of clinical
-#' trials with overdispersed count data. Statist. Med., 32: 3609-3622.
+#' trials with overdispersed count data. Statistics in  Medicine, 32: 3609-3622.
 #' \doi{10.1002/sim.5851}
 #'
 #' @examples
@@ -140,11 +140,3 @@ rqpois <- function(n, lambda, phi, offset=NULL){
         return(obs)
 }
 
-# hdat <- rqpois(n=1000, lambda=10, phi=3, offset=sample(x=1:5, size=1000, replace=TRUE))
-# hdat
-#
-# fit <- glm(hdat[,1]~1,
-#            family=quasipoisson(link="log"),
-#            offset = log(hdat[,2]))
-#
-# summary(fit)

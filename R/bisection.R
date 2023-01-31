@@ -21,7 +21,7 @@
 #'
 #' @details This function is an implementation of the bisection algorithm of Menssen
 #' and Schaarschmidt 2022. It returns a calibrated coefficient \eqn{q^{calib}} for the
-#' calculation of simultanious prediction intervals (or limits)
+#' calculation of simultaneous prediction intervals (or limits)
 #' \deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m)}
 #' that cover all of \eqn{m=1, ... , M} future observations. \cr
 #'

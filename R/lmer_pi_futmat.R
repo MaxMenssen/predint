@@ -25,7 +25,7 @@
 #' lower or upper prediction limits.
 #'
 #' If \code{algorithm} is set to "MS22", both limits of the prediction interval
-#' are calibrated simultaniously using the algorithm described in Menssen and
+#' are calibrated simultaneously using the algorithm described in Menssen and
 #' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
 #' as
 #'
