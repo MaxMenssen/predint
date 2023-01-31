@@ -25,7 +25,7 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * rqpois() can be used with offsets and returns a data.frame (instead of a
         vector as before)
 * quasi_pois_pi() works now with offsets and based on the modified calibration algorithm
-* new fuctions
+* new functions
     - summary.predint 
     - plot.predint 
     - as.data.frame.predint
