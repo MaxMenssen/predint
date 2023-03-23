@@ -6,24 +6,25 @@
 #' The following description of the sampling process is based on the parametrization
 #' used by Gsteiger et al. 2013.
 #'
-#' @param n defines the number of clusters (\eqn{i})
+#' @param n defines the number of clusters (\eqn{I})
 #' @param lambda defines the overall Poisson mean (\eqn{\lambda})
 #' @param phi dispersion parameter (\eqn{\Phi})
 #' @param offset defines the number of experimental units per cluster (\eqn{n_i})
 #'
 #' @details It is assumed that the dispersion parameter (\eqn{\Phi})
 #' is constant for all \eqn{i=1, ... I} clusters, such that the variance becomes
-#' \deqn{var(y_i)= \mu_i (1+\mu_i \kappa_i) = \Phi \mu_i}
+#' \deqn{var(y_i) = \Phi n_i \lambda}
 #' For the sampling \eqn{\kappa_i} is defined as
-#' \deqn{\kappa_i=(\Phi-1)/(\mu_i)}
-#' where \eqn{\mu_i=n_i \lambda}, \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i \mu_i)}. Then, the Poisson means
+#' \deqn{\kappa_i=(\Phi-1)/(n_i \lambda)}
+#' where \eqn{a_i=1/\kappa_i} and \eqn{b_i=1/(\kappa_i n_i \lambda)}. Then, the Poisson means
 #' for each cluster are sampled from the gamma distribution
 #' \deqn{\lambda_i \sim Gamma(a_i, b_i)}
 #' and the observations per cluster are sampled to be
 #' \deqn{y_i \sim Pois(\lambda_i).}
 #' Please note, that the quasi-Poisson assumption is not in contradiction with the
-#' negative-binomial distribution if the data structure is defined by the number
-#' of clusters only (which is the case here), rather than by a complex randomization structure.
+#' negative-binomial distribution, if the data structure is defined by the number
+#' of clusters only (which is the case here) and the offsets are all the same
+#' \eqn{n_h = n_{h´} = n}.
 #'
 #' @return a data.frame containing the sampled observations and the offsets
 #'
@@ -67,6 +68,11 @@ rqpois <- function(n, lambda, phi, offset=NULL){
         # n must be of length 1
         if(length(n) != 1){
                 stop("length(n) must be 1")
+        }
+
+        # Phi must be numeric or integer
+        if(!(is.numeric(lambda) | is.integer(lambda))){
+                stop("lambda must be numeric or integer")
         }
 
         # lambda must be > 0
