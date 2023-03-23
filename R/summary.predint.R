@@ -249,7 +249,7 @@ summary.predint <- function(object, ...){
         #-----------------------------------------------------------------------
         ### Quasi-Poisson PI
 
-        if(inherits(object, "quasiPoissonPI")){
+        if(inherits(object, "quasiPoissonPI") | inherits(object, "negativeBinomialPI")){
 
                 # alternative = both
                 if(object$alternative == "both"){

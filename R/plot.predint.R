@@ -364,7 +364,7 @@ plot.predint <- function(x,
         #-------------------- Quasi-Poisson data -------------------------------
         #-----------------------------------------------------------------------
 
-        if(inherits(x, "quasiPoissonPI")){
+        if(inherits(x, "quasiPoissonPI") | inherits(x, "negativeBinomialPI")){
 
                 dat <- x$histdat
                 dat$data <- factor(rep("histdat", times=nrow(dat)))

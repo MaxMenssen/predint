@@ -121,9 +121,9 @@ print.predint <- function(x, ...){
         }
 
         #-----------------------------------------------------------------------
-        ### Quasi-Poisson PI
+        ### Quasi-Poisson  or negative-binomial PI
 
-        if(inherits(x, "quasiPoissonPI")){
+        if(inherits(x, "quasiPoissonPI") | inherits(x, "negativeBinomialPI")){
 
                 # alternative = both
                 if(x$alternative == "both"){
