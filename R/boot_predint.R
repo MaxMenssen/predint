@@ -84,6 +84,51 @@ boot_predint <- function(pred_int, nboot){
         }
 
         #-----------------------------------------------------------------------
+        ### If the PI is negative binomial
+
+        if(inherits(pred_int, "negativeBinomialPI")){
+
+                # get the future offsets
+                newoffset <- pred_int$newoffset
+
+                # get the historical offsets
+                histoffset <- pred_int$histoffset
+
+                # get the Poisson mean
+                lambda <- pred_int$lambda
+
+                # Get the dispersion parameter
+                kappa <- pred_int$kappa
+
+                # Sampling of future data
+                bs_futdat <- replicate(n=nboot,
+                                       rnbinom(n=length(newoffset),
+                                              lambda=lambda,
+                                              kappa=kappa,
+                                              offset=newoffset),
+                                       simplify = FALSE)
+
+
+                # Sampling of historical data
+                bs_histdat <- replicate(n=nboot,
+                                        rnbinom(n=length(histoffset),
+                                               lambda=lambda,
+                                               kappa=kappa,
+                                               offset=histoffset),
+                                        simplify = FALSE)
+
+                # Define output object
+                out_list <- list(bs_futdat=bs_futdat,
+                                 bs_histdat=bs_histdat)
+
+                # Set class for output object
+                out_s3 <- structure(out_list,
+                                    class=c("predint", "bootstrap"))
+
+                return(out_s3)
+        }
+
+        #-----------------------------------------------------------------------
         ### If the PI is quasi binomial
 
         if(inherits(pred_int, "quasiBinomialPI")){
