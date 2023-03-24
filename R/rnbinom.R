@@ -1,9 +1,7 @@
 
-
-#' Sampling of negative-binomial data
+#' Sampling of negative binomial data
 #'
-#'
-#'\code{rnbinom()} samples negative-binomial distributed data considering offsets.
+#' \code{rnbinom()} samples negative-binomial data.
 #' The following description of the sampling process is based on the parametrization
 #' used by Gsteiger et al. 2013.
 #'
@@ -12,36 +10,22 @@
 #' @param kappa dispersion parameter (\eqn{\kappa})
 #' @param offset defines the number of experimental units per cluster (\eqn{n_i})
 #'
-#' @details In order to sample \eqn{i=1, ... I} observations,
-#' the parameters of the gamma distribution are set to \eqn{a=1/\kappa} and
-#' \eqn{b_i=1/(\kappa n_i \lambda)}.
-#' Then, the Poisson means for each cluster are sampled from the gamma distribution
-#' \deqn{\lambda_i \sim Gamma(a_, b_i)}
-#' and the observations per cluster are sampled to be
-#' \deqn{y_i \sim Pois(\lambda_i).}
-#' Please note, that the negative-binomial distribution is not in contradiction with the
-#' quasi-Poisson assumption, if the data structure is defined by the number
-#' of clusters only (which is the case here) and the offsets are all the same
-#' \eqn{n_h = n_{h´} = n}.
+#' @details
+#' Observations that descent from the negative-binomial distribution have variance
+#' \deqn{var(Y_i) = n_i \lambda (1+ \kappa n_i \lambda).}
+#' Negative-biomial observations can be sampled based on predefined values of \eqn{\kappa},
+#' \eqn{\lambda} and \eqn{n_i}: \cr
+#' Define the parameters of the gamma distribution as \eqn{a=\frac{1}{\kappa}} and
+#' \eqn{b_i=\frac{1}{\kappa n_i \lambda}}. Then, sample the Poisson means for each cluster
+#' \deqn{\lambda_i \sim Gamma(a, b_i).}
+#' Finally, the observations \engn{y_i} are sampled from the Poisson distribution
+#' \deqn{y_i \sim Pois(\lambda_i)}
 #'
 #' @return
 #' @export
 #'
-#'#' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
-#' Using historical control information for the design and analysis of clinical
-#' trials with overdispersed count data. Statistics in  Medicine, 32: 3609-3622.
-#' \doi{10.1002/sim.5851}
-#'
 #' @examples
-#' # No offsets: Same results as rqpois(n=10, lambda=50, phi=3)
-#' set.seed(123)
-#' predint::rnbinom(n=10, lambda=50, kappa=0.04)
-#'
-#' # Different offsets
-#' set.seed(123)
-#' predint::rnbinom(n=3, lambda=50, kappa=0.04, offset=c(3,1,0.5))
-#'
-#'
+#' # coming soon
 rnbinom <- function(n, lambda, kappa, offset=NULL){
 
         # Phi must be numeric or integer

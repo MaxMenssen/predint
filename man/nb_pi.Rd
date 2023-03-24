@@ -27,7 +27,7 @@ nb_pi(
 
 \item{q}{quantile used for interval calculation}
 
-\item{alternative}{either "both", "upper" or "lower"
+\item{alternative}{either "both", "upper" or "lower".
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
@@ -40,7 +40,7 @@ an upper or a lower prediction limit should be computed}
 of simple uncalibrated intervals}
 }
 \value{
-\code{qp_pi} returns an object of class \code{c("predint", "quasiPoissonPI")}.
+\code{qp_pi} returns an object of class \code{c("predint", "negativeBinomialPI")}.
 }
 \description{
 \code{nb_pi()} is a helper function that is internally called by  \code{neg_bin_pi()}. It
@@ -51,16 +51,17 @@ with offsets.
 This function returns a simple uncalibrated prediction interval
 \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m
 \frac{\hat{\lambda} + \hat{\kappa} \bar{n} \hat{\lambda}}{\bar{n} H} +
-(n^*_m hat{\lambda} + \hat{\kappa} n^{*2}_m \hat{\lambda}^2)
+(n^*_m \hat{\lambda} + \hat{\kappa} n^{*2}_m \hat{\lambda}^2)
 }}
 
 with \eqn{n^*_m} as the number of experimental units in \eqn{m=1, 2, ... , M} future clusters,
 \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
-historical data, \eqn{\hat{\kappa}} as the estimate for the dispersion parameter
-and \eqn{n_h} as the number of experimental units per historical cluster. \cr
+historical data, \eqn{\hat{\kappa}} as the estimate for the dispersion parameter,
+\eqn{n_h} as the number of experimental units per historical cluster and
+\eqn{\bar{n}=\sum_h^{n_h} n_h / H}. \cr
 
 The direct application of this uncalibrated prediction interval to real life data
-is not recommended. Please use the \code{neg_bin_pi()} functions for real life applications.
+is not recommended. Please use the \code{neg_bin_pi()} function for real life applications.
 }
 \examples{
 # Prediction interval

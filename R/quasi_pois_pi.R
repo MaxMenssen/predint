@@ -48,9 +48,9 @@
 #' are calibrated independently from each other. The resulting prediction interval
 #' is given by
 #'
-#' \deqn{[l,u] = \Big[n^*_m \hat{\lambda} \pm q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#' \deqn{[l,u] = \Big[n^*_m \hat{\lambda} - q^{calib}_l \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 #'  \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}}, \quad
-#'  n^*_m \hat{\lambda} \pm q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
+#'  n^*_m \hat{\lambda} + q^{calib}_u \sqrt{n^*_m \hat{\phi} \hat{\lambda} +
 #'  \frac{n^{*2}_m \hat{\phi} \hat{\lambda}}{\sum_h n_h}} \Big]}
 #'
 #' Please note, that this modification does not affect the calibration procedure, if only

@@ -1,22 +1,78 @@
+
+
+
+
+
 #' Prediction intervals for negative-binomial data
 #'
-#' @param histdat
-#' @param newdat
-#' @param newoffset
-#' @param alternative
-#' @param alpha
-#' @param nboot
-#' @param delta_min
-#' @param delta_max
-#' @param tolerance
-#' @param traceplot
-#' @param n_bisec
-#' @param algorithm
+#' \code{neg_bin_pi()} calculates bootstrap calibrated prediction intervals for
+#' negative-binomial data.
 #'
-#' @return
+#' @param histdat a \code{data.frame} with two columns. The first has to contain
+#' the historical observations. The second has to contain the number of experimental
+#' units per study (offsets).
+#' @param newdata \code{data.frame} with two columns. The first has to contain
+#' the future observations. The second has to contain the number of experimental
+#' units per study (offsets).
+#' @param newoffset vector with future number of experimental units per historical
+#' study.
+#' @param alternative either "both", "upper" or "lower".
+#' \code{alternative} specifies if a prediction interval or
+#' an upper or a lower prediction limit should be computed
+#' @param alpha defines the level of confidence (\eqn{1-\alpha})
+#' @param nboot number of bootstraps
+#' @param delta_min lower start value for bisection
+#' @param delta_max upper start value for bisection
+#' @param tolerance tolerance for the coverage probability in the bisection
+#' @param traceplot if \code{TRUE}: Plot for visualization of the bisection process
+#' @param n_bisec maximal number of bisection steps
+#' @param algorithm either "MS22" or "MS22mod" (see details)
+#'
+#' @details This function returns bootstrap-calibrated prediction intervals as well as
+#' lower or upper prediction limits.
+#'
+#' If \code{algorithm} is set to "MS22", both limits of the prediction interval
+#' are calibrated simultaneously using the algorithm described in Menssen and
+#' Schaarschmidt (2022), section 3.2.4. The calibrated prediction interval is given
+#' as
+#'
+#' \deqn{[l,u]_m = n^*_m \hat{\lambda} \pm q \sqrt{n^*_m
+#' \frac{\hat{\lambda} + \hat{\kappa} \bar{n} \hat{\lambda}}{\bar{n} H} +
+#' (n^*_m \hat{\lambda} + \hat{\kappa} n^{*2}_m \hat{\lambda}^2)
+#' }}
+#'
+#' with \eqn{n^*_m} as the number of experimental units in the future clusters,
+#' \eqn{\hat{\lambda}} as the estimate for the Poisson mean obtained from the
+#' historical data, \eqn{\hat{\kappa}} as the estimate for the dispersion parameter,
+#' \eqn{n_h} as the number of experimental units per historical cluster and
+#' \eqn{\bar{n}=\sum_h^{n_h} n_h / H}.  \cr
+#'
+#' If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
+#' are calibrated independently from each other. The resulting prediction interval
+#' is given by
+#'
+#' \deqn{[l,u] = \Big[n^*_m \hat{\lambda} - q^{calib}_l \sqrt{n^*_m
+#' \frac{\hat{\lambda} + \hat{\kappa} \bar{n} \hat{\lambda}}{\bar{n} H} +
+#' (n^*_m \hat{\lambda} + \hat{\kappa} n^{*2}_m \hat{\lambda}^2)}, \quad
+#'  n^*_m \hat{\lambda} + q^{calib}_u \sqrt{n^*_m
+#' \frac{\hat{\lambda} + \hat{\kappa} \bar{n} \hat{\lambda}}{\bar{n} H} +
+#' (n^*_m \hat{\lambda} + \hat{\kappa} n^{*2}_m \hat{\lambda}^2)
+#' } \Big]}
+#'
+#' Please note, that this modification does not affect the calibration procedure, if only
+#' prediction limits are of interest.
+#'
+#' @return \code{neg_bin_pi()} returns an object of class \code{c("predint", "negativeBinomialPI")}
+#' with prediction intervals or limits in the first entry (\code{$prediction}).
+#'
 #' @export
 #'
+#' @references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
+#' observations based on linear random effects models. Statistica Neerlandica,
+#'  \doi{10.1111/stan.12260}
+#'
 #' @examples
+#' # Coming soon
 neg_bin_pi <- function(histdat,
                        newdat=NULL,
                        newoffset=NULL,
