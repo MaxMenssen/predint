@@ -39,5 +39,5 @@ plot function needs some bugfixes:
 - plot does not work for uncalibrated intervals
 
 negative binomial PI
-- implement the calibrated interval
+- documentation for all mb functions
 - write checks
