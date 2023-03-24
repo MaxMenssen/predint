@@ -22,4 +22,5 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 2.10),
     ggplot2,
-    lme4
+    lme4,
+    MASS
