@@ -1,3 +1,22 @@
+#' Prediction intervals for negative-binomial data
+#'
+#' @param histdat
+#' @param newdat
+#' @param newoffset
+#' @param alternative
+#' @param alpha
+#' @param nboot
+#' @param delta_min
+#' @param delta_max
+#' @param tolerance
+#' @param traceplot
+#' @param n_bisec
+#' @param algorithm
+#'
+#' @return
+#' @export
+#'
+#' @examples
 neg_bin_pi <- function(histdat,
                        newdat=NULL,
                        newoffset=NULL,
@@ -335,12 +354,12 @@ neg_bin_pi <- function(histdat,
         return(out)
 }
 
-set.seed(123)
-predint::rnbinom(n=10, lambda=50, kappa=0.04)
-nb_dat <- predint::rnbinom(n=100, lambda=50, kappa=0.04)
-
-
-nb_pi_test <- neg_bin_pi(histdat=nb_dat,
-           newoffset = 1)
-nb_pi_test
-str(nb_pi_test)
+# set.seed(123)
+# predint::rnbinom(n=10, lambda=50, kappa=0.04)
+# nb_dat <- predint::rnbinom(n=40000, lambda=50, kappa=0.04, offset=round(runif(n=40000, 1, 4)))
+#
+#
+# nb_pi_test <- neg_bin_pi(histdat=nb_dat,
+#            newdat = rnbinom(n=10, lambda=50, kappa=0.04, offset=round(runif(n=10, 1, 4))))
+# nb_pi_test
+# plot(nb_pi_test)
