@@ -33,15 +33,13 @@
 #' \doi{10.1002/sim.5851}
 #'
 #' @examples
-#' @examples
-#'
 #' # No offsets: Same results as rqpois(n=10, lambda=50, phi=3)
 #' set.seed(123)
-#' rnbinom(n=10, lambda=50, kappa=0.04)
+#' predint::rnbinom(n=10, lambda=50, kappa=0.04)
 #'
 #' # Different offsets
 #' set.seed(123)
-#' rnbinom(n=3, lambda=50, kappa=0.04, offset=c(3,1,0.5))
+#' predint::rnbinom(n=3, lambda=50, kappa=0.04, offset=c(3,1,0.5))
 #'
 #'
 rnbinom <- function(n, lambda, kappa, offset=NULL){
