@@ -111,6 +111,11 @@ neg_bin_pi <- function(histdat,
                 stop("the historical observations have to be integers")
         }
 
+        if(all(histdat[,1] == 0)){
+                histdat[1,1] <- 0.5
+
+                warning("All observations are zero. The first observation was set to 0.5.")
+        }
         #-----------------------------------------------------------------------
         ### Actual data
 
