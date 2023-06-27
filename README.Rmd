@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-<!-- [ https://cranlogs.r-pkg.org/badges/grand-total/predint ]:: -->
+[ https://cranlogs.r-pkg.org/badges/grand-total/predint ]::
 
 In many pharmaceutical and biomedical applications such as assay validation, assessment
 of historical control data or the detection of anti-drug antibodies, prediction intervals
