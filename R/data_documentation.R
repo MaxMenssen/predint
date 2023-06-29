@@ -330,3 +330,19 @@
 #' NTP Historical Control Reports: \url{https://ntp.niehs.nih.gov/data/controls}
 #'
 "mortality_HCD"
+
+
+#-------------------------------------------------------------------------------
+#' HCD on numbers of revertant colonies in the Ames test (OECD 471)
+#'
+#' This data set contains artificial historical control data that was sampled in
+#' order to mimic the number of revertant colonies based on two or three petri dishes.
+#'
+#' @format A \code{data.frame} with 2 rows and 10 columns:
+#'  \describe{
+#'   \item{rev_col}{no. of revertant colonies}
+#'   \item{no_dish}{no. of petri dishes in the control group}
+#' }
+#'
+"ames_HCD"
+
