@@ -67,7 +67,17 @@
 #'  \doi{10.1111/stan.12260}
 #'
 #' @examples
-#' # Coming soon
+#' # HCD from the Ames test
+#' ames_HCD
+#'
+#' # Prediction interval for one future number of revertant colonies
+#' # obtained in three petridishes
+#' pred_int <- quasi_pois_pi(histdat=ames_HCD, newoffset=3, nboot=100)
+#' summary(pred_int)
+#'
+#' # Please note that nboot was set to 100 in order to decrease computing time
+#' # of the example. For a valid analysis set nboot=10000.
+#'
 neg_bin_pi <- function(histdat,
                        newdat=NULL,
                        newoffset=NULL,
