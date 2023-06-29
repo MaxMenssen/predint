@@ -34,10 +34,16 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 
 # predint 2.0.1 (to do)
 
+* New real life data about the mortality of mice
+
+
+
 plot function needs some bugfixes:  
 - lmer_pi_.... plot does not work if endpoint is directly transformed in lmer like lmer(lig(y) ~ ......)
 - plot does not work for uncalibrated intervals
 
 negative binomial PI
 - documentation for all mb functions
+    - done for rnbinom
+    -
 - write checks
