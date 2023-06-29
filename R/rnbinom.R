@@ -11,21 +11,34 @@
 #' @param offset defines the number of experimental units per cluster (\eqn{n_i})
 #'
 #' @details
-#' Observations that descent from the negative-binomial distribution have variance
+#' The variance of the negative-binomial distribution is
 #' \deqn{var(Y_i) = n_i \lambda (1+ \kappa n_i \lambda).}
 #' Negative-biomial observations can be sampled based on predefined values of \eqn{\kappa},
 #' \eqn{\lambda} and \eqn{n_i}: \cr
 #' Define the parameters of the gamma distribution as \eqn{a=\frac{1}{\kappa}} and
 #' \eqn{b_i=\frac{1}{\kappa n_i \lambda}}. Then, sample the Poisson means for each cluster
 #' \deqn{\lambda_i \sim Gamma(a, b_i).}
-#' Finally, the observations \engn{y_i} are sampled from the Poisson distribution
+#' Finally, the observations \eqn{y_i} are sampled from the Poisson distribution
 #' \deqn{y_i \sim Pois(\lambda_i)}
 #'
-#' @return
+#' @return \code{rnbinom()} returns a \code{data.frame} with two columns:
+#' \code{y} as the observations and \code{offset} as the number of offsets per
+#' observation.
+#'
 #' @export
 #'
+#' @references Gsteiger, S., Neuenschwander, B., Mercier, F. and Schmidli, H. (2013):
+#' Using historical control information for the design and analysis of clinical
+#' trials with overdispersed count data. Statistics in  Medicine, 32: 3609-3622.
+#' \doi{10.1002/sim.5851}
+#'
 #' @examples
-#' # coming soon
+#'
+#' # Sampling of negative-binomial observations
+#' # with different offsets
+#' set.seed(123)
+#' rnbinom(n=5, lambda=5, kappa=0.13, offset=c(3,3,2,3,2))
+#'
 rnbinom <- function(n, lambda, kappa, offset=NULL){
 
         # Phi must be numeric or integer
