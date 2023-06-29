@@ -1,8 +1,3 @@
-
-
-
-
-
 #' Prediction intervals for negative-binomial data
 #'
 #' \code{neg_bin_pi()} calculates bootstrap calibrated prediction intervals for
