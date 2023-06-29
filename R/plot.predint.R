@@ -79,6 +79,7 @@ plot.predint <- function(x,
                         dat$obs <- "observations"
                 }
 
+                colnames(dat)[1] <- "y"
                 # PI data
                 pi_dat <- x$prediction
                 pi_dat$y_star_hat <- x$y_star_hat
@@ -130,20 +131,20 @@ plot.predint <- function(x,
                 if(x$alternative == "both"){
 
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="obs",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$obs,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
 
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="upper"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=.data$lower,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 ylab(colnames(dat)[1])+
                                 xlab("")+
@@ -155,20 +156,20 @@ plot.predint <- function(x,
                 if(x$alternative == "lower"){
 
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="obs",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$obs,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
 
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="y_star_hat"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=.data$lower,
+                                                    ymax=.data$y_star_hat))+
                                 ggtitle(title)+
                                 ylab(colnames(dat)[1])+
                                 xlab("")+
@@ -180,20 +181,20 @@ plot.predint <- function(x,
                 if(x$alternative == "upper"){
 
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="obs",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$obs,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
 
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin="y_star_hat",
-                                                           ymax="upper"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=.data$y_star_hat,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 ylab(colnames(dat)[1])+
                                 xlab("")+
@@ -239,14 +240,16 @@ plot.predint <- function(x,
                 }
 
                 dat <- rbind(dat, new_dat)
-                dat$sizef <- factor(dat$size)
+                dat$size <- factor(dat$size)
+                colnames(dat) <- as.character(c("succ", "fail", "n_clust", "data"))
 
                 # PI data
                 pi_dat <- x$prediction
-                pi_dat$sizef <- factor(x$newsize)
-                pi_dat$size <- x$newsize
+                pi_dat$n_clust <- factor(x$newsize)
+                pi_dat$n_clust_int <- x$newsize
                 pi_dat$y_star_hat <- x$y_star_hat
                 pi_dat$data <- "predint"
+                # colnames(pi_dat) <- as.character(c("lower", "upper", "n_clust", "y_star_hat", "data"))
 
                 # alternative = both
                 if(x$alternative == "both"){
@@ -290,19 +293,19 @@ plot.predint <- function(x,
                 # Intervals
                 if(x$alternative == "both"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="sizef",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$n_clust,
+                                              y=.data$succ,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="upper"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=.data$lower,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 xlab("Cluster size")+
                                 ylab("No. of success")+
@@ -314,19 +317,19 @@ plot.predint <- function(x,
                 # Lower bounds
                 if(x$alternative == "lower"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="sizef",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$n_clust,
+                                              y=.data$succ,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="size"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=max(0, .data$lower),
+                                                    ymax=.data$n_clust_int))+
                                 ggtitle(title)+
                                 xlab("Cluster size")+
                                 ylab("No. of success")+
@@ -338,19 +341,19 @@ plot.predint <- function(x,
                 # Upper bounds
                 if(x$alternative == "upper"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="sizef",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$n_clust,
+                                              y=.data$succ,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(y="y_star_hat",
-                                                           ymin=0,
-                                                           ymax="upper"))+
+                                                aes(y=.data$y_star_hat,
+                                                    ymin=0,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 xlab("Cluster size")+
                                 ylab("No. of success")+
@@ -361,7 +364,7 @@ plot.predint <- function(x,
         }
 
         #-----------------------------------------------------------------------
-        #-------------------- Quasi-Poisson data -------------------------------
+        #-------------------------- Poisson data -------------------------------
         #-----------------------------------------------------------------------
 
         if(inherits(x, "quasiPoissonPI") | inherits(x, "negativeBinomialPI")){
@@ -370,6 +373,7 @@ plot.predint <- function(x,
                 dat$data <- factor(rep("histdat", times=nrow(dat)))
                 offsetf <- factor(dat[,2])
                 dat[,2] <-  offsetf
+                colnames(dat)[1] <- "y"
                 colnames(dat)[2] <- "off_set"
 
                 # If newdat is not available
@@ -390,6 +394,7 @@ plot.predint <- function(x,
                 if(!is.null(x$newdat)){
                         new_dat <- x$newdat
                         new_dat$data <- factor(rep("predint", times=nrow(new_dat)))
+                        colnames(new_dat)[1] <- "y"
                         colnames(new_dat)[2] <- "off_set"
                 }
 
@@ -441,23 +446,27 @@ plot.predint <- function(x,
                         }
                 }
 
+                # print(dat)
+                # print(str(dat))
+                # print(colnames(dat))
+
                 # Intervals
                 if(x$alternative == "both"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="off_set",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$off_set,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~factor(data))+
+                                facet_grid(~factor(.data$data))+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(x="off_set",
-                                                           y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="upper"))+
+                                                aes(x=.data$off_set,
+                                                    y=.data$y_star_hat,
+                                                    ymin=.data$lower,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 xlab("Offset")+
                                 ylab("No. of observed objects")+
@@ -469,20 +478,20 @@ plot.predint <- function(x,
                 # Lower bounds
                 if(x$alternative == "lower"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="off_set",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$off_set,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(x="off_set",
-                                                           y="y_star_hat",
-                                                           ymin="lower",
-                                                           ymax="y_star_hat"))+
+                                                aes(x=.data$off_set,
+                                                    y=.data$y_star_hat,
+                                                    ymin=.data$lower,
+                                                    ymax=.data$y_star_hat))+
                                 ggtitle(title)+
                                 xlab("Offset")+
                                 ylab("No. of observed objects")+
@@ -494,20 +503,20 @@ plot.predint <- function(x,
                 # Upper bounds
                 if(x$alternative == "upper"){
                         pi_plot <- ggplot(data=dat,
-                                          aes_string(x="off_set",
-                                                     y=colnames(dat)[1],
-                                                     ...))+
+                                          aes(x=.data$off_set,
+                                              y=.data$y,
+                                              ...))+
                                 theme_bw()+
-                                facet_grid(~data)+
+                                facet_grid(~.data$data)+
                                 geom_jitter(size=size,
                                             width=width,
                                             height=0,
                                             alpha=alpha)+
                                 geom_pointrange(data=pi_dat,
-                                                aes_string(x="off_set",
-                                                           y="y_star_hat",
-                                                           ymin="y_star_hat",
-                                                           ymax="upper"))+
+                                                aes(x=.data$off_set,
+                                                    y=.data$y_star_hat,
+                                                    ymin=.data$y_star_hat,
+                                                    ymax=.data$upper))+
                                 ggtitle(title)+
                                 xlab("Offset")+
                                 ylab("No. of observed objects")+
