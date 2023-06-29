@@ -96,7 +96,7 @@ qp_dat1
 # Future data
 qp_dat2
 
-# Prediction interval using bb_dat2 as future data
+# Prediction interval using qp_dat2 as future data
 pred_int <- quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
 summary(pred_int)
 
