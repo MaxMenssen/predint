@@ -161,6 +161,10 @@ quasi_pois_pi <- function(histdat,
                 if(!isTRUE(all(newdat[,1] == floor(newdat[,1])))){
                         stop("the future observations have to be integers")
                 }
+
+                if(any((colnames(histdat) == colnames(newdat))==FALSE)){
+                        stop("histdat and newdat have to have the same colnames")
+                }
         }
 
         # If newoffset is defined
@@ -372,15 +376,15 @@ quasi_pois_pi <- function(histdat,
                 # Modified version of M and S 21
                 if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = y_star_hat_m_list,
-                                                 pred_se = pred_se_m_list,
-                                                 y_star = bs_y_star,
-                                                 alternative = "lower",
-                                                 quant_min = delta_min,
-                                                 quant_max = delta_max,
-                                                 n_bisec = n_bisec,
-                                                 tol = tolerance,
-                                                 alpha = alpha/2,
-                                                 traceplot=traceplot)
+                                                       pred_se = pred_se_m_list,
+                                                       y_star = bs_y_star,
+                                                       alternative = "lower",
+                                                       quant_min = delta_min,
+                                                       quant_max = delta_max,
+                                                       n_bisec = n_bisec,
+                                                       tol = tolerance,
+                                                       alpha = alpha/2,
+                                                       traceplot=traceplot)
 
                         quant_calib_upper <- bisection(y_star_hat = y_star_hat_m_list,
                                                        pred_se = pred_se_m_list,
