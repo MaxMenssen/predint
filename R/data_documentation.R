@@ -309,4 +309,24 @@
 #'
 "c2_dat4"
 
-
+#-------------------------------------------------------------------------------
+#' HCD on mortality of male B6C3F1-mice
+#'
+#' This data set contains historical control data about the mortality of male B6C3F1-mice
+#' obtained in long term carcinogenicity studies at the National Toxicology Program
+#' presented in NTP Historical Control Reports from 2013 to 2016.
+#' It was used in Menssen and Schaarschmidt 2019 as a real life example.
+#'
+#' @format A \code{data.frame} with 2 rows and 10 columns:
+#'  \describe{
+#'   \item{dead}{no. of dead mice}
+#'   \item{alive}{no. of living mice}
+#' }
+#'
+#' @references
+#' Menssen and Schaarschmidt (2019): Prediction intervals for overdispersed binomial
+#' data with application to historical controls. Statistics in Medicine.
+#' \doi{10.1002/sim.8124} \cr
+#' NTP Historical Control Reports: \url{https://ntp.niehs.nih.gov/data/controls}
+#'
+"mortality_HCD"
