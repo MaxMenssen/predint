@@ -34,7 +34,9 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 
 # predint 2.0.1 (to do)
 
-* New real life data about the mortality of mice
+* New real life data 
+  - Mortality of mice
+  - revertant bacteria colonies
 
 
 
