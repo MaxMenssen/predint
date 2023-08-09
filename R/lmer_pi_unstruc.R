@@ -90,17 +90,17 @@
 #' # of the example. For a valid analysis set nboot=10000.
 #'
 lmer_pi_unstruc <- function(model,
-                    newdat=NULL,
-                    m=NULL,
-                    alternative="both",
-                    alpha=0.05,
-                    nboot=10000,
-                    delta_min=0.01,
-                    delta_max=10,
-                    tolerance = 1e-3,
-                    traceplot=TRUE,
-                    n_bisec=30,
-                    algorithm="MS22"){
+                            newdat=NULL,
+                            m=NULL,
+                            alternative="both",
+                            alpha=0.05,
+                            nboot=10000,
+                            delta_min=0.01,
+                            delta_max=10,
+                            tolerance = 1e-3,
+                            traceplot=TRUE,
+                            n_bisec=30,
+                            algorithm="MS22"){
 
         # Model must be of class lmerMod
         if(!is(model, "lmerMod")){
@@ -168,7 +168,7 @@ lmer_pi_unstruc <- function(model,
 
                 # colnames of historical data and new data must be the same
                 if(all(colnames(model@frame) == colnames(newdat))==FALSE){
-                        stop("columnames of historical data and newdat are not the same")
+                        stop("colnames(model@frame) and colnames(newdat) are not the same.\nHave you transformed the depenent variable within the lmer() call?\nAt their current stage, the lmer_pi_... functions do not work with\ntransformations inside lmer()")
                 }
 
                 # Define m

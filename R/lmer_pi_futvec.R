@@ -205,7 +205,7 @@ lmer_pi_futvec <- function(model,
 
                 # colnames of historical data and new data must be the same
                 if(all(colnames(model@frame) == colnames(newdat))==FALSE){
-                        stop("columnames of historical data and newdat are not the same")
+                        stop("colnames(model@frame) and colnames(newdat) are not the same.\nHave you transformed the depenent variable within the lmer() call?\nAt their current stage, the lmer_pi_... functions do not work with\ntransformations inside lmer()")
                 }
 
                 #
