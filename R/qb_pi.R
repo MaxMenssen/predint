@@ -1,7 +1,7 @@
 #' Simple uncalibrated prediction intervals for quasi-binomial data
 #'
 #' \code{qb_pi()} is a helper function that is internally called by  \code{quasi_bin_pi()}. It
-#' calculates simple uncalibrated prediction intervals for binomial
+#' calculates simple uncalibrated prediction intervals for binary
 #' data with constant overdispersion (quasi-binomial assumption).
 #'
 #' @param newsize number of experimental units in the historical clusters.
@@ -13,7 +13,7 @@
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param histdat additional argument to specify the historical data set
-#' @param newdat additional argument to specify the actual data set
+#' @param newdat additional argument to specify the current data set
 #' @param algorithm used to define the algorithm for calibration if called via
 #' \code{quasi_bin_pi}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals

@@ -1,11 +1,11 @@
 #' Simple uncalibrated prediction intervals for beta-binomial data
 #'
 #' \code{bb_pi()} is a helper function that is internally called by \code{beta_bin_pi()}. It
-#' calculates simple uncalibrated prediction intervals for binomial
+#' calculates simple uncalibrated prediction intervals for binary
 #' data with overdispersion changing between the clusters (beta-binomial).
 #'
-#' @param newsize number of experimental units in the historical clusters.
-#' @param histsize number of experimental units in the future clusters.
+#' @param newsize number of experimental units in the historical clusters
+#' @param histsize number of experimental units in the future clusters
 #' @param pi binomial proportion
 #' @param rho intra class correlation
 #' @param q quantile used for interval calculation
@@ -13,7 +13,7 @@
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param histdat additional argument to specify the historical data set
-#' @param newdat additional argument to specify the actual data set
+#' @param newdat additional argument to specify the current data set
 #' @param algorithm used to define the algorithm for calibration if called via
 #' \code{beta_bin_pi()}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals

@@ -12,7 +12,7 @@
 \item{...}{further arguments passed over to \code{base::cbind()} and \code{base::data.frame()}}
 }
 \value{
-A \code{data.frame} containing the actual data (if provided via \code{newdat}),
+A \code{data.frame} containing the current data (if provided via \code{newdat}),
 the prediction interval (or limit), the expected value for the future observation,
 the bootstrap calibrated coefficient(s), the prediction standard error and
 a statement about the coverage for each future observation, if new observations

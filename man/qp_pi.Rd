@@ -31,7 +31,7 @@ qp_pi(
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
-\item{newdat}{additional argument to specify the actual data set}
+\item{newdat}{additional argument to specify the current data set}
 
 \item{histdat}{additional argument to specify the historical data set}
 

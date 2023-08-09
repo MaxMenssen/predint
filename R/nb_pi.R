@@ -14,7 +14,7 @@
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
 #' @param histdat additional argument to specify the historical data set
-#' @param newdat additional argument to specify the actual data set
+#' @param newdat additional argument to specify the current data set
 #' @param algorithm used to define the algorithm for calibration if called via
 #' \code{quasi_pois_pi()}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals
@@ -34,7 +34,7 @@
 #' The direct application of this uncalibrated prediction interval to real life data
 #' is not recommended. Please use the \code{neg_bin_pi()} function for real life applications.
 #'
-#' @return \code{qp_pi} returns an object of class \code{c("predint", "negativeBinomialPI")}.
+#' @return \code{np_pi} returns an object of class \code{c("predint", "negativeBinomialPI")}.
 #'
 #' @export
 #'

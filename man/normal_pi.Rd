@@ -36,7 +36,7 @@ if called via \code{lmer_pi_futmat()}}
 \item{futvec}{used to add the vector of the historical row numbers that define
 the future experimental design to the output if called via \code{lmer_pi_futmat()}}
 
-\item{newdat}{additional argument to specify the actual data set}
+\item{newdat}{additional argument to specify the current data set}
 
 \item{histdat}{additional argument to specify the historical data set}
 

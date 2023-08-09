@@ -7,7 +7,8 @@
 #' \code{boot_predint()} is a helper function to bootstrap new data from the simple
 #' uncalibrated prediction intervals implemented in predint.
 #'
-#' @param pred_int object of class \code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}
+#' @param pred_int object of class \code{c("quasiPoissonPI", "betaBinomialPI",
+#' "quasiBinomialPI", negativeBinomialPI)}
 #' @param nboot number of bootstraps
 #'
 #' @details This function only works for binomial and Poisson type data. For the sampling

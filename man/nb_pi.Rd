@@ -31,7 +31,7 @@ nb_pi(
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
-\item{newdat}{additional argument to specify the actual data set}
+\item{newdat}{additional argument to specify the current data set}
 
 \item{histdat}{additional argument to specify the historical data set}
 
@@ -40,7 +40,7 @@ an upper or a lower prediction limit should be computed}
 of simple uncalibrated intervals}
 }
 \value{
-\code{qp_pi} returns an object of class \code{c("predint", "negativeBinomialPI")}.
+\code{np_pi} returns an object of class \code{c("predint", "negativeBinomialPI")}.
 }
 \description{
 \code{nb_pi()} is a helper function that is internally called by  \code{neg_bin_pi()}. It

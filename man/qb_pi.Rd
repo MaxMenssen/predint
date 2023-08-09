@@ -31,7 +31,7 @@ qb_pi(
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
 
-\item{newdat}{additional argument to specify the actual data set}
+\item{newdat}{additional argument to specify the current data set}
 
 \item{histdat}{additional argument to specify the historical data set}
 
@@ -44,7 +44,7 @@ of simple uncalibrated intervals}
 }
 \description{
 \code{qb_pi()} is a helper function that is internally called by  \code{quasi_bin_pi()}. It
-calculates simple uncalibrated prediction intervals for binomial
+calculates simple uncalibrated prediction intervals for binary
 data with constant overdispersion (quasi-binomial assumption).
 }
 \details{

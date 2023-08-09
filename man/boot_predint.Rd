@@ -7,7 +7,8 @@
 boot_predint(pred_int, nboot)
 }
 \arguments{
-\item{pred_int}{object of class \code{c("quasiPoissonPI", "betaBinomialPI", "quasiBinomialPI")}}
+\item{pred_int}{object of class \code{c("quasiPoissonPI", "betaBinomialPI",
+"quasiBinomialPI", negativeBinomialPI)}}
 
 \item{nboot}{number of bootstraps}
 }

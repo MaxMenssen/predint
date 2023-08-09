@@ -16,7 +16,7 @@
 #' @param futvec used to add the vector of the historical row numbers that define
 #' the future experimental design to the output if called via \code{lmer_pi_futmat()}
 #' @param histdat additional argument to specify the historical data set
-#' @param newdat additional argument to specify the actual data set
+#' @param newdat additional argument to specify the current data set
 #' @param algorithm used to define the algorithm for calibration if called via
 #' \code{lmer_pi_...()}. This argument is not of interest for the calculation
 #' of simple uncalibrated intervals
