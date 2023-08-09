@@ -310,7 +310,7 @@
 "c2_dat4"
 
 #-------------------------------------------------------------------------------
-#' HCD on mortality of male B6C3F1-mice
+#' Historical mortality of male B6C3F1-mice
 #'
 #' This data set contains historical control data about the mortality of male B6C3F1-mice
 #' obtained in long term carcinogenicity studies at the National Toxicology Program
@@ -333,7 +333,7 @@
 
 
 #-------------------------------------------------------------------------------
-#' HCD on numbers of revertant colonies in the Ames test (OECD 471)
+#' Historical numbers of revertant colonies in the Ames test (OECD 471)
 #'
 #' This data set contains artificial historical control data that was sampled in
 #' order to mimic the number of revertant colonies based on two or three petri dishes.
