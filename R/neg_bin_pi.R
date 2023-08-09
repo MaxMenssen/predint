@@ -6,7 +6,7 @@
 #' @param histdat a \code{data.frame} with two columns. The first has to contain
 #' the historical observations. The second has to contain the number of experimental
 #' units per study (offsets).
-#' @param newdata \code{data.frame} with two columns. The first has to contain
+#' @param newdat \code{data.frame} with two columns. The first has to contain
 #' the future observations. The second has to contain the number of experimental
 #' units per study (offsets).
 #' @param newoffset vector with future number of experimental units per historical
@@ -61,6 +61,8 @@
 #' with prediction intervals or limits in the first entry (\code{$prediction}).
 #'
 #' @export
+#'
+#' @importFrom MASS glm.nb
 #'
 #' @references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
 #' observations based on linear random effects models. Statistica Neerlandica,
