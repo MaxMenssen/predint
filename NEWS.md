@@ -32,13 +32,16 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
     - print.predint
 
 
-# predint 2.0.1 (to do)
+# predint 2.0.1
 
 * New real life data 
   - Mortality of mice
   - revertant bacteria colonies
 
-
+* new functions
+  - rnbinom
+  - nb_pi
+  - neg_bin_pi
 
 plot function needs some bugfixes:  
 - lmer_pi_.... plot does not work if endpoint is directly transformed in lmer like lmer(lig(y) ~ ......)
