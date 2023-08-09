@@ -3,7 +3,7 @@
 \docType{data}
 \name{ames_HCD}
 \alias{ames_HCD}
-\title{HCD on numbers of revertant colonies in the Ames test (OECD 471)}
+\title{Historical numbers of revertant colonies in the Ames test (OECD 471)}
 \format{
 A \code{data.frame} with 2 rows and 10 columns:
  \describe{

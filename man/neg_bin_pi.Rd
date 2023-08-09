@@ -24,6 +24,10 @@ neg_bin_pi(
 the historical observations. The second has to contain the number of experimental
 units per study (offsets).}
 
+\item{newdat}{\code{data.frame} with two columns. The first has to contain
+the future observations. The second has to contain the number of experimental
+units per study (offsets).}
+
 \item{newoffset}{vector with future number of experimental units per historical
 study.}
 
@@ -46,10 +50,6 @@ an upper or a lower prediction limit should be computed}
 \item{n_bisec}{maximal number of bisection steps}
 
 \item{algorithm}{either "MS22" or "MS22mod" (see details)}
-
-\item{newdata}{\code{data.frame} with two columns. The first has to contain
-the future observations. The second has to contain the number of experimental
-units per study (offsets).}
 }
 \value{
 \code{neg_bin_pi()} returns an object of class \code{c("predint", "negativeBinomialPI")}

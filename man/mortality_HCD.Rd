@@ -3,7 +3,7 @@
 \docType{data}
 \name{mortality_HCD}
 \alias{mortality_HCD}
-\title{HCD on mortality of male B6C3F1-mice}
+\title{Historical mortality of male B6C3F1-mice}
 \format{
 A \code{data.frame} with 2 rows and 10 columns:
  \describe{
