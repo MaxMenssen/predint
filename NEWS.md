@@ -37,14 +37,11 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * New real life data 
   - Mortality of mice
   - revertant bacteria colonies
-  
+
 * new functions
   - rnbinom
   - nb_pi
   - neg_bin_pi
 
-plot function needs some bugfixes:  
-- plot does not work for uncalibrated intervals
+* plot works now with uncalibrated PI
 
-negative binomial PI
-- write checks
