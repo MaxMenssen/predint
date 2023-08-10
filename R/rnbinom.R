@@ -84,6 +84,10 @@ rnbinom <- function(n, lambda, kappa, offset=NULL){
                 if(length(offset) != n){
                         stop("offset must be of length n")
                 }
+
+                if(isFALSE(all(offset>0))){
+                        stop("all offsets must be bigger than one")
+                }
         }
 
 

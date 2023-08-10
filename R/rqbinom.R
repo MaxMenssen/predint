@@ -53,6 +53,10 @@ rqbinom <- function(n, size, prob, phi){
                 stop("length(n) must be 1")
         }
 
+        if(n<=0){
+                stop("n bust be bigger than zero")
+        }
+
         # size must be integer
         if(!isTRUE(all(size == floor(size)))){
                 stop("'size' must contain integer values only")
@@ -61,6 +65,14 @@ rqbinom <- function(n, size, prob, phi){
         # Prob must be element of [0,1]
         if(prob < 0 ){
                 stop("prob is not element of [0,1]")
+        }
+
+        if(prob == 0){
+                warning("prob = 0")
+        }
+
+        if(prob == 1){
+                warning("prob = 1")
         }
 
         # Prob must be element of [0,1]

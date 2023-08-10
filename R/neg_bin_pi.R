@@ -106,12 +106,12 @@ neg_bin_pi <- function(histdat,
                 stop("histdat has to have two columns (observations and number of exp. units)")
         }
 
-        if(!(is.numeric(histdat[,1]) | is.integer(histdat[,1]))){
-                stop("At least one variable in histdat is neither integer or numeric")
-        }
+        # if(!(is.numeric(histdat[,1]) | is.integer(histdat[,1]))){
+        #         stop("At least one variable in histdat is neither integer or numeric")
+        # }
 
         if(!(is.numeric(histdat[,2]) | is.integer(histdat[,2]))){
-                stop("At least one variable in histdat is neither integer or numeric")
+                stop("Offset variable in histdat is neither integer or numeric")
         }
 
         if(!isTRUE(all(histdat[,1] == floor(histdat[,1])))){
@@ -119,12 +119,11 @@ neg_bin_pi <- function(histdat,
         }
 
         if(all(histdat[,1] == 0)){
-                histdat[1,1] <- 0.5
 
-                warning("All observations are zero. The first observation was set to 0.5.")
+                stop("All observations are zero")
         }
         #-----------------------------------------------------------------------
-        ### Actual data
+        ### Current data
 
         # Relationship between newdat and newoffset
         if(is.null(newdat) & is.null(newoffset)){
@@ -145,12 +144,12 @@ neg_bin_pi <- function(histdat,
                         stop("newdat has to have two columns (observations and number of exp. units")
                 }
 
-                if(!(is.numeric(newdat[,1]) | is.integer(newdat[,1]))){
-                        stop("At least one variable in newdat is neither integer or numeric")
-                }
+                # if(!(is.numeric(newdat[,1]) | is.integer(newdat[,1]))){
+                #         stop("At least one variable in newdat is neither integer or numeric")
+                # }
 
                 if(!(is.numeric(newdat[,2]) | is.integer(newdat[,2]))){
-                        stop("At least one variable in newdat is neither integer or numeric")
+                        stop("Offset variable in newdat is neither integer or numeric")
                 }
 
                 if(nrow(newdat) > nrow(histdat)){
