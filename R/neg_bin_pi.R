@@ -74,7 +74,7 @@
 #'
 #' # Prediction interval for one future number of revertant colonies
 #' # obtained in three petridishes
-#' pred_int <- quasi_pois_pi(histdat=ames_HCD, newoffset=3, nboot=100)
+#' pred_int <- neg_bin_pi(histdat=ames_HCD, newoffset=3, nboot=100)
 #' summary(pred_int)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
