@@ -21,8 +21,12 @@
 #'
 #' @details This function is an implementation of the bisection algorithm of Menssen
 #' and Schaarschmidt 2022. It returns a calibrated coefficient \eqn{q^{calib}} for the
-#' calculation of simultaneous prediction intervals (or limits)
-#' \deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m)}
+#' calculation of pointwise and simultaneous prediction intervals
+#' \deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m),}
+#' lower prediction limits
+#' \deqn{l = \hat{y}^*_m - q^{calib} \hat{se}(Y_m - y^*_m)}
+#' or upper prediction limits
+#' \deqn{u = \hat{y}^*_m  + q^{calib} \hat{se}(Y_m - y^*_m)}
 #' that cover all of \eqn{m=1, ... , M} future observations. \cr
 #'
 #' In this notation, \eqn{\hat{y}^*_m} are the expected future observations for each of
@@ -85,10 +89,11 @@ bisection <- function(y_star_hat,
                 stop("all elements in y_star have to have the same length M")
         }
 
-        # M has to be the same for all three lists
-        if(length(unique(unique(sapply(y_star_hat, length)), unique(sapply(pred_se, length)), unique(sapply(y_star, length)))) != 1){
-                stop("M differs between y_star_hat, pred_se and y_star")
-        }
+        # # M has to be the same for all three lists
+        # if(length(unique(unique(sapply(y_star_hat, length)), unique(sapply(pred_se, length)), unique(sapply(y_star, length)))) != 1){
+        # # if(var(c(unique(sapply(y_star_hat, length)), unique(sapply(pred_se, length)), unique(sapply(y_star, length)))) != 0){
+        #         stop("M differs between y_star_hat, pred_se and y_star")
+        # }
 
 
         # alternative must be defined
@@ -159,12 +164,12 @@ bisection <- function(y_star_hat,
 
         #----------------------------------------------------------------------
 
-        # if the coverage is smaller for both quant take quant_min
-        if ((cover_quant_min > 1-(alpha+tol))) {
+        # if the coverage is bigger for both quant take quant_min
+        if ((cover_quant_min > 1-alpha+tol)) {
 
-                warning(paste("observed coverage probability for quant_min =",
+                warning(paste("observed coverage probability of ",
                               cover_quant_min,
-                              "is bigger than 1-alpha+tol =",
+                              "for quant_min is bigger than 1-alpha+tol =",
                               1-alpha+tol))
 
                 if(traceplot==TRUE){
@@ -188,11 +193,11 @@ bisection <- function(y_star_hat,
 
         # if the coverage is bigger for both quant take quant_max
 
-        else if ((cover_quant_max < 1-(alpha-tol))) {
+        else if ((cover_quant_max < 1-alpha-tol)) {
 
-                warning(paste("observed coverage probability for quant_max =",
+                warning(paste("observed coverage probability of",
                               cover_quant_max,
-                              "is smaller than 1-alpha-tol =",
+                              "for quant_max is smaller than 1-alpha-tol =",
                               1-alpha-tol))
 
 
@@ -222,28 +227,32 @@ bisection <- function(y_star_hat,
                 # Calculate midpoint
                 c <- (quant_min + quant_max) / 2
 
-                runval <- (1-alpha)-coverage_prob(y_star_hat = y_star_hat,
-                                                  pred_se = pred_se,
-                                                  q = c,
-                                                  y_star = y_star,
-                                                  alternative = alternative)
+                cprop <- coverage_prob(y_star_hat = y_star_hat,
+                                       pred_se = pred_se,
+                                       q = c,
+                                       y_star = y_star,
+                                       alternative = alternative)
+
+                runval <- (1-alpha) - cprop
 
                 # Assigning c and runval into the vectors
                 c_i[i] <- c
                 runval_i[i] <- runval
+                # runval_i[i] <- cprop
 
+                # if ((1-alpha)-tol < cprop & cprop < (1-alpha)+tol) {
                 if (abs(runval) < tol) {
 
                         if(traceplot==TRUE){
 
                                 plot(x=c_i,
-                                     y=runval_i,
+                                     y=-runval_i,
                                      type="p",
                                      pch=20,
                                      xlab="calibration value",
                                      ylab="obs. coverage - nom. coverage",
                                      main=paste("Trace with", i, "iterations"))
-                                lines(x=c_i, y=runval_i, type="s", col="red")
+                                lines(x=c_i, y=-runval_i, type="s", col="red")
                                 abline(a=0, b=0, lty="dashed")
                                 abline(a=tol, b=0, col="grey")
                                 abline(a=-tol, b=0, col="grey")
