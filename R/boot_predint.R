@@ -12,7 +12,7 @@
 #' @param nboot number of bootstraps
 #'
 #' @details This function only works for binomial and Poisson type data. For the sampling
-#' of new data from random effects models see \code{lmer_bs()}.
+#' of new data from random effects models see \code{\link{lmer_bs}}.
 #'
 #' @return \code{boot_predint} returns an object of class \code{c("predint", "bootstrap")}
 #' which is a list with two entries: One for bootstrapped historical observations
@@ -29,8 +29,8 @@
 #' str(test_boot)
 #' summary(test_boot)
 #'
-#' # Please note that the low number of bootstrap samples was choosen in order to
-#' # decrease computing time. For valid analysis draw at least 5000 bootstrap samples.
+#' # Please note that the low number of bootstrap samples was chosen in order to
+#' # decrease computing time. For valid analysis draw at least 10000 bootstrap samples.
 #'
 boot_predint <- function(pred_int, nboot){
 
