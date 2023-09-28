@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.predint.R
 \name{print.predint}
 \alias{print.predint}
-\title{Print function for objects of class \code{predint}}
+\title{Print objects of class \code{predint}}
 \usage{
 \method{print}{predint}(x, ...)
 }
@@ -15,5 +15,5 @@
 prints output to the console
 }
 \description{
-Print function for objects of class \code{predint}
+Print objects of class \code{predint}
 }

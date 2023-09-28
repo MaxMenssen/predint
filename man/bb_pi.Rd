@@ -62,6 +62,7 @@ The direct application of this uncalibrated prediction interval to real life dat
 is not recommended. Please use \code{beta_bin_pi()} for real life applications.  \cr
 }
 \examples{
+# Pointwise uncalibrated PI
 bb_pred <- bb_pi(newsize=c(50), pi=0.3, rho=0.05, histsize=rep(50, 20), q=qnorm(1-0.05/2))
 summary(bb_pred)
 

@@ -27,8 +27,8 @@ limits that are calculated using the functionality of the \pkg{predint} package.
 }
 \examples{
 ### PI for quasi-Poisson data
-pred_int <- quasi_pois_pi(histdat=qp_dat1,
-                          newdat=qp_dat2,
+pred_int <- quasi_pois_pi(histdat=ames_HCD,
+                          newoffset=3,
                           nboot=100,
                           traceplot = FALSE)
 

@@ -24,7 +24,7 @@ A list of length \code{nboot} containing the bootstrapped observations.
 and the variance components drawn from a random effects model fit with \code{lme4::lmer()}.
 Contrary to \code{lme4::bootMer()}, the number of observations for each random factor
 can vary between the original data set and the bootstrapped data. Random effects
-need to be specified as \code{(1|random effect)}.
+in \code{model} have to be specified as \code{(1|random effect)}.
 }
 \details{
 The data sampling is based on a list of design matrices (one for each random factor)

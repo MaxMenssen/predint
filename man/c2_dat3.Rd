@@ -17,31 +17,6 @@ c2_dat3
 }
 \description{
 c2_dat3 contains data that was sampled from a balanced cross-classified design.
-}
-\examples{
-
-# loading lme4
-library(lme4)
-
-# Fitting a random effects model based on c2_dat_1
-fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-summary(fit)
-
-#----------------------------------------------------------------------------
-
-### Prediction interval using c2_dat3 as future data
-# without printing c2_dat3 in the output
-\donttest{
-# Row numbers of the historical data c2_dat1 that define the structure of
-# the future data c2_dat3
-futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
-
-# Calculating the PI
-pred_int <- lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)
-summary(pred_int)}
-
-# Please note that nboot was set to 100 in order to decrease computing time
-# of the example. For a valid analysis set nboot=10000.
-
+This data set is used in order to demonstrate the functionality of the \code{lmer_pi_...()} functions.
 }
 \keyword{datasets}

@@ -85,13 +85,12 @@ Please note, that this modification does not affect the calibration procedure, i
 prediction limits are of interest.
 }
 \examples{
-# Prediction interval using qb_dat2 as future data
-pred_int <- quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
+# Pointwise prediction interval
+pred_int <- quasi_bin_pi(histdat=mortality_HCD, newsize=40, nboot=100)
 summary(pred_int)
 
-# Upper prediction bound for m=3 future observations
-# that are based on cluster sizes 40, 50, 60 respectively
-pred_u <- quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
+# Pointwise upper prediction limit
+pred_u <- quasi_bin_pi(histdat=mortality_HCD, newsize=40, alternative="upper", nboot=100)
 summary(pred_u)
 
 # Please note that nboot was set to 100 in order to decrease computing time

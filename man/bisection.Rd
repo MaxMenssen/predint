@@ -53,8 +53,12 @@ of prediction intervals (and limits).
 \details{
 This function is an implementation of the bisection algorithm of Menssen
 and Schaarschmidt 2022. It returns a calibrated coefficient \eqn{q^{calib}} for the
-calculation of simultaneous prediction intervals (or limits)
-\deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m)}
+calculation of pointwise and simultaneous prediction intervals
+\deqn{[l,u] = \hat{y}^*_m  \pm q^{calib} \hat{se}(Y_m - y^*_m),}
+lower prediction limits
+\deqn{l = \hat{y}^*_m - q^{calib} \hat{se}(Y_m - y^*_m)}
+or upper prediction limits
+\deqn{u = \hat{y}^*_m  + q^{calib} \hat{se}(Y_m - y^*_m)}
 that cover all of \eqn{m=1, ... , M} future observations. \cr
 
 In this notation, \eqn{\hat{y}^*_m} are the expected future observations for each of
