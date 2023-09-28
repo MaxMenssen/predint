@@ -4,7 +4,7 @@
 #' and the variance components drawn from a random effects model fit with \code{lme4::lmer()}.
 #' Contrary to \code{lme4::bootMer()}, the number of observations for each random factor
 #' can vary between the original data set and the bootstrapped data. Random effects
-#' need to be specified as \code{(1|random effect)}.
+#' in \code{model} have to be specified as \code{(1|random effect)}.
 #'
 #' @param model a random effects model of class lmerMod
 #' @param newdat a \code{data.frame} with the same column names as the historical data
