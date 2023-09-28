@@ -21,11 +21,14 @@ save them as a \code{data.frame}.
 }
 \examples{
 ### PI for quasi-Poisson data
-\donttest{pred_int <- quasi_pois_pi(histdat=data.frame(qp_dat1),
-                          newoffset=c(1,2,3),
+\donttest{pred_int <- quasi_pois_pi(histdat=ames_HCD,
+                          newoffset=3,
                           nboot=100,
                           traceplot = FALSE)
 
 # Return the prediction intervals as a data.frame
 as.data.frame(pred_int)}
+
+# Please note that nboot was set to 100 in order to decrease computing time
+# of the example. For a valid analysis set nboot=10000.
 }
