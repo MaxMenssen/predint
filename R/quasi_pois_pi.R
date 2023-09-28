@@ -75,12 +75,12 @@
 #' # Future data
 #' qp_dat2
 #'
-#' # Prediction interval using qp_dat2 as future data
-#' pred_int <- quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
+#' # Pointwise prediction interval
+#' pred_int <- quasi_pois_pi(histdat=ames_HCD, newoffset=3, nboot=100)
 #' summary(pred_int)
 #'
-#' # Upper prediction bound for m=3 future observations
-#' pred_u <- quasi_pois_pi(histdat=qp_dat1, newoffset=c(1,2,1), alternative="upper", nboot=100)
+#' # Pointwise upper prediction
+#' pred_u <- quasi_pois_pi(histdat=ames_HCD, newoffset=3, alternative="upper", nboot=100)
 #' summary(pred_u)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
