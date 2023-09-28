@@ -1,5 +1,5 @@
 
-#' Print function for objects of class \code{predint}
+#' Print objects of class \code{predint}
 #'
 #' @param x an object of class \code{predint}
 #' @param ... additional arguments passed over to \code{base::cbind()} and \code{base::data.frame()}
