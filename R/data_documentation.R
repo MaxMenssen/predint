@@ -13,15 +13,6 @@
 #'   \item{fail}{number of failures}
 #' }
 #'
-#' @examples
-#' # Upper prediction limit for m=3 future number of successes
-#' # that are based on cluster sizes 40, 50, 60 respectively
-#' pred_int <- beta_bin_pi(histdat=bb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
-#'
 "bb_dat1"
 
 #-------------------------------------------------------------------------------
@@ -38,14 +29,6 @@
 #'   \item{fail}{number of failures}
 #' }
 #'
-#'
-#' @examples
-#' # Prediction interval using bb_dat2 as future data
-#' pred_int <- beta_bin_pi(histdat=bb_dat1, newdat=bb_dat2, nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "bb_dat2"
 
@@ -65,15 +48,6 @@
 #' }
 #'
 #'
-#' @examples
-#' # Upper prediction limit for m=3 future observations
-#' # that are based on cluster sizes 40, 50, 60 respectively
-#' pred_int <- quasi_bin_pi(histdat=qb_dat1, newsize=c(40, 50, 60), alternative="upper", nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
-#'
 "qb_dat1"
 
 #-------------------------------------------------------------------------------
@@ -91,14 +65,6 @@
 #' }
 #'
 #'
-#' @examples
-#' # Prediction interval using qb_dat2 as future data
-#' pred_int <- quasi_bin_pi(histdat=qb_dat1, newdat=qb_dat2, nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
-#'
 "qb_dat2"
 
 
@@ -111,14 +77,11 @@
 #' The data set was sampled with \code{rqpois(n=10, lambda=50, phi=3)}.
 #'
 #' @format A data.frame with two columns
+#' \describe{
+#'   \item{y}{numbers of eventzs}
+#'   \item{offset}{size of experimental units}
+#' }
 #'
-#' @examples
-#' # Prediction interval using bb_dat2 as future data
-#' pred_int <- quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "qp_dat1"
 
@@ -131,14 +94,10 @@
 #' The data set was sampled with \code{rqpois(n=3, lambda=50, phi=3)}.
 #'
 #' @format A data.frame with two columns
-#'
-#' @examples
-#' # Prediction interval using bb_dat2 as future data
-#' pred_int <- quasi_pois_pi(histdat=qp_dat1, newdat=qp_dat2, nboot=100)
-#' summary(pred_int)
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
+#' \describe{
+#'   \item{y}{numbers of eventzs}
+#'   \item{offset}{size of experimental units}
+#' }
 #'
 "qp_dat2"
 
@@ -150,6 +109,7 @@
 #' Cross-classified data (example 1)
 #'
 #' c2_dat1 contains data that is sampled from a balanced cross-classified design.
+#' This data set is used in order to demonstrate the functionality of the \code{lmer_pi_...()} functions.
 #'
 #' @format A \code{data.frame} with 27 rows and 3 columns:
 #' \describe{
@@ -157,21 +117,6 @@
 #'   \item{a}{treatment a}
 #'   \item{b}{treatment b}
 #' }
-#'
-#' @examples
-#' # loading lme4
-#' library(lme4)
-#'
-#' # Fitting a random effects model based on c2_dat_1
-#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#' summary(fit)
-#'
-#' # Upper prediction limit for m=3 future observations
-#' \donttest{pred_int <- lmer_pi_unstruc(model=fit, m=3, alternative="upper", nboot=100)
-#' summary(pred_int)}
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat1"
 
@@ -182,6 +127,7 @@
 #' Cross-classified data (example 2)
 #'
 #' c2_dat2 contains data that was sampled from an unbalanced cross-classified design.
+#' This data set is used in order to demonstrate the functionality of the \code{lmer_pi_...()} functions.
 #'
 #' @format A \code{data.frame} with 21 rows and 3 columns:
 #' \describe{
@@ -190,20 +136,6 @@
 #'   \item{b}{treatment b}
 #' }
 #'
-#' @examples
-#' # loading lme4
-#' library(lme4)
-#'
-#' # Fitting a random effects model based on c2_dat_1
-#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#' summary(fit)
-#'
-#' # Prediction interval using c2_dat2 as future data
-#' \donttest{pred_int <- lmer_pi_unstruc(model=fit, newdat=c2_dat2, alternative="both", nboot=100)
-#' summary(pred_int)}
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat2"
 
@@ -213,6 +145,7 @@
 #' Cross-classified data (example 3)
 #'
 #' c2_dat3 contains data that was sampled from a balanced cross-classified design.
+#' This data set is used in order to demonstrate the functionality of the \code{lmer_pi_...()} functions.
 #'
 #' @format A \code{data.frame} with 8 rows and 3 columns:
 #' \describe{
@@ -221,30 +154,6 @@
 #'   \item{b}{treatment b}
 #' }
 #'
-#' @examples
-#'
-#' # loading lme4
-#' library(lme4)
-#'
-#' # Fitting a random effects model based on c2_dat_1
-#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#' summary(fit)
-#'
-#' #----------------------------------------------------------------------------
-#'
-#' ### Prediction interval using c2_dat3 as future data
-#' # without printing c2_dat3 in the output
-#' \donttest{
-#' # Row numbers of the historical data c2_dat1 that define the structure of
-#' # the future data c2_dat3
-#' futvec <- c(1, 2, 4, 5, 10, 11, 13, 14)
-#'
-#' # Calculating the PI
-#' pred_int <- lmer_pi_futvec(model=fit, futvec=futvec, alternative="both", nboot=100)
-#' summary(pred_int)}
-#'
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat3"
 
@@ -254,6 +163,7 @@
 #' Cross-classified data (example 4)
 #'
 #' c2_dat4 contains data that was sampled from an unbalanced cross-classified design.
+#' This data set is used in order to demonstrate the functionality of the \code{lmer_pi_...()} functions.
 #'
 #' @format A \code{data.frame} with 6 rows and 3 columns:
 #' \describe{
@@ -262,50 +172,6 @@
 #'   \item{b}{treatment b}
 #' }
 #'
-#' @examples
-#'
-#' # loading lme4
-#' library(lme4)
-#'
-#' # Fitting a random effects model based on c2_dat_1
-#' fit <- lmer(y_ijk~(1|a)+(1|b)+(1|a:b), c2_dat1)
-#' summary(fit)
-#'
-#' #----------------------------------------------------------------------------
-#'
-#' ### Prediction interval using c2_dat4 as future data
-#'
-#' # c2_dat4 has no replication for b. Hence the list of design matrices can not be
-#' # generated by lme4::lFormula() and has to be provided by hand via futmat_list.
-#'
-#' c2_dat4
-#'
-#' # Build a list containing the design matrices
-#'
-#' fml <- vector(length=4, "list")
-#'
-#' names(fml) <- c("a:b", "b", "a", "Residual")
-#'
-#' fml[["a:b"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
-#'
-#' fml[["b"]] <- matrix(nrow=6, ncol=1, data=c(1,1,1,1,1,1))
-#'
-#' fml[["a"]] <- matrix(nrow=6, ncol=2, data=c(1,1,0,0,0,0, 0,0,1,1,1,1))
-#'
-#' fml[["Residual"]] <- diag(6)
-#'
-#' fml
-#'
-#' # Please note, that the design matrix for the interaction term a:b is also
-#' # provided even there is no replication for b, since it is believed that
-#' # both, the historical and the future data descent from the same data generating
-#' # process.
-#'
-#' # Calculate the PI
-#' pred_int <- lmer_pi_futmat(model=fit, futmat_list=fml, alternative="both", nboot=100)
-#' summary(pred_int)
-#' # Please note that nboot was set to 100 in order to decrease computing time
-#' # of the example. For a valid analysis set nboot=10000.
 #'
 "c2_dat4"
 
