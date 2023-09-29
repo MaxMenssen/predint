@@ -11,39 +11,36 @@ New functions are
 0 errors | 0 warnings | 0 note
 
 
-
-
 ## Checks with devtools::check_rhub()
 
-All checks seem to be ok. Only the Checks on the Windows Server 2022, R-devel, 64 bit
-gave the following notes: 
+ Checks on the Windows Server 2022, R-devel, 64 bit gave the following notes: 
 - Found the following files/directories: 'lastMiKTeXException'
+- Found the following files/directories: ''NULL''
 - Skipping checking math rendering: package 'V8' unavailable
 
-This seems to be some problems with the server itself and not with my code....
+ Checks on Ubuntu Linux 20.04.1 LTS, R-release, GCC
+- checking HTML version of manual ... :
+    - Skipping checking HTML validation: no command 'tidy' found
+    - Skipping checking math rendering: package 'V8' unavailable
+
+Checks with Fedora Linux, R-devel, clang, gfortran
+- checking HTML version of manual ...:
+    - Skipping checking HTML validation: no command 'tidy' found
+    - Skipping checking math rendering: package 'V8' unavailable
+
+
+This seems to be some issues with the servers itself and not with my package....
 
 
 
 
 ## Checks with devtools::check_win_devel()
 
-The Check gave following Note:
+- checking CRAN incoming feasibility ... [11s] NOTE:
+    - Maintainer: 'Max Menssen <menssen@cell.uni-hannover.de>'
 
-Found the following (possibly) invalid URLs:
-  URL: https://onlinelibrary.wiley.com/doi/10.1002/sim.8124
-    From: README.md
-    Status: 503
-    Message: Service Unavailable
-  URL: https://onlinelibrary.wiley.com/doi/10.1111/stan.12260?af=R
-    From: README.md
-    Status: 503
-    Message: Service Unavailable
-    
-I checked the README on Github and all links work fine.
-
-Due to Hadley Wickham these Notes can be ignored (see link below). Hope that´s right.
-https://twitter.com/hadleywickham/status/1358170607314235392
-
-
+"This is just a Note that reminds CRAN maintainers to check that the 
+submission comes actually from his maintainer and not anybody else." 
+see post of Uwe Ligges: https://mailman.stat.ethz.ch/pipermail/r-devel/2014-March/068497.html
 
 
