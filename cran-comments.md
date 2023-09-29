@@ -10,8 +10,12 @@ New functions are
 0 errors | 0 warnings | 0 note
 
 ## Checks with devtools::check()
-0 errors ✔ | 0 warnings ✔ | 0 notes ✔ 
+- checking HTML version of manual ... NOTE
+   Found the following HTML validation problems:
+   ames_HCD.html:4:1 (ames_HCD.Rd:6): Warning: <link> inserting "type" attribut...
 
+According to B. Ripley this note can be ignored
+See https://groups.google.com/g/r-sig-mac/c/7u_ivEj4zhM
 
 ## Checks with devtools::check_rhub()
 
