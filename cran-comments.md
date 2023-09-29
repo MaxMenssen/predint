@@ -7,8 +7,10 @@ New functions are
 
 
 ## R CMD check results (local on my 2021 MacBook, M1pro)
-
 0 errors | 0 warnings | 0 note
+
+## Checks with devtools::check()
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔ 
 
 
 ## Checks with devtools::check_rhub()
@@ -30,8 +32,6 @@ Checks with Fedora Linux, R-devel, clang, gfortran
 
 
 This seems to be some issues with the servers itself and not with my package....
-
-
 
 
 ## Checks with devtools::check_win_devel()
