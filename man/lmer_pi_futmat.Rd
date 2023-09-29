@@ -77,7 +77,7 @@ If \code{algorithm} is set to "MS22mod", both limits of the prediction interval
 are calibrated independently from each other. The resulting prediction interval
 is given by
 
-\deqn{[l,u] = \Big[\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \text{   }
+\deqn{[l,u] = \Big[\hat{\mu} - q^{calib}_l \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c}, \quad
 \hat{\mu} + q^{calib}_u \sqrt{\widehat{var}(\hat{\mu}) + \sum_{c=1}^{C+1} \hat{\sigma}^2_c} \Big].}
 
 Please note, that this modification does not affect the calibration procedure, if only
