@@ -24,3 +24,5 @@ Depends:
     ggplot2,
     lme4,
     MASS
+URL: https://github.com/MaxMenssen/predint
+BugReports: https://github.com/MaxMenssen/predint/issues

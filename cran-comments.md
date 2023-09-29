@@ -1,28 +1,15 @@
-This is a major release including new functionality based on the S3 system
+This is a minor release including new functionality 
 
 New functions are
-- as.data.frame.predint
-- bb_pi
-- bisection
-- boot_predint
-- coverage_prob
-- normal_pi
-- plot.predint
-- print.predint
-- qb_pi
-- qp_pi
-- summary.predint
+- nb_pi()
+- neg_bin_pi()
+- rnbinom()
 
 
 ## R CMD check results (local on my 2021 MacBook, M1pro)
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-checking for future file timestamps ... NOTE
-  unable to verify current time
-  
-This note seems to be a documented problem with CMD check and should not cause any problem, see
-https://stackoverflow.com/questions/63613301/r-cmd-check-note-unable-to-verify-current-time
 
 
 
