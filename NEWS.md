@@ -32,7 +32,7 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
     - print.predint
 
 
-# predint 2.0.1
+# predint 2.1.0
 
 * New real life data 
   - Mortality of mice
