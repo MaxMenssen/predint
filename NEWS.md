@@ -49,3 +49,9 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 
 * plot works now with uncalibrated PI
 
+
+# predint 2.1.1
+
+* Small bugfix in the test-suite
+
+
