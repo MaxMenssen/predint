@@ -118,12 +118,12 @@ pi_m1
 #> Pointwise 95 % prediction interval for one future observation 
 #>  
 #>      lower    upper newsize
-#> 1 2.176397 15.05858      30
+#> 1 2.288892 15.39607      30
 ```
 
 The mortality of a concurrent control group is in line with the
-historical knowledge, if it is not lower than 2.176 or higher than
-2.176.
+historical knowledge, if it is not lower than 2.289 or higher than
+2.289.
 
 A graphical overview about the prediction interval can be given with
 
