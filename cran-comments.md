@@ -1,21 +1,12 @@
-This is a minor release including new functionality 
+This is a patch release
 
-New functions are
-- nb_pi()
-- neg_bin_pi()
-- rnbinom()
-
+minor changes in the test suite
 
 ## R CMD check results (local on my 2021 MacBook, M1pro)
 0 errors | 0 warnings | 0 note
 
 ## Checks with devtools::check()
-- checking HTML version of manual ... NOTE
-   Found the following HTML validation problems:
-   ames_HCD.html:4:1 (ames_HCD.Rd:6): Warning: <link> inserting "type" attribut...
-
-According to B. Ripley this note can be ignored
-See https://groups.google.com/g/r-sig-mac/c/7u_ivEj4zhM
+0 errors | 0 warnings | 0 note
 
 ## Checks with devtools::check_rhub()
 
