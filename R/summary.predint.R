@@ -386,7 +386,7 @@ summary.predint <- function(object, ...){
 
                         if(object$algorithm == "MS22mod" & object$alternative == "both"){
                                 cat("\n")
-                                cat("Bootstrap calibration was done for each prediction limit seperately \n using a modiefied version of Menssen and Schaarschmidt 2022")
+                                cat("Bootstrap calibration was done for each prediction limit separately  \n using a modified  version of Menssen and Schaarschmidt 2022")
                         }
 
                         else{
