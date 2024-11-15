@@ -90,6 +90,7 @@ quasi_pois_pi <- function(histdat,
                           newdat=NULL,
                           newoffset=NULL,
                           alternative="both",
+                          adjust="between",
                           alpha=0.05,
                           nboot=10000,
                           delta_min=0.01,
@@ -246,7 +247,8 @@ quasi_pois_pi <- function(histdat,
 
         # Do the bootstrap
         bs_data <- boot_predint(pred_int=pi_init,
-                                nboot=nboot)
+                                nboot=nboot,
+                                adjust=adjust)
 
         # Get bootstrapped future obs.
         bs_futdat <- bs_data$bs_futdat
