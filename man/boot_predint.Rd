@@ -4,7 +4,7 @@
 \alias{boot_predint}
 \title{Bootstrap new data from uncalibrated prediction intervals}
 \usage{
-boot_predint(pred_int, nboot)
+boot_predint(pred_int, nboot, adjust = NULL)
 }
 \arguments{
 \item{pred_int}{object of class \code{c("quasiPoissonPI", "betaBinomialPI",
@@ -29,7 +29,7 @@ of new data from random effects models see \code{\link{lmer_bs}}.
 # Simple quasi-Poisson PI
 test_pi <- qp_pi(histoffset=c(3,3,3,4,5), newoffset=3, lambda=10, phi=3, q=1.96)
 
-# Draw 5 bootstrap samles
+# Draw 5 bootstrap samples
 test_boot <- boot_predint(pred_int = test_pi, nboot=50)
 str(test_boot)
 summary(test_boot)

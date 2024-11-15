@@ -32,7 +32,7 @@
 #' # Please note that the low number of bootstrap samples was chosen in order to
 #' # decrease computing time. For valid analysis draw at least 10000 bootstrap samples.
 #'
-boot_predint <- function(pred_int, nboot, adjust=NULL){
+boot_predint <- function(pred_int, nboot, adjust="within"){
 
         # Input object needs to be of class predint
         if(!inherits(pred_int, "predint")){
@@ -47,6 +47,11 @@ boot_predint <- function(pred_int, nboot, adjust=NULL){
                 # get the future offsets
                 newoffset <- pred_int$newoffset
 
+                # Throw a warning if offsets are different in the new data
+                if(length(unique(newoffset)) > 1){
+                                warning("offset differs betwen clusters.  bs-calibration is experimental")
+                }
+
                 # get the historical offsets
                 histoffset <- pred_int$histoffset
 
@@ -58,6 +63,8 @@ boot_predint <- function(pred_int, nboot, adjust=NULL){
 
                 # pointwise PI or simultaneous PI for several control groups
                 if(adjust=="between"){
+
+
                         # Sampling of future data
                         bs_futdat <- replicate(n=nboot,
                                                rqpois(n=length(newoffset),
@@ -89,17 +96,55 @@ boot_predint <- function(pred_int, nboot, adjust=NULL){
                 # Simultaneous PI for complete trial
                 if(adjust=="within"){
 
-                        kappa_c
-                        stop("not yet ready")
+                        # sampling data to mimic a complete new trial
+                        rqpois_within <- function(newoffset, phi, lambda){
+
+                                # get weights for sampling
+                                weights_nf <- (newoffset/newoffset[1])[-1]
+                                # print(weights_nf)
+
+                                # Calculate kappa based on n_control
+                                kappa_c <- (phi-1)/(newoffset[1]*lambda)
+
+                                # Define gamma parameters based on n_control
+                                a_c=1/kappa_c
+                                b_c=1/(kappa_c*newoffset[1]*lambda)
+
+                                # Sample lambda_control (reflecting n_control)
+                                lambda_c <- rgamma(n=1, shape=a_c, rate=b_c)
+                                # print(lambda_c)
+
+                                # sample y_control
+                                y_c <- rpois(n=1, lambda = lambda_c)
+
+                                # Pointwise prediction
+                                if(length(newoffset) == 1){
+                                        return(data.frame(y=y_c, offset=newoffset))
+                                }
+
+                                # Simultaneous prediction
+                                if(length(newoffset) > 1){
+
+                                        # sample y_treatments
+                                        y_treat <- vector(length=length(weights_nf))
+
+                                        for(i in 1:length(y_treat)){
+                                                y_treat[i] <- rpois(n=1, lambda=weights_nf[i] * lambda_c)
+                                        }
+
+                                        return(data.frame(y=c(y_c, y_treat), offset=newoffset))
+                                }
+
+                        }
+
 
                         # Sampling of future data
                         bs_futdat <- replicate(n=nboot,
-                                               rqpois(n=length(newoffset),
-                                                      lambda=lambda,
-                                                      phi=phi,
-                                                      offset=newoffset),
+                                               rqpois_within(newoffset=newoffset,
+                                                             phi=phi,
+                                                             lambda=lambda),
                                                simplify = FALSE)
-
+                        # print(bs_futdat)
 
                         # Sampling of historical data
                         bs_histdat <- replicate(n=nboot,
@@ -109,6 +154,8 @@ boot_predint <- function(pred_int, nboot, adjust=NULL){
                                                        offset=histoffset),
                                                 simplify = FALSE)
 
+                        # print(bs_histdat)
+
                         # Define output object
                         out_list <- list(bs_futdat=bs_futdat,
                                          bs_histdat=bs_histdat)
@@ -117,6 +164,7 @@ boot_predint <- function(pred_int, nboot, adjust=NULL){
                         out_s3 <- structure(out_list,
                                             class=c("predint", "bootstrap"))
 
+                        # print(out_s3)
                         return(out_s3)
                 }
 

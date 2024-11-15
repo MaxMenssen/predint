@@ -9,6 +9,7 @@ quasi_pois_pi(
   newdat = NULL,
   newoffset = NULL,
   alternative = "both",
+  adjust = "between",
   alpha = 0.05,
   nboot = 10000,
   delta_min = 0.01,
@@ -34,6 +35,10 @@ study.}
 \item{alternative}{either "both", "upper" or "lower".
 \code{alternative} specifies if a prediction interval or
 an upper or a lower prediction limit should be computed}
+
+\item{adjust}{specifies if simultaneous prediction should be done for several
+control groups of different studies (\code{between}), or for the outcome of
+the current control and some treatment groups \code{within} the same trial}
 
 \item{alpha}{defines the level of confidence (\eqn{1-\alpha})}
 

@@ -18,6 +18,9 @@
 #' @param alternative either "both", "upper" or "lower".
 #' \code{alternative} specifies if a prediction interval or
 #' an upper or a lower prediction limit should be computed
+#' @param adjust specifies if simultaneous prediction should be done for several
+#' control groups of different studies (\code{between}), or for the outcome of
+#' the current control and some treatment groups \code{within} the same trial
 #' @param alpha defines the level of confidence (\eqn{1-\alpha})
 #' @param nboot number of bootstraps
 #' @param delta_min lower start value for bisection
