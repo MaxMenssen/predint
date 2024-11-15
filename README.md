@@ -118,11 +118,12 @@ pi_m1
 #> Pointwise 95 % prediction interval for one future observation 
 #>  
 #>      lower    upper newsize
-#> 1 2.120149 15.50856      30
+#> 1 2.288892 15.39607      30
 ```
 
 The mortality of a concurrent control group is in line with the
-historical knowledge, if it is not lower than 2.12 or higher than 2.12.
+historical knowledge, if it is not lower than 2.289 or higher than
+2.289.
 
 A graphical overview about the prediction interval can be given with
 
@@ -137,20 +138,13 @@ plot(pi_m1)
 Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M future
 observations based on linear random effects models. Statistica
 Neerlandica. 2022. [DOI:
-10.1111/stan.12260](https://onlinelibrary.wiley.com/doi/10.1111/stan.12260?af=R)
+10.1111/stan.12260](https://doi.org/10.1111/stan.12260)
 
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
 Medicine. 2019;38:2652-2663.
-[DOI:10.1002/sim.8124](https://onlinelibrary.wiley.com/doi/10.1002/sim.8124)
-
-<!-- Kluxen et al.: Using historical control data in bioassays for regulatory toxicology. -->
-<!-- Regulatory Toxicology and Pharmacology. 2021;125:105024  -->
-<!-- [DOI:10.1016/j.yrtph.2021.105024](https://doi.org/10.1016/j.yrtph.2021.105024) -->
-<!-- Valverde-Garcia et al.: An avian reproduction study historical control database: A tool for data -->
-<!-- interpretation. Regulatory Toxicology and Pharmacology. 2018;92:295-302 -->
-<!-- [DOI:10.1016/j.yrtph.2017.12.004](https://doi.org/10.1016/j.yrtph.2017.12.004) -->
+[DOI:10.1002/sim.8124](https://doi.org/10.1002/sim.8124)
 
 NTP 2017: [Tables of historical controls: pathology tables by
-route/vehicle.](https://ntp.niehs.nih.gov/results/dbsearch/historical/index.html),
-Accessed May 17, 2017.
+route/vehicle.](https://ntp.niehs.nih.gov/data/controls), Accessed May
+17, 2017.

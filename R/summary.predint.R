@@ -59,7 +59,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(object$m > 1){
-                                cat("Simultanious", conf_lev, "prediction interval for", object$m, "future observations \n \n")
+                                cat("Simultaneous", conf_lev, "prediction interval for", object$m, "future observations \n \n")
                         }
 
                         if(object$m == 1){
@@ -72,7 +72,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(object$m > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limit for", object$m, "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "lower prediction limit for", object$m, "future observations \n \n")
                         }
 
                         if(object$m == 1){
@@ -85,7 +85,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(object$m > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limit for", object$m, "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "upper prediction limit for", object$m, "future observations \n \n")
                         }
 
                         if(object$m == 1){
@@ -155,7 +155,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newsize)> 1){
-                                cat("Simultanious", conf_lev, "prediction intervals for", length(object$newsize), "future observations \n \n")
+                                cat("Simultaneous", conf_lev, "prediction intervals for", length(object$newsize), "future observations \n \n")
                         }
 
                         if(length(object$newsize) == 1){
@@ -168,7 +168,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newsize) > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(object$newsize), "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "upper prediction limits for", length(object$newsize), "future observations \n \n")
                         }
 
                         if(length(object$newsize) == 1){
@@ -181,7 +181,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newsize) > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(object$newsize), "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "lower prediction limits for", length(object$newsize), "future observations \n \n")
                         }
 
                         if(length(object$newsize) == 1){
@@ -256,7 +256,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newoffset)> 1){
-                                cat("Simultanious", conf_lev, "prediction intervals for", length(object$newoffset), "future observations \n \n")
+                                cat("Simultaneous", conf_lev, "prediction intervals for", length(object$newoffset), "future observations \n \n")
                         }
 
                         if(length(object$newoffset) == 1){
@@ -269,7 +269,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newoffset) > 1){
-                                cat("One-sided simultanious", conf_lev, "upper prediction limits for", length(object$newoffset), "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "upper prediction limits for", length(object$newoffset), "future observations \n \n")
                         }
 
                         if(length(object$newoffset) == 1){
@@ -282,7 +282,7 @@ summary.predint <- function(object, ...){
 
                         # Title
                         if(length(object$newoffset) > 1){
-                                cat("One-sided simultanious", conf_lev, "lower prediction limits for", length(object$newoffset), "future observations \n \n")
+                                cat("One-sided simultaneous", conf_lev, "lower prediction limits for", length(object$newoffset), "future observations \n \n")
                         }
 
                         if(length(object$newoffset) == 1){
@@ -386,7 +386,7 @@ summary.predint <- function(object, ...){
 
                         if(object$algorithm == "MS22mod" & object$alternative == "both"){
                                 cat("\n")
-                                cat("Bootstrap calibration was done for each prediction limit seperately \n using a modiefied version of Menssen and Schaarschmidt 2022")
+                                cat("Bootstrap calibration was done for each prediction limit separately  \n using a modified  version of Menssen and Schaarschmidt 2022")
                         }
 
                         else{

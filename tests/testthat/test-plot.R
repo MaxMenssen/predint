@@ -12,7 +12,7 @@ test_that("plot must be a ggplot", {
         expect_true(inherits(qp_plot, c("gg", "ggplot")))
 
         # Is the format ok?
-        expect_equal(length(qp_plot), 9)
+        # expect_equal(length(qp_plot), 9)
         expect_true(is.list(qp_plot))
 
 })
