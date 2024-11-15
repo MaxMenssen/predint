@@ -24,7 +24,7 @@
 #' # Simple quasi-Poisson PI
 #' test_pi <- qp_pi(histoffset=c(3,3,3,4,5), newoffset=3, lambda=10, phi=3, q=1.96)
 #'
-#' # Draw 5 bootstrap samles
+#' # Draw 5 bootstrap samples
 #' test_boot <- boot_predint(pred_int = test_pi, nboot=50)
 #' str(test_boot)
 #' summary(test_boot)
@@ -32,7 +32,7 @@
 #' # Please note that the low number of bootstrap samples was chosen in order to
 #' # decrease computing time. For valid analysis draw at least 10000 bootstrap samples.
 #'
-boot_predint <- function(pred_int, nboot){
+boot_predint <- function(pred_int, nboot, adjust=NULL){
 
         # Input object needs to be of class predint
         if(!inherits(pred_int, "predint")){
@@ -56,32 +56,70 @@ boot_predint <- function(pred_int, nboot){
                 # Get the dispersion parameter
                 phi <- pred_int$phi
 
-                # Sampling of future data
-                bs_futdat <- replicate(n=nboot,
-                                       rqpois(n=length(newoffset),
-                                              lambda=lambda,
-                                              phi=phi,
-                                              offset=newoffset),
-                                       simplify = FALSE)
+                # pointwise PI or simultaneous PI for several control groups
+                if(adjust=="between"){
+                        # Sampling of future data
+                        bs_futdat <- replicate(n=nboot,
+                                               rqpois(n=length(newoffset),
+                                                      lambda=lambda,
+                                                      phi=phi,
+                                                      offset=newoffset),
+                                               simplify = FALSE)
 
 
-                # Sampling of historical data
-                bs_histdat <- replicate(n=nboot,
-                                        rqpois(n=length(histoffset),
-                                               lambda=lambda,
-                                               phi=phi,
-                                               offset=histoffset),
-                                        simplify = FALSE)
+                        # Sampling of historical data
+                        bs_histdat <- replicate(n=nboot,
+                                                rqpois(n=length(histoffset),
+                                                       lambda=lambda,
+                                                       phi=phi,
+                                                       offset=histoffset),
+                                                simplify = FALSE)
 
-                # Define output object
-                out_list <- list(bs_futdat=bs_futdat,
-                                 bs_histdat=bs_histdat)
+                        # Define output object
+                        out_list <- list(bs_futdat=bs_futdat,
+                                         bs_histdat=bs_histdat)
 
-                # Set class for output object
-                out_s3 <- structure(out_list,
-                                    class=c("predint", "bootstrap"))
+                        # Set class for output object
+                        out_s3 <- structure(out_list,
+                                            class=c("predint", "bootstrap"))
 
-                return(out_s3)
+                        return(out_s3)
+                }
+
+                # Simultaneous PI for complete trial
+                if(adjust=="within"){
+
+                        kappa_c
+                        stop("not yet ready")
+
+                        # Sampling of future data
+                        bs_futdat <- replicate(n=nboot,
+                                               rqpois(n=length(newoffset),
+                                                      lambda=lambda,
+                                                      phi=phi,
+                                                      offset=newoffset),
+                                               simplify = FALSE)
+
+
+                        # Sampling of historical data
+                        bs_histdat <- replicate(n=nboot,
+                                                rqpois(n=length(histoffset),
+                                                       lambda=lambda,
+                                                       phi=phi,
+                                                       offset=histoffset),
+                                                simplify = FALSE)
+
+                        # Define output object
+                        out_list <- list(bs_futdat=bs_futdat,
+                                         bs_histdat=bs_histdat)
+
+                        # Set class for output object
+                        out_s3 <- structure(out_list,
+                                            class=c("predint", "bootstrap"))
+
+                        return(out_s3)
+                }
+
         }
 
         #-----------------------------------------------------------------------
