@@ -13,6 +13,7 @@
 #' @param alternative either "both", "upper" or "lower"
 #' \code{alternative} specifies, if a prediction interval or
 #' an upper or a lower prediction limit should be computed
+#' @param adjust only important if called via \code{quasi_pois_pi()}
 #' @param histdat additional argument to specify the historical data set
 #' @param newdat additional argument to specify the current data set
 #' @param algorithm used to define the algorithm for calibration if called via
@@ -48,6 +49,7 @@ qp_pi <- function(newoffset,
                   phi,
                   q=qnorm(1-0.05/2),
                   alternative="both",
+                  adjust=NULL,
                   newdat=NULL,
                   histdat=NULL,
                   algorithm=NULL){
@@ -159,6 +161,7 @@ qp_pi <- function(newoffset,
                          "y_star_hat"=y_star_hat,
                          "pred_se"=pred_se,
                          "alternative"=alternative,
+                         "adjust"=adjust,
                          "q"=q,
                          "lambda"=lambda,
                          "phi"=phi,

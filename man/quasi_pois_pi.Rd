@@ -9,7 +9,7 @@ quasi_pois_pi(
   newdat = NULL,
   newoffset = NULL,
   alternative = "both",
-  adjust = "between",
+  adjust = "within",
   alpha = 0.05,
   nboot = 10000,
   delta_min = 0.01,

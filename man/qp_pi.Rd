@@ -11,6 +11,7 @@ qp_pi(
   phi,
   q = qnorm(1 - 0.05/2),
   alternative = "both",
+  adjust = NULL,
   newdat = NULL,
   histdat = NULL,
   algorithm = NULL
@@ -30,6 +31,8 @@ qp_pi(
 \item{alternative}{either "both", "upper" or "lower"
 \code{alternative} specifies, if a prediction interval or
 an upper or a lower prediction limit should be computed}
+
+\item{adjust}{only important if called via \code{quasi_pois_pi()}}
 
 \item{newdat}{additional argument to specify the current data set}
 
