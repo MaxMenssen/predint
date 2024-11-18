@@ -4,7 +4,7 @@
 \alias{boot_predint}
 \title{Bootstrap new data from uncalibrated prediction intervals}
 \usage{
-boot_predint(pred_int, nboot, adjust = NULL)
+boot_predint(pred_int, nboot, adjust = "within")
 }
 \arguments{
 \item{pred_int}{object of class \code{c("quasiPoissonPI", "betaBinomialPI",

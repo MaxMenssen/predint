@@ -178,6 +178,11 @@ boot_predint <- function(pred_int, nboot, adjust="within"){
                 # get the future offsets
                 newoffset <- pred_int$newoffset
 
+                 # Throw a warning if offsets are different in the new data
+                if(length(unique(newoffset)) > 1){
+                                warning("offset differs betwen clusters.  bs-calibration is experimental")
+                }
+
                 # get the historical offsets
                 histoffset <- pred_int$histoffset
 
@@ -187,32 +192,106 @@ boot_predint <- function(pred_int, nboot, adjust="within"){
                 # Get the dispersion parameter
                 kappa <- pred_int$kappa
 
-                # Sampling of future data
-                bs_futdat <- replicate(n=nboot,
-                                       rnbinom(n=length(newoffset),
-                                              lambda=lambda,
-                                              kappa=kappa,
-                                              offset=newoffset),
-                                       simplify = FALSE)
+                if(adjust=="between"){
+
+                        # Sampling of future data
+                        bs_futdat <- replicate(n=nboot,
+                                               rnbinom(n=length(newoffset),
+                                                       lambda=lambda,
+                                                       kappa=kappa,
+                                                       offset=newoffset),
+                                               simplify = FALSE)
 
 
-                # Sampling of historical data
-                bs_histdat <- replicate(n=nboot,
-                                        rnbinom(n=length(histoffset),
-                                               lambda=lambda,
-                                               kappa=kappa,
-                                               offset=histoffset),
-                                        simplify = FALSE)
+                        # Sampling of historical data
+                        bs_histdat <- replicate(n=nboot,
+                                                rnbinom(n=length(histoffset),
+                                                        lambda=lambda,
+                                                        kappa=kappa,
+                                                        offset=histoffset),
+                                                simplify = FALSE)
 
-                # Define output object
-                out_list <- list(bs_futdat=bs_futdat,
-                                 bs_histdat=bs_histdat)
+                        # Define output object
+                        out_list <- list(bs_futdat=bs_futdat,
+                                         bs_histdat=bs_histdat)
 
-                # Set class for output object
-                out_s3 <- structure(out_list,
-                                    class=c("predint", "bootstrap"))
+                        # Set class for output object
+                        out_s3 <- structure(out_list,
+                                            class=c("predint", "bootstrap"))
 
-                return(out_s3)
+                        return(out_s3)
+                }
+
+                # Simultaneous PI for complete trial
+                if(adjust=="within"){
+
+                        # sampling data to mimic a complete new trial
+                        rnbinom_within <- function(newoffset, kappa, lambda){
+
+                                # get weights for sampling
+                                weights_nf <- (newoffset/newoffset[1])[-1]
+                                # print(weights_nf)
+
+                                # Define gamma parameters based on n_control
+                                a_c=1/kappa
+                                b_c=1/(kappa*newoffset[1]*lambda)
+
+                                # Sample lambda_control (reflecting n_control)
+                                lambda_c <- rgamma(n=1, shape=a_c, rate=b_c)
+                                # print(lambda_c)
+
+                                # sample y_control
+                                y_c <- rpois(n=1, lambda = lambda_c)
+
+                                # Pointwise prediction
+                                if(length(newoffset) == 1){
+                                        return(data.frame(y=y_c, offset=newoffset))
+                                }
+
+                                # Simultaneous prediction
+                                if(length(newoffset) > 1){
+
+                                        # sample y_treatments
+                                        y_treat <- vector(length=length(weights_nf))
+
+                                        for(i in 1:length(y_treat)){
+                                                y_treat[i] <- rpois(n=1, lambda=weights_nf[i] * lambda_c)
+                                        }
+
+                                        return(data.frame(y=c(y_c, y_treat), offset=newoffset))
+                                }
+                        }
+
+                        # Sampling of future data
+                        bs_futdat <- replicate(n=nboot,
+                                               rnbinom_within(lambda=lambda,
+                                                              kappa=kappa,
+                                                              newoffset=newoffset),
+                                               simplify = FALSE)
+
+
+                        # Sampling of historical data
+                        bs_histdat <- replicate(n=nboot,
+                                                rnbinom(n=length(histoffset),
+                                                        lambda=lambda,
+                                                        kappa=kappa,
+                                                        offset=histoffset),
+                                                simplify = FALSE)
+
+                        # print(bs_histdat)
+
+                        # Define output object
+                        out_list <- list(bs_futdat=bs_futdat,
+                                         bs_histdat=bs_histdat)
+
+                        # Set class for output object
+                        out_s3 <- structure(out_list,
+                                            class=c("predint", "bootstrap"))
+
+                        # print(out_s3)
+                        return(out_s3)
+                }
+
         }
 
         #-----------------------------------------------------------------------

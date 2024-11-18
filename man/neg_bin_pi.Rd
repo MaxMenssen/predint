@@ -9,6 +9,7 @@ neg_bin_pi(
   newdat = NULL,
   newoffset = NULL,
   alternative = "both",
+  adjust = "within",
   alpha = 0.05,
   nboot = 10000,
   delta_min = 0.01,
@@ -34,6 +35,10 @@ study.}
 \item{alternative}{either "both", "upper" or "lower".
 \code{alternative} specifies if a prediction interval or
 an upper or a lower prediction limit should be computed}
+
+\item{adjust}{specifies if simultaneous prediction should be done for several
+control groups of different studies (\code{between}), or for the outcome of
+the current control and some treatment groups \code{within} the same trial}
 
 \item{alpha}{defines the level of confidence (\eqn{1-\alpha})}
 
@@ -98,10 +103,15 @@ prediction limits are of interest.
 # HCD from the Ames test
 ames_HCD
 
-# Prediction interval for one future number of revertant colonies
+# Pointwise prediction interval for one future number of revertant colonies
 # obtained in three petridishes
 pred_int <- neg_bin_pi(histdat=ames_HCD, newoffset=3, nboot=100)
 summary(pred_int)
+
+# Simultaneous prediction interval for the numbers of revertant colonies obtained in
+# the control and three treatment groups of a future trial
+pred_int_w <- neg_bin_pi(histdat=ames_HCD, newoffset=c(3, 3, 3, 3), adjust="within", nboot=100)
+summary(pred_intw)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
