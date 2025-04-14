@@ -111,7 +111,7 @@ summary(pred_int)
 # Simultaneous prediction interval for the numbers of revertant colonies obtained in
 # the control and three treatment groups of a future trial
 pred_int_w <- neg_bin_pi(histdat=ames_HCD, newoffset=c(3, 3, 3, 3), adjust="within", nboot=100)
-summary(pred_intw)
+summary(pred_int_w)
 
 # Please note that nboot was set to 100 in order to decrease computing time
 # of the example. For a valid analysis set nboot=10000.
