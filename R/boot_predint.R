@@ -10,6 +10,9 @@
 #' @param pred_int object of class \code{c("quasiPoissonPI", "betaBinomialPI",
 #' "quasiBinomialPI", negativeBinomialPI)}
 #' @param nboot number of bootstraps
+#' @param adjust specifies if simultaneous prediction should be done for several
+#' control groups of different studies (\code{between}), or for the outcome of
+#' the current control and some treatment groups \code{within} the same trial
 #'
 #' @details This function only works for binomial and Poisson type data. For the sampling
 #' of new data from random effects models see \code{\link{lmer_bs}}.
