@@ -83,7 +83,7 @@
 #' # Simultaneous prediction interval for the numbers of revertant colonies obtained in
 #' # the control and three treatment groups of a future trial
 #' pred_int_w <- neg_bin_pi(histdat=ames_HCD, newoffset=c(3, 3, 3, 3), adjust="within", nboot=100)
-#' summary(pred_intw)
+#' summary(pred_int_w)
 #'
 #' # Please note that nboot was set to 100 in order to decrease computing time
 #' # of the example. For a valid analysis set nboot=10000.
@@ -270,7 +270,7 @@ neg_bin_pi <- function(histdat,
         # Fit the initial model to the bs. hist. obs
         bs_hist_glm_na <- lapply(X=bs_histdat,
                               FUN=function(x){
-                                      fit <- try(glm.nb(x[,1]~1 + offset(log(x[,2]))))
+                                      fit <- try(suppressWarnings(glm.nb(x[,1]~1 + offset(log(x[,2])))))
 
                                       if(all(class(fit)=="try-error")){
                                               return(NA)
