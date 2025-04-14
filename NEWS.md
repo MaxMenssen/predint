@@ -53,3 +53,8 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 * Small bugfix in the test-suite
 
 
+# predint 2.1.9000
+
+* Bugfix in bootstrap procedure of neg_bin_pi()
+* Simultaneous PI for several treatment groups in neg_bin_pi and quasi_pois_pi (argument "adjust")
+
