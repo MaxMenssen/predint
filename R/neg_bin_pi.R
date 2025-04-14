@@ -268,13 +268,29 @@ neg_bin_pi <- function(histdat,
         ### Define the input lists for bisection (y_star_hat_m and pred_se_m)
 
         # Fit the initial model to the bs. hist. obs
-        bs_hist_glm <- lapply(X=bs_histdat,
+        bs_hist_glm_na <- lapply(X=bs_histdat,
                               FUN=function(x){
-                                      fit <- glm(x[,1]~1,
-                                                 family=quasipoisson(link="log"),
-                                                 offset = log(x[,2]))
-                                      return(fit)
+                                      fit <- try(glm.nb(x[,1]~1 + offset(log(x[,2]))))
+
+                                      if(all(class(fit)=="try-error")){
+                                              return(NA)
+                                      }
+                                      else{
+                                              return(fit)
+                                      }
                               })
+
+        # print(bs_hist_glm_na)
+
+        # Omit all fits with convergence problems
+        bs_hist_glm <- bs_hist_glm_na[!is.na(bs_hist_glm_na)]
+
+        if((length(bs_hist_glm_na) - length(bs_hist_glm)) > 0){
+
+                n_na <- length(bs_hist_glm_na) - length(bs_hist_glm)
+                warning(paste("glm.nb could not be fit to", n_na, "bs-data sets"))
+
+        }
 
         # Get the bs Poisson mean
         bs_lambda_hat <- lapply(X=bs_hist_glm,
@@ -282,10 +298,10 @@ neg_bin_pi <- function(histdat,
                                         return(exp(unname(coef(x))))
                                 })
 
-        # Get the bs dispersion parameter
-        bs_phi_hat <- lapply(X=bs_hist_glm,
+        # Get the bs dispersion parameter (kappa)
+        bs_kappa_hat <- lapply(X=bs_hist_glm,
                              FUN=function(x){
-                                     return(summary(x)$dispersion)
+                                     return(max(1/x$theta, 0.0001))
                              })
 
         # Get a vector for newoffset (if newdat is defined)
@@ -295,25 +311,25 @@ neg_bin_pi <- function(histdat,
 
 
         # Calculate the prediction SE
-        pred_se_fun <- function(n_star_m, phi_hat, lambda_hat, n_hist_sum){
+        pred_se_fun <- function(n_star_m, kappa_hat, lambda_hat, n_hist_mean, H){
 
-                # Variance of fut. random variable
-                var_y <- n_star_m * phi_hat * lambda_hat
+                # var for future random variable
+                var_y_star <- n_star_m * lambda_hat + kappa_hat * n_star_m^2 * lambda_hat^2
 
-                # Variance of fut. expectation
-                var_y_star_hat_m <- n_star_m^2 * phi_hat * lambda_hat * 1/n_hist_sum
+                # var for the expected future observations
+                var_y_star_hat <- n_star_m^2 * (lambda_hat + kappa_hat * n_hist_mean * lambda_hat) / (n_hist_mean * H)
 
-                # Prediction SE
-                pred_se <- sqrt(var_y + var_y_star_hat_m)
-
+                # SE for prediction
+                pred_se <- sqrt(var_y_star + var_y_star_hat)
                 return(pred_se)
         }
 
         pred_se_m_list <- mapply(FUN=pred_se_fun,
-                                 phi_hat=bs_phi_hat,
+                                 kappa_hat=bs_kappa_hat,
                                  lambda_hat=bs_lambda_hat,
                                  MoreArgs = list(n_star_m=newoffset,
-                                                 n_hist_sum=hist_n_total),
+                                                 n_hist_mean=mean(pi_init$histoffset),
+                                                 H=length(pi_init$histoffset)),
                                  SIMPLIFY=FALSE)
 
         # Calculate the expected future observations
