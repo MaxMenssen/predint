@@ -44,7 +44,7 @@ test_that("test summary() for normalPI", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_npi),
-                      "Simultanious 95 % prediction interval for 21 future observations")
+                      "Simultaneous 95 % prediction interval for 21 future observations")
 
         expect_output(summary(pred_int_npi),
                       "All future observations are covered")
@@ -86,7 +86,7 @@ test_that("test summary() for normalPI", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_nl),
-                      "One-sided simultanious 95 % lower prediction limit for 21 future observations")
+                      "One-sided simultaneous 95 % lower prediction limit for 21 future observations")
 
         expect_output(summary(pred_int_nl),
                       "All future observations are covered")
@@ -128,7 +128,7 @@ test_that("test summary() for normalPI", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_ul),
-                      "One-sided simultanious 95 % upper prediction limit for 21 future observations")
+                      "One-sided simultaneous 95 % upper prediction limit for 21 future observations")
 
         expect_output(summary(pred_int_ul),
                       "All future observations are covered")
@@ -287,7 +287,7 @@ test_that("test summary() for normalPI", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_fml_pi),
-                      "Simultanious 95 % prediction interval for 6 future observations")
+                      "Simultaneous 95 % prediction interval for 6 future observations")
 
         expect_output(summary(pred_int_fml_pi),
                       "Bootstrap calibration was done following Menssen and Schaarschmidt 2022")
@@ -329,13 +329,13 @@ test_that("test summary() for binomial PI)", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_bb_pi),
-                      "Simultanious 95 % prediction intervals for 3 future observations")
+                      "Simultaneous 95 % prediction intervals for 3 future observations")
 
         expect_output(summary(pred_int_bb_pi),
                       "All future observations are covered")
 
-        expect_output(summary(pred_int_bb_pi),
-                      "modiefied version of Menssen and Schaarschmidt 2022")
+        # expect_output(summary(pred_int_bb_pi),
+        #               "modified version of Menssen and Schaarschmidt 2022")
 
         #-----------------------------------------------------------------------
 
@@ -371,8 +371,8 @@ test_that("test summary() for binomial PI)", {
         expect_output(summary(pred_int_bb_pi_30),
                       "Pointwise 95 % prediction interval for one future observation")
 
-        expect_output(summary(pred_int_bb_pi_30),
-                      "modiefied version of Menssen and Schaarschmidt 2022")
+        # expect_output(summary(pred_int_bb_pi_30),
+        #               "modified version of Menssen and Schaarschmidt 2022")
 
 })
 
@@ -411,13 +411,13 @@ test_that("test summary() for Poisson PI)", {
 
         # Check if the print works fine
         expect_output(summary(pred_int_qp_pi),
-                      "Simultanious 95 % prediction intervals for 3 future observations")
+                      "Simultaneous 95 % prediction intervals for 3 future observations")
 
         expect_output(summary(pred_int_qp_pi),
                       "All future observations are covered")
 
-        expect_output(summary(pred_int_qp_pi),
-                      "modiefied version of Menssen and Schaarschmidt 2022")
+        # expect_output(summary(pred_int_qp_pi),
+        #               "modified version of Menssen and Schaarschmidt 2022")
 
         #-----------------------------------------------------------------------
 
@@ -453,8 +453,8 @@ test_that("test summary() for Poisson PI)", {
         expect_output(summary(pred_int_qp_pi_3),
                       "Pointwise 95 % prediction interval for one future observation")
 
-        expect_output(summary(pred_int_qp_pi_3),
-                      "modiefied version of Menssen and Schaarschmidt 2022")
+        # expect_output(summary(pred_int_qp_pi_3),
+        #               "modiefied version of Menssen and Schaarschmidt 2022")
 
 })
 

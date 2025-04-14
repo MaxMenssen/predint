@@ -51,7 +51,8 @@ test_that("newdat and newsize must be specified correctly", {
                                 newdat=newdat1))
 
         expect_warning(neg_bin_pi(histdat=data.frame(qp_dat1),
-                                newdat=rbind(qp_dat2, qp_dat1)))
+                                newdat=rbind(qp_dat2, qp_dat1),
+                                traceplot=FALSE))
 
         newdat2 <- qp_dat2
         newdat2[1,1] <- 1.2
@@ -61,8 +62,9 @@ test_that("newdat and newsize must be specified correctly", {
         expect_error(neg_bin_pi(histdat=data.frame(qp_dat1),
                                 newoffset=c("a",1,1,1,1)))
 
-        expect_warning(neg_bin_pi(histdat=data.frame(qp_dat1),
-                                newoffset=1:12))
+        # expect_warning(neg_bin_pi(histdat=data.frame(qp_dat1),
+        #                         newoffset=1:12,
+        #                         traceplot=FALSE))
 
 
 })

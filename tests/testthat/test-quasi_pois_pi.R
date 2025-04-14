@@ -22,6 +22,7 @@ test_that("class must be correct",{
                                  "y_star_hat",
                                  "pred_se",
                                  "alternative",
+                                 "adjust",
                                  "q",
                                  "lambda",
                                  "phi",
