@@ -298,11 +298,15 @@ neg_bin_pi <- function(histdat,
                                         return(exp(unname(coef(x))))
                                 })
 
+        print(length(bs_lambda_hat))
+
         # Get the bs dispersion parameter (kappa)
         bs_kappa_hat <- lapply(X=bs_hist_glm,
                              FUN=function(x){
                                      return(max(1/x$theta, 0.0001))
                              })
+
+        # print(length(bs_kappa_hat))
 
         # Get a vector for newoffset (if newdat is defined)
         if(!is.null(newdat)){
@@ -332,6 +336,8 @@ neg_bin_pi <- function(histdat,
                                                  H=length(pi_init$histoffset)),
                                  SIMPLIFY=FALSE)
 
+        # print(length(pred_se_m_list))
+
         # Calculate the expected future observations
         y_star_hat_fun <- function(lambda_hat, n_star_m){
 
@@ -344,6 +350,8 @@ neg_bin_pi <- function(histdat,
                                     MoreArgs = list(n_star_m=newoffset),
                                     SIMPLIFY=FALSE)
 
+        # print(length(y_star_hat_m_list))
+
         #-----------------------------------------------------------------------
 
         ### Calculation of the calibrated quantile
@@ -353,7 +361,7 @@ neg_bin_pi <- function(histdat,
 
                 quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                          pred_se = pred_se_m_list,
-                                         y_star = bs_y_star,
+                                         y_star = bs_y_star[1:length(y_star_hat_m_list)],
                                          alternative = alternative,
                                          quant_min = delta_min,
                                          quant_max = delta_max,
@@ -368,7 +376,7 @@ neg_bin_pi <- function(histdat,
 
                 quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                          pred_se = pred_se_m_list,
-                                         y_star = bs_y_star,
+                                         y_star = bs_y_star[1:length(y_star_hat_m_list)],
                                          alternative = alternative,
                                          quant_min = delta_min,
                                          quant_max = delta_max,
@@ -386,7 +394,7 @@ neg_bin_pi <- function(histdat,
                 if(algorithm=="MS22"){
                         quant_calib <- bisection(y_star_hat = y_star_hat_m_list,
                                                  pred_se = pred_se_m_list,
-                                                 y_star = bs_y_star,
+                                                 y_star = bs_y_star[1:length(y_star_hat_m_list)],
                                                  alternative = alternative,
                                                  quant_min = delta_min,
                                                  quant_max = delta_max,
@@ -400,7 +408,7 @@ neg_bin_pi <- function(histdat,
                 if(algorithm=="MS22mod"){
                         quant_calib_lower <- bisection(y_star_hat = y_star_hat_m_list,
                                                        pred_se = pred_se_m_list,
-                                                       y_star = bs_y_star,
+                                                       y_star = bs_y_star[1:length(y_star_hat_m_list)],
                                                        alternative = "lower",
                                                        quant_min = delta_min,
                                                        quant_max = delta_max,
@@ -411,7 +419,7 @@ neg_bin_pi <- function(histdat,
 
                         quant_calib_upper <- bisection(y_star_hat = y_star_hat_m_list,
                                                        pred_se = pred_se_m_list,
-                                                       y_star = bs_y_star,
+                                                       y_star = bs_y_star[1:length(y_star_hat_m_list)],
                                                        alternative = "upper",
                                                        quant_min = delta_min,
                                                        quant_max = delta_max,
