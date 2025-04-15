@@ -298,7 +298,7 @@ neg_bin_pi <- function(histdat,
                                         return(exp(unname(coef(x))))
                                 })
 
-        print(length(bs_lambda_hat))
+        # print(length(bs_lambda_hat))
 
         # Get the bs dispersion parameter (kappa)
         bs_kappa_hat <- lapply(X=bs_hist_glm,
