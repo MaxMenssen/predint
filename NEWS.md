@@ -57,4 +57,5 @@ functions are lmer_pi_unstruc(), lmer_pi_futvec() and lmer_pi_futmat().
 
 * Bugfix in bootstrap procedure of neg_bin_pi()
 * Simultaneous PI for several treatment groups in neg_bin_pi and quasi_pois_pi (argument "adjust")
-
+* Small change in the test suite for plot function (see issue on github)
+* New citation for neg_bin_pi() and quasi_bin_pi()
