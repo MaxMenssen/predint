@@ -67,9 +67,9 @@
 #'
 #' @importFrom MASS glm.nb
 #'
-#' @references Menssen and Schaarschmidt (2022): Prediction intervals for all of M future
-#' observations based on linear random effects models. Statistica Neerlandica,
-#'  \doi{10.1111/stan.12260}
+#' @references Menssen et al. (2025): Prediction Intervals for Overdispersed Poisson
+#' Data and Their Application in Medical and Pre-Clinical Quality Control.
+#' Pharmaceutical Statistics \doi{10.1002/pst.2447}
 #'
 #' @examples
 #' # HCD from the Ames test
