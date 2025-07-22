@@ -118,12 +118,12 @@ pi_m1
 #> Pointwise 95 % prediction interval for one future observation 
 #>  
 #>      lower    upper newsize
-#> 1 2.401388 15.05858      30
+#> 1 2.176397 15.05858      30
 ```
 
 The mortality of a concurrent control group is in line with the
-historical knowledge, if it is not lower than 2.401 or higher than
-2.401.
+historical knowledge, if it is not lower than 2.176 or higher than
+2.176.
 
 A graphical overview about the prediction interval can be given with
 
@@ -137,13 +137,11 @@ plot(pi_m1)
 
 Menssen, M., Schaarschmidt, F.: Prediction intervals for all of M future
 observations based on linear random effects models. Statistica
-Neerlandica. 2022. [DOI:
-10.1111/stan.12260](https://doi.org/10.1111/stan.12260)
+Neerlandica. 2022.
 
 Menssen M, Schaarschmidt F.: Prediction intervals for overdispersed
 binomial data with application to historical controls. Statistics in
 Medicine. 2019;38:2652-2663.
-[DOI:10.1002/sim.8124](https://doi.org/10.1002/sim.8124)
 
 NTP 2017: [Tables of historical controls: pathology tables by
 route/vehicle.](https://ntp.niehs.nih.gov/data/controls), Accessed May
