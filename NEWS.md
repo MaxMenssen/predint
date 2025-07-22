@@ -1,3 +1,5 @@
+# predint (development version)
+
 # predint 2.3.0
 
 * Bugfix in bootstrap procedure of neg_bin_pi()
