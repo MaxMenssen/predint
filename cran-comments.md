@@ -1,8 +1,8 @@
-This is a patch release
+This is a minor release
 
 minor changes in the test suite
 
-## R CMD check results (local on my 2021 MacBook, M1pro)
+## R CMD check results (local on my 2024 MacBook, M4 Pro)
 0 errors | 0 warnings | 0 note
 
 ## Checks with devtools::check()
